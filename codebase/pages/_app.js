@@ -1,4 +1,3 @@
-
 import Styles from '../app/globals.css'
 import Layout from '../app/layout'
 import Image from 'next/image'
@@ -114,4 +113,5 @@ export default function Home() {
     </main>
   )
 }
+
 
