@@ -1,5 +1,5 @@
 
-import '../app/globals.css'
+import Styles from '../app/globals.css'
 import Layout from '../app/layout'
 
 
