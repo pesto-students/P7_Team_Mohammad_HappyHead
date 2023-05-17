@@ -2,7 +2,7 @@ import * as React from 'react'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import createEmotionServer from '@emotion/server/create-instance'
 import createEmotionCache from '../utils/createEmotionCache'
-
+import theme from '../components/styles/theme'
 
 export default class MyDocument extends Document {
 	render() {
@@ -10,6 +10,11 @@ export default class MyDocument extends Document {
 			<Html lang='en'>
 				<Head>
 					{/* PWA primary color */}
+					<style jsx global>{`
+            :root {
+              --primary-color: ${theme.palette.primary.main};
+            }
+          `}</style>
 					<link rel='shortcut icon' href='/favicon.ico' />
 					<meta name='emotion-insertion-point' content='' />
 					{this.props.emotionStyleTags}
