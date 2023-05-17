@@ -1,6 +1,6 @@
 import React from 'react';
-// import ResponsiveAppBar from '../components/Layout/Header/Index';
-import ResponsiveAppBar from '../components/Layout/Header';
+import ResponsiveAppBar from '../components/Layout/Header/Index';
+
 function IndexPage() {
   return (
     <div>
