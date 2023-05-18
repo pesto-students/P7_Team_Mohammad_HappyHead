@@ -1,5 +1,5 @@
-// /** @type {import('next').NextConfig} */
-// require('./utils/db');
+/** @type {import('next').NextConfig} */
+require('./utils/db');
 
 const nextConfig = {}
 
