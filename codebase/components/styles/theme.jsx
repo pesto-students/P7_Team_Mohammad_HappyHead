@@ -20,6 +20,10 @@ const theme = createTheme({
     text: {
       primary: '#000000', // Black font color
     },
+    typography: {
+      fontFamily: 'Roboto, Arial, sans-serif',
+      fontWeightBold: 700,
+    },
     mode: 'light', // Initial mode set to light
   },
   // Add more options to your theme if needed
