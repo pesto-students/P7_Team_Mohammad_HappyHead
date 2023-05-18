@@ -1,23 +1,19 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Container } from '@mui/material';
+import { AppBar, Toolbar, Container, ThemeProvider } from '@mui/material';
 import Header from '../Layout/Header/Index';
 import Footer from '../Layout/Footer/Index';
 import HeroComponent from './Hero';
+import theme from '../styles/theme';
 
 const HomePage = () => {
   return (
-    <>
-      <AppBar position="fixed">
-          <Header />
-      </AppBar>
-      <Toolbar /> {/* Empty Toolbar to push the content below the AppBar */}
-      <Container maxWidth="lg" sx={{ marginTop: '80px', marginBottom: '80px' }}>
-        {/* Other components */}
+    <ThemeProvider theme={theme}>
+      <Header position="fixed" />
+      <Container maxWidth="vw" sx={{ p: '30px', p: '30px', bgcolor: theme.palette.secondary.main }}>
         <HeroComponent />
-        {/* Other components */}
       </Container>
       <Footer />
-    </>
+    </ThemeProvider>
   );
 };
 
