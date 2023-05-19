@@ -3,7 +3,7 @@ import { Container, ThemeProvider } from '@mui/material'
 import Header from '../Layout/Header/Index'
 import Footer from '../Layout/Footer/Index'
 import HeroComponent from './HeroComponent'
-import theme from '../styles/Theme'
+import theme from '../styles/theme'
 
 const HomePage = () => {
   return (
