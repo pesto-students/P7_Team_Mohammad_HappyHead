@@ -1,17 +1,16 @@
-import React from 'react';
-import { Box, Container, Grid } from '@mui/material';
-import { NextLinkComposed } from '../../MuiLink';
-import theme from '../../styles/theme';
-import AboutSection from './AboutSection';
-import ContactSection from './ContactSection';
-import FeaturesSection from './FeaturesSection';
-import BottomSection from './BottomSection';
+import React from 'react'
+import { Box, Container, Grid } from '@mui/material'
+import theme from '../../styles/theme'
+import AboutSection from './AboutSection'
+import ContactSection from './ContactSection'
+import FeaturesSection from './FeaturesSection'
+import BottomSection from './BottomSection'
 
 const pages = [
   { name: 'About', path: '/about' },
   { name: 'Features', path: '/features' },
   { name: 'Contact', path: '/contact' },
-];
+]
 
 const featureLinks = [
   {
@@ -30,11 +29,11 @@ const featureLinks = [
     name: 'Login as an Expert',
     path: '/features/login-as-expert',
   },
-];
+]
 
 const Footer = () => {
   return (
-    <Box sx={{ bgcolor: theme.palette.quaternary.main, py: 3 }}>
+    <Box sx={{ bgcolor: theme.palette.quinary.main, py: 3 }}>
       <Container maxWidth="md">
         <Grid container spacing={2}>
           {/* About Section */}
@@ -57,7 +56,7 @@ const Footer = () => {
         <BottomSection />
       </Container>
     </Box>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

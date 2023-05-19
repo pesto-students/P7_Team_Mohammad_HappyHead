@@ -1,12 +1,12 @@
-import React from 'react';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
-import Login from '@mui/icons-material/AccountCircleRounded';
-import MuiLink from '../../MuiLink';
-import Box from '@mui/material/Box';
+import React from 'react'
+import IconButton from '@mui/material/IconButton'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import Tooltip from '@mui/material/Tooltip'
+import Typography from '@mui/material/Typography'
+import Login from '@mui/icons-material/AccountCircleRounded'
+import MuiLink from '../../MuiLink'
+import Box from '@mui/material/Box'
 
 const UserMenu = ({ anchorElUser, handleOpenUserMenu, handleCloseUserMenu, login, theme }) => {
   return (
@@ -46,7 +46,7 @@ const UserMenu = ({ anchorElUser, handleOpenUserMenu, handleCloseUserMenu, login
         ))}
       </Menu>
     </Box>
-  );
-};
+  )
+}
 
-export default UserMenu;
+export default UserMenu

@@ -1,4 +1,4 @@
-import { styled } from '@mui/system';
+import { styled } from '@mui/system'
 
 const ContentContainer = styled('div')({
   display: 'flex',
@@ -6,6 +6,6 @@ const ContentContainer = styled('div')({
   justifyContent: 'center',
   alignItems: 'center',
   maxWidth: '100%',
-});
+})
 
-export default ContentContainer;
+export default ContentContainer

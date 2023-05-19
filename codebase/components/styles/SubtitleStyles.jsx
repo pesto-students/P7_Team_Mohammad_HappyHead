@@ -1,4 +1,4 @@
-import { styled, Typography } from '@mui/material';
+import { styled, Typography } from '@mui/material'
 
 const Subtitle = styled(Typography)(({ theme }) => ({
   fontFamily: 'monospace',
@@ -6,6 +6,6 @@ const Subtitle = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     fontSize: '2rem',
   },
-}));
+}))
 
-export default Subtitle;
+export default Subtitle

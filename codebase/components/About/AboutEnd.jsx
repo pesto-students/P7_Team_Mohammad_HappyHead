@@ -1,6 +1,6 @@
 import React from 'react'
-import { Button, Typography } from '@mui/material'
-import { ThemeProvider } from '@mui/system'
+import { Button } from '@mui/material'
+import { styled, ThemeProvider } from '@mui/system'
 import Face2OutlinedIcon from '@mui/icons-material/Face2Outlined'
 import FaceOutlinedIcon from '@mui/icons-material/FaceOutlined'
 import Face4OutlinedIcon from '@mui/icons-material/Face4Outlined'
@@ -11,25 +11,40 @@ import RootContainer from '../styles/RootContainerStyles'
 import ContentContainer from '../styles/ContentContainerStyles'
 import IconContainer from '../styles/IconContainerStyles'
 import Title from '../styles/TitleStyles'
-import Subtitle from '../styles/SubtitleStyles'
+import SubText from '../styles/SubTextStyles'
 import ButtonWrapper from '../styles/ButtonWrapperStyles'
 
-const HeroComponent = () => {
+// Styled component for the custom root container
+const CustomRootContainer = styled(RootContainer)({
+  backgroundColor: theme.palette.secondary.main, // Replace 'your-desired-color' with the desired background color
+})
+
+// Styled component for the custom content container
+const CustomContentContainer = styled(ContentContainer)({
+  backgroundColor: theme.palette.secondary.main, // Replace 'your-desired-color' with the desired background color
+  padding: '2rem 0',
+})
+
+// Styled component for the custom title
+const CustomTitle = styled(Title)({
+  padding: '0 2rem',
+})
+
+const AboutHero = () => {
   return (
     <ThemeProvider theme={theme}>
-      {/* Custom root container */}
-      <RootContainer>
-        {/* Custom content container */}
-        <ContentContainer>
+      {/* Custom Root container */}
+      <CustomRootContainer>
+        {/* Custom Content container */}
+        <CustomContentContainer>
           {/* Title */}
-          <Title variant="h2">Your Chief Happiness Officer</Title>
+          <CustomTitle variant="h2">Try HappyHead for free today</CustomTitle>
 
-          {/* Subtitle */}
-          <Subtitle variant="h3">HappyHead</Subtitle>
+          {/* Sub text */}
+          <SubText variant="h5">Find more joy, less stress, and the best sleep ever with HappyHead. Try it for free today.</SubText>
 
-          {/* Icon container */}
+          {/* Icons */}
           <IconContainer>
-            {/* Icons */}
             <Face2OutlinedIcon fontSize="large" />
             <FaceOutlinedIcon fontSize="large" />
             <Face4OutlinedIcon fontSize="large" />
@@ -39,20 +54,19 @@ const HeroComponent = () => {
           {/* Button to explore tools */}
           <ButtonWrapper color="primary">
             <Button variant="contained" color="quaternary">
-              Explore Tools
+              Explore Features
             </Button>
           </ButtonWrapper>
 
-          {/* Button to register as an expert */}
           <ButtonWrapper color="tertiary">
             <Button variant="contained" color="tertiary">
               Register as an Expert
             </Button>
           </ButtonWrapper>
-        </ContentContainer>
-      </RootContainer>
+        </CustomContentContainer>
+      </CustomRootContainer>
     </ThemeProvider>
-  );
-};
+  )
+}
 
-export default HeroComponent
+export default AboutHero

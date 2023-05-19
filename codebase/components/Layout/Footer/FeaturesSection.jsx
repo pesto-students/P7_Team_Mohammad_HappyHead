@@ -1,7 +1,7 @@
-import React from 'react';
-import { Box, Typography } from '@mui/material';
-import { NextLinkComposed } from '../../MuiLink';
-import theme from '../../styles/theme';
+import React from 'react'
+import { Box, Typography } from '@mui/material'
+import { NextLinkComposed } from '../../MuiLink'
+import theme from '../../styles/theme'
 
 const FeaturesSection = ({ featureLinks }) => {
     return (
@@ -28,13 +28,13 @@ const FeaturesSection = ({ featureLinks }) => {
               textAlign: 'center',
             }}
           >
-            <Typography variant="body2" color="textSecondary" component="p" align="center">
+            <Typography variant="body1" color="textSecondary" component="p" align="center">
               {feature.name}
             </Typography>
           </NextLinkComposed>
         ))}
       </Box>
-    );
-  };
+    )
+  }
 
-export default FeaturesSection;
+export default FeaturesSection

@@ -1,7 +1,7 @@
-import React from 'react';
-import { Box, Typography } from '@mui/material';
-import { NextLinkComposed } from '../../MuiLink';
-import theme from '../../styles/theme';
+import React from 'react'
+import { Box, Typography } from '@mui/material'
+import { NextLinkComposed } from '../../MuiLink'
+import theme from '../../styles/theme'
 
 const ContactSection = () => {
     return (
@@ -26,7 +26,7 @@ const ContactSection = () => {
             textAlign: 'center',
           }}
         >
-          <Typography variant="body2" color="textSecondary" component="p" align="center">
+          <Typography variant="body1" color="textSecondary" component="p" align="center">
             Contact us
           </Typography>
         </NextLinkComposed>
@@ -41,7 +41,7 @@ const ContactSection = () => {
             textAlign: 'center',
           }}
         >
-          <Typography variant="body2" color="textSecondary" component="p" align="center">
+          <Typography variant="body1" color="textSecondary" component="p" align="center">
             Mental health resources
           </Typography>
         </NextLinkComposed>
@@ -56,13 +56,13 @@ const ContactSection = () => {
             textAlign: 'center',
           }}
         >
-          <Typography variant="body2" color="textSecondary" component="p" align="center">
+          <Typography variant="body1" color="textSecondary" component="p" align="center">
             Accessibility Statement
           </Typography>
         </NextLinkComposed>
       </Box>
-    );
-  };
+    )
+  }
   
 
-export default ContactSection;
+export default ContactSection

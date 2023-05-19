@@ -1,4 +1,4 @@
-import { styled } from '@mui/system';
+import { styled } from '@mui/system'
 
 const RootContainer = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -9,6 +9,6 @@ const RootContainer = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
   color: theme.palette.text.primary,
   textAlign: 'center',
-}));
+}))
 
-export default RootContainer;
+export default RootContainer

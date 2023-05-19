@@ -1,9 +1,9 @@
-import React from 'react';
-import { Box, Grid, Typography } from '@mui/material';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import theme from '../../styles/theme';
+import React from 'react'
+import { Box, Grid, Typography } from '@mui/material'
+import FacebookIcon from '@mui/icons-material/Facebook'
+import TwitterIcon from '@mui/icons-material/Twitter'
+import InstagramIcon from '@mui/icons-material/Instagram'
+import theme from '../../styles/theme'
 
 const BottomSection = () => {
   return (
@@ -28,7 +28,7 @@ const BottomSection = () => {
         © {new Date().getFullYear()} Your App. All rights reserved.
       </Typography>
     </Box>
-  );
-};
+  )
+}
 
-export default BottomSection;
+export default BottomSection

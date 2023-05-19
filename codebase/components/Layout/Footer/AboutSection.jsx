@@ -1,7 +1,7 @@
-import React from 'react';
-import { Box, Typography } from '@mui/material';
-import { NextLinkComposed } from '../../MuiLink';
-import theme from '../../styles/theme';
+import React from 'react'
+import { Box, Typography } from '@mui/material'
+import { NextLinkComposed } from '../../MuiLink'
+import theme from '../../styles/theme'
 
 
 const AboutSection = () => {
@@ -17,7 +17,7 @@ const AboutSection = () => {
           About
         </Typography>
         <NextLinkComposed
-          to="/about-happyhead"
+          to="/about"
           color="textPrimary"
           sx={{
             color: theme.palette.text.primary,
@@ -27,12 +27,12 @@ const AboutSection = () => {
             textAlign: 'center',
           }}
         >
-          <Typography variant="body2" color="textSecondary" component="p" align="center">
+          <Typography variant="body1" color="textSecondary" component="p" align="center">
             About HappyHead
           </Typography>
         </NextLinkComposed>
         <NextLinkComposed
-          to="/the-team"
+          to="/about"
           color="textPrimary"
           sx={{
             color: theme.palette.text.primary,
@@ -42,12 +42,12 @@ const AboutSection = () => {
             textAlign: 'center',
           }}
         >
-          <Typography variant="body2" color="textSecondary" component="p" align="center">
-            The Team
+          <Typography variant="body1" color="textSecondary" component="p" align="center">
+            Our Aim
           </Typography>
         </NextLinkComposed>
         <NextLinkComposed
-          to="/join-our-team"
+          to="/about"
           color="textPrimary"
           sx={{
             color: theme.palette.text.primary,
@@ -57,13 +57,13 @@ const AboutSection = () => {
             textAlign: 'center',
           }}
         >
-          <Typography variant="body2" color="textSecondary" component="p" align="center">
-            Join our Team
+          <Typography variant="body1" color="textSecondary" component="p" align="center">
+          The Team
           </Typography>
         </NextLinkComposed>
       </Box>
-    );
-  };
+    )
+  }
   
 
-export default AboutSection;
+export default AboutSection
