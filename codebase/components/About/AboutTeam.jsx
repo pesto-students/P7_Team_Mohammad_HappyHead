@@ -59,8 +59,7 @@ const Team = () => {
                 </ImageContainer>
                 <CustomTitle variant="h5">Chaitra</CustomTitle>
                 <SubText variant="body1">
-                  Think of HappyHead as your mind’s best friend. We’re here for you whenever you need us, wherever you are,
-                  helping you get through tough times and find joy in every day.
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem quod libero natus quas a omnis. Numquam qui fuga modi ex soluta.
                 </SubText>
               </ColumnContainer>
             </Grid>
@@ -74,8 +73,7 @@ const Team = () => {
                 </ImageContainer>
                 <CustomTitle variant="h5">Parisha</CustomTitle>
                 <SubText variant="body1">
-                  Through science-backed meditation and mindfulness tools, HappyHead helps you create life-changing habits
-                  to support your mental health and find a healthier, happier you.
+                  An unboxabe chameleon who is too interesting to categorise, she is a marketer, coder, rower, ukulele player, avid reader, pet parent, pizza eater and music lover.
                 </SubText>
               </ColumnContainer>
             </Grid>
@@ -89,8 +87,7 @@ const Team = () => {
                 </ImageContainer>
                 <CustomTitle variant="h5">Shubham</CustomTitle>
                 <SubText variant="body1">
-                  HappyHead is proven to reduce stress by 14% in just 10 days. It can also help you relax your mind in minutes,
-                  improve focus, and get the best sleep ever.
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora et magnam, ab, voluptatum numquam rem excepturi id voluptatem obcaecati eos eveniet porro.
                 </SubText>
               </ColumnContainer>
             </Grid>
