@@ -17,7 +17,7 @@ const AboutSection = () => {
           About
         </Typography>
         <NextLinkComposed
-          to="/about-happyhead"
+          to="/about"
           color="textPrimary"
           sx={{
             color: theme.palette.text.primary,
@@ -32,7 +32,7 @@ const AboutSection = () => {
           </Typography>
         </NextLinkComposed>
         <NextLinkComposed
-          to="/the-team"
+          to="/about"
           color="textPrimary"
           sx={{
             color: theme.palette.text.primary,
@@ -43,11 +43,11 @@ const AboutSection = () => {
           }}
         >
           <Typography variant="body2" color="textSecondary" component="p" align="center">
-            The Team
+            Our Aim
           </Typography>
         </NextLinkComposed>
         <NextLinkComposed
-          to="/join-our-team"
+          to="/about"
           color="textPrimary"
           sx={{
             color: theme.palette.text.primary,
@@ -58,7 +58,7 @@ const AboutSection = () => {
           }}
         >
           <Typography variant="body2" color="textSecondary" component="p" align="center">
-            Join our Team
+          The Team
           </Typography>
         </NextLinkComposed>
       </Box>
