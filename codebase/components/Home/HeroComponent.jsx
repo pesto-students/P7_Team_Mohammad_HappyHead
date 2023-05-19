@@ -6,7 +6,7 @@ import FaceOutlinedIcon from '@mui/icons-material/FaceOutlined'
 import Face4OutlinedIcon from '@mui/icons-material/Face4Outlined'
 import Face5OutlinedIcon from '@mui/icons-material/Face5Outlined'
 
-import theme from '../styles/Theme'
+import theme from '../styles/theme'
 import RootContainer from '../styles/RootContainerStyles'
 import ContentContainer from '../styles/ContentContainerStyles'
 import IconContainer from '../styles/IconContainerStyles'
