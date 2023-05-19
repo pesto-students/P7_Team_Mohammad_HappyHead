@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Container, Grid } from '@mui/material'
-import theme from '../../styles/Theme'
+import theme from '../../styles/theme'
 import AboutSection from './AboutSection'
 import ContactSection from './ContactSection'
 import FeaturesSection from './FeaturesSection'
@@ -33,7 +33,7 @@ const featureLinks = [
 
 const Footer = () => {
   return (
-    <Box sx={{ bgcolor: theme.palette.quaternary.main, py: 3 }}>
+    <Box sx={{ bgcolor: theme.palette.quinary.main, py: 3 }}>
       <Container maxWidth="md">
         <Grid container spacing={2}>
           {/* About Section */}

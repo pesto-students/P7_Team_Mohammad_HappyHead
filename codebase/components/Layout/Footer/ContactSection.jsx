@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Typography } from '@mui/material'
 import { NextLinkComposed } from '../../MuiLink'
-import theme from '../../styles/Theme'
+import theme from '../../styles/theme'
 
 const ContactSection = () => {
     return (
