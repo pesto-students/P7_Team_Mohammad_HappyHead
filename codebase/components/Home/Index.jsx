@@ -1,9 +1,9 @@
-import React from 'react';
-import { AppBar, Toolbar, Container, ThemeProvider } from '@mui/material';
-import Header from '../Layout/Header/Index';
-import Footer from '../Layout/Footer/Index';
-import HeroComponent from './HeroComponent';
-import theme from '../styles/theme';
+import React from 'react'
+import { Container, ThemeProvider } from '@mui/material'
+import Header from '../Layout/Header/Index'
+import Footer from '../Layout/Footer/Index'
+import HeroComponent from './HeroComponent'
+import theme from '../styles/Theme'
 
 const HomePage = () => {
   return (
@@ -17,4 +17,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default HomePage

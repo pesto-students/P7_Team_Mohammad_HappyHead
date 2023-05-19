@@ -1,7 +1,7 @@
-import React from 'react';
-import { Box, Typography } from '@mui/material';
-import { NextLinkComposed } from '../../MuiLink';
-import theme from '../../styles/theme';
+import React from 'react'
+import { Box, Typography } from '@mui/material'
+import { NextLinkComposed } from '../../MuiLink'
+import theme from '../../styles/Theme'
 
 const ContactSection = () => {
     return (
@@ -61,8 +61,8 @@ const ContactSection = () => {
           </Typography>
         </NextLinkComposed>
       </Box>
-    );
-  };
+    )
+  }
   
 
-export default ContactSection;
+export default ContactSection

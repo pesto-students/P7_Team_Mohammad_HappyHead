@@ -1,16 +1,16 @@
-import React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Container from '@mui/material/Container';
-import Toolbar from '@mui/material/Toolbar';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import { ThemeProvider } from '@mui/system';
-import theme from '../../styles/theme';
-import Logo from '@mui/icons-material/AddReactionOutlined';
-import MuiLink from '../../MuiLink';
-import DesktopMenu from './DesktopMenu';
-import MobileMenu from './MobileMenu';
-import UserMenu from './UserMenu';
+import React from 'react'
+import AppBar from '@mui/material/AppBar'
+import Container from '@mui/material/Container'
+import Toolbar from '@mui/material/Toolbar'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import { ThemeProvider } from '@mui/system'
+import theme from '../../styles/Theme'
+import Logo from '@mui/icons-material/AddReactionOutlined'
+import MuiLink from '../../MuiLink'
+import DesktopMenu from './DesktopMenu'
+import MobileMenu from './MobileMenu'
+import UserMenu from './UserMenu'
 
 const pages = [
   { name: 'About', path: '/about' },
@@ -118,7 +118,7 @@ function ResponsiveAppBar() {
         </Container>
       </AppBar>
     </ThemeProvider>
-  );
+  )
 }
 
-export default ResponsiveAppBar;
+export default ResponsiveAppBar

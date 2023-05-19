@@ -1,10 +1,10 @@
-import React from 'react';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import MenuIcon from '@mui/icons-material/Menu';
-import Typography from '@mui/material/Typography';
-import MuiLink from '../../MuiLink';
+import React from 'react'
+import IconButton from '@mui/material/IconButton'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import MenuIcon from '@mui/icons-material/Menu'
+import Typography from '@mui/material/Typography'
+import MuiLink from '../../MuiLink'
 
 const MobileMenu = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu, pages, theme }) => {
   return (
@@ -48,7 +48,7 @@ const MobileMenu = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu, pages,
         ))}
       </Menu>
     </>
-  );
-};
+  )
+}
 
-export default MobileMenu;
+export default MobileMenu

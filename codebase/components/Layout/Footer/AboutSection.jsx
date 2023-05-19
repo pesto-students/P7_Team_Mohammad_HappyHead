@@ -1,7 +1,7 @@
-import React from 'react';
-import { Box, Typography } from '@mui/material';
-import { NextLinkComposed } from '../../MuiLink';
-import theme from '../../styles/theme';
+import React from 'react'
+import { Box, Typography } from '@mui/material'
+import { NextLinkComposed } from '../../MuiLink'
+import theme from '../../styles/Theme'
 
 
 const AboutSection = () => {
@@ -62,8 +62,8 @@ const AboutSection = () => {
           </Typography>
         </NextLinkComposed>
       </Box>
-    );
-  };
+    )
+  }
   
 
-export default AboutSection;
+export default AboutSection

@@ -1,7 +1,7 @@
-import React from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import MuiLink from '../../MuiLink';
+import React from 'react'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import MuiLink from '../../MuiLink'
 
 const DesktopMenu = ({ pages, handleCloseNavMenu, theme }) => {
   return (
@@ -18,7 +18,7 @@ const DesktopMenu = ({ pages, handleCloseNavMenu, theme }) => {
         </MuiLink>
       ))}
     </Box>
-  );
-};
+  )
+}
 
-export default DesktopMenu;
+export default DesktopMenu
