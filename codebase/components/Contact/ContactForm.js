@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { TextField, Button, Container } from '@mui/material';
-import { ThemeProvider, styled } from '@mui/system';
-import ContentContainer from '../styles/ContentContainerStyles';
-import ButtonWrapper from '../styles/ButtonWrapperStyles';
-import SubText from '../styles/SubTextStyles';
-import theme from '../styles/theme';
+import { useState } from 'react'
+import { TextField, Button, Container } from '@mui/material'
+import { ThemeProvider, styled } from '@mui/system'
+import ContentContainer from '../styles/ContentContainerStyles'
+import ButtonWrapper from '../styles/ButtonWrapperStyles'
+import SubText from '../styles/SubTextStyles'
+import theme from '../styles/theme'
 
 // Styled component for the custom root container
 const CustomRootContainer = styled('div')({
@@ -30,13 +30,13 @@ const CustomTextField = styled(TextField)({
 });
 
 export default function Contact() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [query, setQuery] = useState('');
-  const [errors, setErrors] = useState({});
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [query, setQuery] = useState('')
+  const [errors, setErrors] = useState({})
 
   const validateForm = () => {
-    const newErrors = {};
+    const newErrors = {}
 
     if (name.trim() === '') {
       newErrors.name = 'Name is required';
@@ -49,16 +49,16 @@ export default function Contact() {
     }
 
     if (query.trim() === '') {
-      newErrors.query = 'Query is required';
+      newErrors.query = 'Query is required'
     }
 
-    setErrors(newErrors);
+    setErrors(newErrors)
 
-    return Object.keys(newErrors).length === 0;
-  };
+    return Object.keys(newErrors).length === 0
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (validateForm()) {
       try {
@@ -78,17 +78,17 @@ export default function Contact() {
           console.log(data); // Handle the response as desired
 
           // Clear the form fields
-          setName('');
-          setEmail('');
-          setQuery('');
+          setName('')
+          setEmail('')
+          setQuery('')
         } else {
           throw new Error('Request failed');
         }
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
     }
-  };
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -155,5 +155,5 @@ export default function Contact() {
         </CustomContentContainer>
       </CustomRootContainer>
     </ThemeProvider>
-  );
+  )
 }
