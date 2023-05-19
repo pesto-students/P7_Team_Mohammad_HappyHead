@@ -83,7 +83,7 @@ const Team = () => {
               <ColumnContainer>
                 {/* ImageContainer for Shubham */}
                 <ImageContainer>
-                  <Avatar alt="Shubham" src="/path/to/why-image.jpg" />
+                  <Avatar alt="Shubham" src="/images/shubham.jpeg" />
                 </ImageContainer>
                 <CustomTitle variant="h5">Shubham</CustomTitle>
                 <SubText variant="body1">
