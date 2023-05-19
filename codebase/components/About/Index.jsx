@@ -13,8 +13,8 @@ const AboutPage = () => {
     <ThemeProvider theme={theme}>
       <Header position="fixed"/>
       <AboutTop />
-      <AboutTeam/>
       <WhoWhatWe/>
+      <AboutTeam/>
       <AboutEnd />
       <Footer />
     </ThemeProvider>
