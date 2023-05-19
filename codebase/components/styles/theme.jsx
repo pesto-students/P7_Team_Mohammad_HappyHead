@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles'
 
 const theme = createTheme({
   palette: {
@@ -24,9 +24,18 @@ const theme = createTheme({
       fontFamily: 'Roboto, Arial, sans-serif',
       fontWeightBold: 700,
     },
+    breakpoints: {
+      values: {
+        xs: 0,      // Extra small devices (portrait phones)
+        sm: 600,    // Small devices (landscape phones)
+        md: 960,    // Medium devices (tablets)
+        lg: 1280,   // Large devices (laptops/desktops)
+        xl: 1920,   // Extra large devices (large desktops)
+      },
+    },
     mode: 'light', // Initial mode set to light
   },
   // Add more options to your theme if needed
-});
+})
 
-export default theme;
+export default theme
