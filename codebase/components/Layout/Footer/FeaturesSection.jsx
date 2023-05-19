@@ -28,7 +28,7 @@ const FeaturesSection = ({ featureLinks }) => {
               textAlign: 'center',
             }}
           >
-            <Typography variant="body2" color="textSecondary" component="p" align="center">
+            <Typography variant="body1" color="textSecondary" component="p" align="center">
               {feature.name}
             </Typography>
           </NextLinkComposed>

@@ -27,7 +27,7 @@ const AboutSection = () => {
             textAlign: 'center',
           }}
         >
-          <Typography variant="body2" color="textSecondary" component="p" align="center">
+          <Typography variant="body1" color="textSecondary" component="p" align="center">
             About HappyHead
           </Typography>
         </NextLinkComposed>
@@ -42,7 +42,7 @@ const AboutSection = () => {
             textAlign: 'center',
           }}
         >
-          <Typography variant="body2" color="textSecondary" component="p" align="center">
+          <Typography variant="body1" color="textSecondary" component="p" align="center">
             Our Aim
           </Typography>
         </NextLinkComposed>
@@ -57,7 +57,7 @@ const AboutSection = () => {
             textAlign: 'center',
           }}
         >
-          <Typography variant="body2" color="textSecondary" component="p" align="center">
+          <Typography variant="body1" color="textSecondary" component="p" align="center">
           The Team
           </Typography>
         </NextLinkComposed>

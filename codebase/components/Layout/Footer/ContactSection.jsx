@@ -26,7 +26,7 @@ const ContactSection = () => {
             textAlign: 'center',
           }}
         >
-          <Typography variant="body2" color="textSecondary" component="p" align="center">
+          <Typography variant="body1" color="textSecondary" component="p" align="center">
             Contact us
           </Typography>
         </NextLinkComposed>
@@ -41,7 +41,7 @@ const ContactSection = () => {
             textAlign: 'center',
           }}
         >
-          <Typography variant="body2" color="textSecondary" component="p" align="center">
+          <Typography variant="body1" color="textSecondary" component="p" align="center">
             Mental health resources
           </Typography>
         </NextLinkComposed>
@@ -56,7 +56,7 @@ const ContactSection = () => {
             textAlign: 'center',
           }}
         >
-          <Typography variant="body2" color="textSecondary" component="p" align="center">
+          <Typography variant="body1" color="textSecondary" component="p" align="center">
             Accessibility Statement
           </Typography>
         </NextLinkComposed>
