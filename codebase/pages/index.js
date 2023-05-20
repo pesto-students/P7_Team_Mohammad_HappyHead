@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import Hero from '../components/Home/Index'
 
 function IndexPage() {
@@ -8,4 +8,4 @@ function IndexPage() {
     </div>
   );
 }
-export default IndexPage;
+export default IndexPage
