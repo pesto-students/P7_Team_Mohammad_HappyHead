@@ -1,13 +1,13 @@
-import React from 'react';
+import React from 'react'
 
-const LoginPage = () => {
+const LoginPageUser = () => {
   // Your login page content and logic here
 
   return (
     <div>
       Your Login page here
     </div>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPageUser
