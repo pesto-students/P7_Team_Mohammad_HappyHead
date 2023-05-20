@@ -1,11 +1,11 @@
 import React from 'react'
-import { styled, Button, Typography } from '@mui/material'
+import { styled } from '@mui/material'
 import { ThemeProvider } from '@mui/system'
 
 import theme from '../styles/theme'
 import Title from '../styles/TitleStyles'
 import SubText from '../styles/SubTextStyles'
-import ImageList from './Images'
+import ImageList from './ImagesSection'
 import RootContainer from '../styles/RootContainerStyles'
 import ContentContainer from '../styles/ContentContainerStyles'
 
