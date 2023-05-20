@@ -1,8 +1,10 @@
-import Head from 'next/head';
-import Image from 'next/image'
-import Link from 'next/link'
+import React from 'react';
+import useAuth from '../utils/auth';
+import Features from '../components/Features/Index';
 
-export default function Features() {
-    return (
-        <h1>Features Page</h1>
-    )}
+function FeaturesPage() {
+  const isLoggedIn = useAuth();
+  return  <Features isLoggedIn={isLoggedIn} />
+}
+
+export default FeaturesPage
