@@ -1,15 +1,16 @@
 import { useState } from 'react'
 import { TextField, Button, Container } from '@mui/material'
 import { ThemeProvider, styled } from '@mui/system'
+import RootContainer from '../styles/RootContainerStyles'
 import ContentContainer from '../styles/ContentContainerStyles'
 import ButtonWrapper from '../styles/ButtonWrapperStyles'
 import SubText from '../styles/SubTextStyles'
 import theme from '../styles/theme'
 
-// Styled component for the custom root container
-const CustomRootContainer = styled('div')({
+// Styled component for the root container
+const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
-});
+}))
 
 // Styled component for the custom content container
 const CustomContentContainer = styled(ContentContainer)({
