@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import { styled, ThemeProvider } from '@mui/system'
 import Face2OutlinedIcon from '@mui/icons-material/Face2Outlined'
 import FaceOutlinedIcon from '@mui/icons-material/FaceOutlined'
@@ -30,6 +30,14 @@ const CustomTitle = styled(Title)({
   padding: '0 2rem',
 })
 
+const LoginLinkTypography = styled(Typography)`
+  padding-top: 16px;
+  color: ${({ theme }) => theme.palette.text.primary};
+
+  a {
+    color: ${({ theme }) => theme.palette.text.primary};
+  }
+`;
 const AboutHero = () => {
   return (
     <ThemeProvider theme={theme}>
@@ -54,15 +62,25 @@ const AboutHero = () => {
           {/* Button to explore tools */}
           <ButtonWrapper color="primary">
             <Button variant="contained" color="quaternary">
-              Explore Features
+              Try for free
             </Button>
           </ButtonWrapper>
 
+          {/* Button to register as an expert */}
           <ButtonWrapper color="tertiary">
             <Button variant="contained" color="tertiary">
               Register as an Expert
             </Button>
           </ButtonWrapper>
+
+          {/* Link for "Already a user? Login" */}
+          <LoginLinkTypography
+            variant="body2"
+            color="primary"
+            align="center"
+          >
+            Already a user? <a href="/login">Login</a>
+          </LoginLinkTypography>
         </CustomContentContainer>
       </CustomRootContainer>
     </ThemeProvider>
