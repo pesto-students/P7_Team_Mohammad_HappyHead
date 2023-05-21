@@ -1,7 +1,7 @@
-import React from 'react'
-import AppBar from '@mui/material/AppBar'
-import Container from '@mui/material/Container'
-import Toolbar from '@mui/material/Toolbar'
+import React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Container from '@mui/material/Container';
+import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { ThemeProvider } from '@mui/system'
@@ -12,36 +12,45 @@ import DesktopMenu from './DesktopMenu'
 import MobileMenu from './MobileMenu'
 import UserMenu from './UserMenu'
 
+// Array of pages for navigation
 const pages = [
   { name: 'About', path: '/about' },
   { name: 'Features', path: '/features' },
   { name: 'Contact', path: '/contact' },
-];
+]
 
+// Array of login options
 const login = [
+  { name: 'Logout', path: '/logout' },
   { name: 'Sign In', path: '/signin' },
   { name: 'Sign Up', path: '/signup' },
-];
+]
 
-function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+// ResponsiveAppBar component
+function ResponsiveAppBar({ isLoggedIn }) {
+  // State variables
+  const [anchorElNav, setAnchorElNav] = React.useState(null)
+  const [anchorElUser, setAnchorElUser] = React.useState(null)
 
+  // Event handlers for opening and closing navigation menu
   const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
+    setAnchorElNav(event.currentTarget)
   };
 
   const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+    setAnchorElUser(event.currentTarget)
   };
 
   const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+    setAnchorElNav(null)
   };
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+    setAnchorElUser(null)
   };
+
+  // Filtering login options based on user's login status
+  const filteredLoginOptions = isLoggedIn ? [login[0]] : login.slice(1)
 
   return (
     <ThemeProvider theme={theme}>
@@ -50,7 +59,7 @@ function ResponsiveAppBar() {
           <Toolbar disableGutters>
             {/* Desktop Styling */}
             <Logo sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-            
+
             <Typography
               variant="h6"
               noWrap
@@ -66,7 +75,9 @@ function ResponsiveAppBar() {
                 textDecoration: 'none',
               }}
             >
-             <MuiLink href="/" color="inherit" underline="none">HappyHead</MuiLink>
+              <MuiLink href="/" color="inherit" underline="none">
+                HappyHead
+              </MuiLink>
             </Typography>
 
             {/* Mobile Styling */}
@@ -98,20 +109,20 @@ function ResponsiveAppBar() {
                 textDecoration: 'none',
               }}
             >
-             <MuiLink href="/" color="inherit" underline="none">HappyHead</MuiLink>
+              <MuiLink href="/" color="inherit" underline="none">
+                HappyHead
+              </MuiLink>
             </Typography>
 
             {/* Desktop Styling */}
-            <DesktopMenu 
-            pages={pages} 
-            handleCloseNavMenu={handleCloseNavMenu}
-            theme={theme} />
+            <DesktopMenu pages={pages} handleCloseNavMenu={handleCloseNavMenu} theme={theme} />
 
+            {/* User Menu */}
             <UserMenu
               anchorElUser={anchorElUser}
               handleOpenUserMenu={handleOpenUserMenu}
               handleCloseUserMenu={handleCloseUserMenu}
-              login={login}
+              login={filteredLoginOptions}
               theme={theme}
             />
           </Toolbar>
@@ -119,6 +130,11 @@ function ResponsiveAppBar() {
       </AppBar>
     </ThemeProvider>
   )
+}
+
+// Default props for ResponsiveAppBar component
+ResponsiveAppBar.defaultProps = {
+  isLoggedIn: false,
 }
 
 export default ResponsiveAppBar

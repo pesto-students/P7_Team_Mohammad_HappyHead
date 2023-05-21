@@ -8,20 +8,23 @@ import Login from '@mui/icons-material/AccountCircleRounded'
 import MuiLink from '../../MuiLink'
 import Box from '@mui/material/Box'
 
+// UserMenu component
 const UserMenu = ({ anchorElUser, handleOpenUserMenu, handleCloseUserMenu, login, theme }) => {
   return (
     <Box sx={{ flexGrow: 0 }}>
+      {/* Login Button */}
       <Tooltip title="Login">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Login alt="Login" src="" sx={{ color: theme.palette.text.primary }} /> {/* Color applied to the Login icon */}
+          <Login alt="Login" src="" sx={{ color: theme.palette.text.primary }} />{/* Color applied to the Login icon */}
         </IconButton>
       </Tooltip>
+      {/* User Menu */}
       <Menu
         sx={{
           mt: '45px',
           '& .MuiPaper-root': {
-            backgroundColor: theme.palette.quinary.main // Set the background color here
-          }
+            backgroundColor: theme.palette.quinary.main, 
+          },
         }}
         id="menu-appbar"
         anchorEl={anchorElUser}
@@ -37,10 +40,13 @@ const UserMenu = ({ anchorElUser, handleOpenUserMenu, handleCloseUserMenu, login
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
+        {/* Mapping login options */}
         {login.map((login) => (
           <MenuItem key={login.name} onClick={handleCloseUserMenu}>
             <MuiLink href={login.path} color="inherit" underline="none">
-              <Typography textAlign="center" sx={{ color: theme.palette.text.primary }}>{login.name}</Typography>
+              <Typography textAlign="center" sx={{ color: theme.palette.text.primary }}>
+                {login.name}
+              </Typography>
             </MuiLink>
           </MenuItem>
         ))}

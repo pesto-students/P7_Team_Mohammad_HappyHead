@@ -4,7 +4,6 @@ import Header from '../Layout/Header/Index'
 import Footer from '../Layout/Footer/Index'
 import Features from '../Features/Features'
 import theme from '../styles/theme'
-{/* <Features isLoggedIn={isLoggedIn} /> */}
 
 const FeaturesPage = () => {
   return (
