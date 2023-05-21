@@ -1,6 +1,6 @@
-/** @type {import('next').NextConfig} */
-require('./utils/db');
+// /** @type {import('next').NextConfig} */
+// require('./utils/db');
 
-const nextConfig = {}
+// const nextConfig = {}
 
-module.exports = nextConfig
+// module.exports = nextConfig

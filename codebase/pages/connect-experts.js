@@ -1,9 +1,11 @@
-import Head from 'next/head';
-import Image from 'next/image'
-import { metadata } from '../components/metadata';
-import Link from 'next/link'
+import React from 'react';
+import ExpertsPage from '../components/ConnectWithExperts/Index'
 
-export default function ConnectWithExperts() {
-    return (
-        <h1>ConnectWithExperts Page</h1>
-    )}
+function ConnectWithExpertsPage() {
+  return (
+    <div>
+     <ExpertsPage/>
+    </div>
+  );
+}
+export default ConnectWithExpertsPage;

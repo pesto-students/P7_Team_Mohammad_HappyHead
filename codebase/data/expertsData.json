@@ -1,0 +1,20 @@
+[
+    {
+      "id": 1,
+      "name": "Dr. John Doe",
+      "specialty": "Psychology",
+      "location": "New York"
+    },
+    {
+      "id": 2,
+      "name": "Dr. Jane Smith",
+      "specialty": "Counseling",
+      "location": "Los Angeles"
+    },
+    {
+      "id": 3,
+      "name": "Dr. Robert Johnson",
+      "specialty": "Family Therapy",
+      "location": "Chicago"
+    }
+  ]
