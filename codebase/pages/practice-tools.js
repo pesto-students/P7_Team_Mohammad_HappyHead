@@ -1,9 +1,10 @@
-import Head from 'next/head';
-import Image from 'next/image'
-import { metadata } from '../components/metadata';
-import Link from 'next/link'
+// import React from 'react'
+import useAuth from '../utils/auth';
+import Tools from '../components/Features/Index';
 
-export default function Tools() {
-    return (
-        <h1>Tools Page</h1>
-    )}
+function UserTools() {
+  const isLoggedIn = useAuth();
+  return  <Tools isLoggedIn={isLoggedIn} />
+}
+
+export default UserTools
