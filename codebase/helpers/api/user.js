@@ -10,13 +10,17 @@ mongoose.connect(process.env.MONGODB_URI, {
 const UserToolsSchema = mongoose.Schema({
   type: {
     type: Number,
-    enum: [1, 2, 3, 4, 5],
+    enum: [1, 2, 3, 4, 5, 6, 7, 8],
     required: true,
   },
 });
 
 // Define the UserAnswersSchema
 const UserAnswersSchema = mongoose.Schema({
+  question: {
+    type: String,
+    required: true,
+  },
   answers: {
     type: [Number],
     required: true,
@@ -82,4 +86,4 @@ const UsersSchema = new mongoose.Schema({
 // Create the Users model using the schema
 const Users = mongoose.model('Users', UsersSchema);
 
-
+export default Users;

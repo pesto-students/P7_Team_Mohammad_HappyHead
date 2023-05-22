@@ -1,5 +1,5 @@
 import Users from '../../../helpers/api/user';
-import { connectToCluster } from './db';
+import { connectToCluster } from '../../../utils/db';
 
 const userProfileHandler = async (req, res) => {
   if (req.method === 'GET') {
