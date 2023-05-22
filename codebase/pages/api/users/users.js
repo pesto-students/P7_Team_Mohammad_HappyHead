@@ -1,1 +1,0 @@
-//GET - secure route that returns all users
