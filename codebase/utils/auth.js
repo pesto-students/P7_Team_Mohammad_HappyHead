@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 const useAuth = () => {
   const router = useRouter();
+  //Sets the boolean value based on whether the user is logged in ot not
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -17,7 +18,9 @@ const useAuth = () => {
           setIsLoggedIn(true);
         } else {
           setIsLoggedIn(false);
-          router.push('/login'); // Redirect to the login page if the user is not logged in
+          // Redirect to the login page by replacing thw current path without pushing it to browser history
+          // The user can't hit back button on browser and go back to the logic page
+          router.replace('/login'); 
         }
       } catch (error) {
         console.error('Error checking login status:', error);

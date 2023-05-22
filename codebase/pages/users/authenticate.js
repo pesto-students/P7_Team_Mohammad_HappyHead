@@ -1,0 +1,1 @@
+// POST - public route for authenticating username and password and generating a JWT token.

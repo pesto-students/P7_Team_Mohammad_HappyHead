@@ -1,21 +1,6 @@
-import mongoose from 'mongoose'
 
-mongoose.connect('YOUR_MONGODB_CONNECTION_STRING', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
 
-// Define the Contact schema
-const ContactSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  query: String,
-});
-
-// Create the Contact model using the schema
-const Contact = mongoose.model('Contact', ContactSchema);
-
-export default async function handler(req, res) {
+export default async function ContactUshandler(req, res) {
   if (req.method === 'POST') {
     try {
       const { name, email, query } = req.body

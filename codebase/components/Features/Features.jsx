@@ -1,5 +1,5 @@
 import React from 'react'
-import { CardContent, Typography, Grid } from '@mui/material'
+import { CardContent, Grid } from '@mui/material'
 import { ThemeProvider, styled } from '@mui/system'
 import {redirectToPage} from '../../utils/redirect'
 import RootContainer from '../styles/RootContainerStyles'

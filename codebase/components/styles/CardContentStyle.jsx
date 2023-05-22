@@ -1,6 +1,6 @@
 import { styled } from '@mui/system'
 
-const ProfileContentStyle = styled('div')(({ theme }) => ({
+const CardContentStyle = styled('div')(({ theme }) => ({
     backgroundImage: `linear-gradient(to bottom, ${theme.palette.tertiary.main}, ${theme.palette.quinary.main})`,
     display: 'flex',
     flexDirection: 'column',
@@ -12,4 +12,4 @@ const ProfileContentStyle = styled('div')(({ theme }) => ({
     gap: '0.5rem', 
 }))
 
-export default ProfileContentStyle
+export default CardContentStyle
