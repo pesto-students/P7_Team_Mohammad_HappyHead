@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, CardContent } from '@mui/material';
-import CardStyle from '../styles/CardStyles';
-import MuiLink from '../MuiLink';
+import CardStyle from '../../styles/CardStyles';
+import MuiLink from '../../MuiLink';
 
 const ToolCard = ({ tool, handleCardClick, isLoggedIn }) => {
   const muiLinkStyles = {

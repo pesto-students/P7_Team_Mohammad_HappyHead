@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Button, Dialog, DialogTitle, DialogContent, TextField, InputAdornment, IconButton, DialogActions } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/system';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import RootContainer from '../styles/RootContainerStyles';
-import ContentContainer from '../styles/ContentContainerStyles';
-import theme from '../styles/theme';
-import { redirectToPage } from '../../utils/redirect';
-import { toolsData } from '../Features/toolsData';
+import RootContainer from '../../styles/RootContainerStyles';
+import ContentContainer from '../../styles/ContentContainerStyles';
+import theme from '../../styles/theme';
+import { redirectToPage } from '../../../utils/redirect';
+import { toolsData } from '../../Features/toolsData';
 
 import UserProfile from './UserProfile';
 import ToolCard from './ToolCard';

@@ -1,9 +1,9 @@
 import React from 'react'
 import { ThemeProvider } from '@mui/material'
-import Header from '../Layout/Header/Index'
-import Footer from '../Layout/Footer/Index'
+import Header from '../../Layout/Header/Index'
+import Footer from '../../Layout/Footer/Index'
 import UserDashboard from '../userDashboard/UserDashboard'
-import theme from '../styles/theme'
+import theme from '../../styles/theme'
 
 const Dashboard = () => {
   return (
