@@ -1,3 +1,4 @@
+// public page for logging into the Next.js app.
 import React from 'react'
 
 const LoginPageExpert = () => {
