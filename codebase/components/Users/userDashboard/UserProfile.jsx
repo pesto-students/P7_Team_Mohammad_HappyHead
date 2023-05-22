@@ -1,6 +1,6 @@
 import React from 'react'
 import { Avatar, CardActions, Typography, Grid, Card, Button } from '@mui/material'
-import CardContentStyle from '../styles/CardContentStyle'
+import CardContentStyle from '../../styles/CardContentStyle'
 
 const UserProfile = ({ userProfile, handleOpenDialog }) => {
   const cardActionsStyles = {
