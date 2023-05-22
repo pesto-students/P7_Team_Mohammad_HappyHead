@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, Button, Dialog, DialogTitle, DialogContent, TextField, InputAdornment, IconButton, DialogActions } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/system';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -55,7 +55,7 @@ const buttonStyles = {
     },
 };
 
-const UserDashboard = ({ isLoggedIn }) => {
+const UserDashboard = ({ username, isLoggedIn }) => {
     // State variables
     const [userProfile, setUserProfile] = useState({
         name: 'Arjun',
@@ -80,10 +80,44 @@ const UserDashboard = ({ isLoggedIn }) => {
         setOpenDialog(false);
     };
 
+    // Fetch user profile data
+    const getUserProfile = async () => {
+      try {
+        const response = await fetch(`/api/users/${username}`);
+        const data = await response.json();
+        setUserProfile(data);
+        setEditedProfile(data);
+      } catch (error) {
+        console.error('Failed to fetch user profile', error);
+      }
+    };
+
+    // Fetch user profile data when the component mounts
+    useEffect(() => {
+      if (username) {
+        getUserProfile();
+      }
+    }, [username]);
+
     // Save the edited profile
-    const handleSaveProfile = () => {
-        setUserProfile(editedProfile);
-        setOpenDialog(false);
+    const handleSaveProfile = async () => {
+        try {
+            const response = await fetch(`/api/users/${username}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(editedProfile),
+            });
+            if (response.ok) {
+                setUserProfile(editedProfile);
+                setOpenDialog(false);
+            } else {
+                console.error('Failed to update user profile');
+            }
+        } catch (error) {
+            console.error('Failed to update user profile', error);
+        }
     };
 
     // Handle input change in the profile edit form
@@ -142,54 +176,55 @@ const UserDashboard = ({ isLoggedIn }) => {
                 <DialogContent>
                     {/* Profile edit form */}
                     <TextField
-                        autoFocus
-                        margin="dense"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
                         label="Name"
-                        type="text"
                         name="name"
                         value={editedProfile.name}
                         onChange={handleInputChange}
-                        fullWidth
                     />
                     <TextField
-                        margin="dense"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
                         label="Username"
-                        type="text"
                         name="username"
                         value={editedProfile.username}
                         onChange={handleInputChange}
-                        fullWidth
                     />
                     <TextField
-                        margin="dense"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
                         label="Email"
-                        type="email"
                         name="email"
                         value={editedProfile.email}
                         onChange={handleInputChange}
-                        fullWidth
                     />
                     <TextField
-                        margin="dense"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
                         label="Date of Birth"
-                        type="date"
                         name="dob"
+                        type="date"
+                        InputLabelProps={{ shrink: true }}
                         value={editedProfile.dob}
                         onChange={handleInputChange}
-                        fullWidth
                     />
                     <TextField
-                        margin="dense"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
                         label="Password"
-                        type={showPassword ? 'text' : 'password'}
                         name="password"
+                        type={showPassword ? 'text' : 'password'}
                         value={editedProfile.password}
                         onChange={handleInputChange}
-                        fullWidth
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
-                                    {/* Toggle password visibility */}
                                     <IconButton onClick={handleTogglePassword}>
                                         {showPassword ? <VisibilityOff /> : <Visibility />}
                                     </IconButton>
@@ -199,12 +234,10 @@ const UserDashboard = ({ isLoggedIn }) => {
                     />
                 </DialogContent>
                 <DialogActions>
-                    {/* Cancel button */}
-                    <Button onClick={handleCloseDialog} style={buttonStyles.cancelButton}>
+                    <Button style={buttonStyles.cancelButton} onClick={handleCloseDialog}>
                         Cancel
                     </Button>
-                    {/* Save button */}
-                    <Button onClick={handleSaveProfile} style={buttonStyles.saveButton}>
+                    <Button style={buttonStyles.saveButton} onClick={handleSaveProfile}>
                         Save
                     </Button>
                 </DialogActions>

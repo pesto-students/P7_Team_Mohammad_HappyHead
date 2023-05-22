@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
@@ -78,15 +78,6 @@ const UsersSchema = new mongoose.Schema({
   answers: UserAnswersSchema,
 });
 
-
-//to compare passwords with the database and return the result from here
-userSchema.method({
-    async authenticate(password) {
-       return bcrypt.compare(password, this.hash_password)
-    },
- })
-
- 
  
 // Create the Users model using the schema
 const Users = mongoose.model('Users', UsersSchema);
