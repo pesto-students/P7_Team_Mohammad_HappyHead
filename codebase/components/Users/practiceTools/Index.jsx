@@ -5,11 +5,11 @@ import Footer from '../../Layout/Footer/Index'
 import UserTools from './MeditationToolsPage'
 import theme from '../../styles/theme'
 
-const UserToolsPage = () => {
+const UserToolsPage = ({username}) => {
   return (
     <ThemeProvider theme={theme}>
       <Header position="fixed"/>
-      <UserTools/>
+      <UserTools username={username}/>
       <Footer />
     </ThemeProvider>
   )
