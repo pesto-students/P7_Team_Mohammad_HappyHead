@@ -5,8 +5,10 @@ const ObjectId = require('mongodb').ObjectId;
 export default async function ContactUshandler(req, res) {
   if (req.method === 'POST') {
     try {
+      // Connect to the MongoDB Atlas cluster
       let { db } = await connectToDatabase();
 
+      // Update the Contact us form inputs in the database
       const { name, email, query } = req.body
       await db.collection('Contact').insertOne({ name, email, query })
 
