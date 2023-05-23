@@ -1,23 +1,14 @@
-import Contact from '../../helpers/api/contactus';
+const { connectToDatabase } = require('../../utils/mongodb');
+const ObjectId = require('mongodb').ObjectId;
+
 
 export default async function ContactUshandler(req, res) {
   if (req.method === 'POST') {
     try {
+      let { db } = await connectToDatabase();
+
       const { name, email, query } = req.body
-
-      // Check if a Contact document already exists with the given email
-      const existingContact = await Contact.findOne({ email })
-
-      if (existingContact) {
-        // If a document already exists, return a response with conflict status code
-        return res.status(409).json({ message: 'Contact already exists' })
-      }
-
-      // Create a new Contact document
-      const contact = new Contact({ name, email, query })
-
-      // Save the document to MongoDB Atlas
-      await contact.save()
+      await db.collection('Contact').insertOne({ name, email, query })
 
       res.status(200).json({ message: 'Form submission successful!' })
     } catch (error) {
