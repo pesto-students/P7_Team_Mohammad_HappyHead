@@ -1,4 +1,4 @@
-
+import Contact from '../../helpers/api/contactus';
 
 export default async function ContactUshandler(req, res) {
   if (req.method === 'POST') {
