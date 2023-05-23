@@ -80,23 +80,25 @@ const UserDashboard = ({ username, isLoggedIn }) => {
         setOpenDialog(false);
     };
 
+
     // Fetch user profile data when the component mounts
-    useEffect(() => {
-        // Fetch user profile data
-        const getUserProfile = async () => {
-            try {
-                const response = await fetch(`/api/users/${username}`);
-                const data = await response.json();
-                setUserProfile(data);
-                setEditedProfile(data);
-            } catch (error) {
-                console.error('Failed to fetch user profile', error);
-            }
-        };
-        if (username) {
-            getUserProfile();
-        }
-    }, [username, getUserProfile]);
+  const getUserProfile = useCallback(async () => {
+    try {
+      const response = await fetch(`/api/users/${username}`);
+      const data = await response.json();
+      setUserProfile(data);
+      setEditedProfile(data);
+    } catch (error) {
+      console.error('Failed to fetch user profile', error);
+    }
+  }, [username]);
+
+
+     useEffect(() => {
+    if (username) {
+      getUserProfile();
+    }
+  }, [username, getUserProfile]);
 
     // Save the edited profile
     const handleSaveProfile = async () => {
