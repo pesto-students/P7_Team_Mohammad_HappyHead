@@ -35,9 +35,9 @@ const CustomDialog = styled(Dialog)(({ theme }) => ({
         '& fieldset': {
             borderColor: theme.palette.text.primary,
         },
-    '& .MuiDialogTitle-root': {
-        color: theme.palette.text.primary,
-    },
+        '& .MuiDialogTitle-root': {
+            color: theme.palette.text.primary,
+        },
     },
 }));
 
@@ -80,24 +80,23 @@ const UserDashboard = ({ username, isLoggedIn }) => {
         setOpenDialog(false);
     };
 
-    // Fetch user profile data
-    const getUserProfile = async () => {
-      try {
-        const response = await fetch(`/api/users/${username}`);
-        const data = await response.json();
-        setUserProfile(data);
-        setEditedProfile(data);
-      } catch (error) {
-        console.error('Failed to fetch user profile', error);
-      }
-    };
-
     // Fetch user profile data when the component mounts
     useEffect(() => {
-      if (username) {
-        getUserProfile();
-      }
-    }, [username]);
+        // Fetch user profile data
+        const getUserProfile = async () => {
+            try {
+                const response = await fetch(`/api/users/${username}`);
+                const data = await response.json();
+                setUserProfile(data);
+                setEditedProfile(data);
+            } catch (error) {
+                console.error('Failed to fetch user profile', error);
+            }
+        };
+        if (username) {
+            getUserProfile();
+        }
+    }, [username, getUserProfile]);
 
     // Save the edited profile
     const handleSaveProfile = async () => {
