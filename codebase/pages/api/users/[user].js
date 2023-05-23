@@ -1,4 +1,3 @@
-import Users from '../../../models/api/user';
 const { connectToDatabase } = require('../../utils/mongodb');
 const ObjectId = require('mongodb').ObjectId;
 
