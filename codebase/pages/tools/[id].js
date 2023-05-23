@@ -1,5 +1,5 @@
 import React from 'react'
-import ToolPage from '../../components/PracticeTools/[ids]'
+import ToolPage from '../../components/Users/practiceTools/[id]'
 
 const ToolPageWrapper = () => {
   return <ToolPage />
