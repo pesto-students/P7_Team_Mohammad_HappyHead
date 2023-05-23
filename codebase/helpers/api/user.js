@@ -1,11 +1,6 @@
 import mongoose from 'mongoose';
 // const bcrypt = require('bcrypt');
 
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
 // Define the UserToolsSchema
 const UserToolsSchema = mongoose.Schema({
   type: {
@@ -84,6 +79,6 @@ const UsersSchema = new mongoose.Schema({
 
  
 // Create the Users model using the schema
-const Users = mongoose.model('Users', UsersSchema);
+const Users = mongoose.models.Users || mongoose.model('Users', UsersSchema);
 
 export default Users;

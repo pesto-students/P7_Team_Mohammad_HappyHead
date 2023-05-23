@@ -1,4 +1,4 @@
-import meditationTools from '../components/toolsData';
+import meditationTools from '../../components/Users/practiceTools/toolsData';
 
 export default function handler(req, res) {
   const {
