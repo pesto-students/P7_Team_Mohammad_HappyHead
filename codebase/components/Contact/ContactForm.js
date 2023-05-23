@@ -7,6 +7,7 @@ import ButtonWrapper from '../styles/ButtonWrapperStyles'
 import SubText from '../styles/SubTextStyles'
 import theme from '../styles/theme'
 
+
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,

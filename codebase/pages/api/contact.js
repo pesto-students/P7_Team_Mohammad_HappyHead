@@ -1,4 +1,4 @@
-
+import Contact from '../../helpers/api/contactus';
 
 export default async function ContactUshandler(req, res) {
   if (req.method === 'POST') {
@@ -6,7 +6,7 @@ export default async function ContactUshandler(req, res) {
       const { name, email, query } = req.body
 
       // Check if a Contact document already exists with the given email
-      const existingContact = await Contact.findOne({ email })
+      const existingContact = await Contact.findOne({ email }).maxTimeMS(20000)
 
       if (existingContact) {
         // If a document already exists, return a response with conflict status code
