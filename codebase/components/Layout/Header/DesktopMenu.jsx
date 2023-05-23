@@ -5,7 +5,7 @@ import MuiLink from '../../MuiLink'
 
 const DesktopMenu = ({ pages, handleCloseNavMenu, theme }) => {
   return (
-    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', paddingLeft: '3rem' } }}>
       {pages.map((page) => (
         <MuiLink key={page.name} href={page.path} color="inherit" underline="none">
           <Button

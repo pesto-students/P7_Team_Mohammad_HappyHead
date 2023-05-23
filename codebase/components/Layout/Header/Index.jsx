@@ -58,7 +58,7 @@ function ResponsiveAppBar({ isLoggedIn }) {
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             {/* Desktop Styling */}
-            <Logo sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+            <Logo sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} fontSize="large" />
 
             <Typography
               variant="h6"
@@ -91,7 +91,7 @@ function ResponsiveAppBar({ isLoggedIn }) {
               />
             </Box>
 
-            <Logo sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+            <Logo sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}  />
 
             <Typography
               variant="h5"
