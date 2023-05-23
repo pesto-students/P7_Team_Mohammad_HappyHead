@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import imageData from './imageData';
-import Image from 'next/image'
 
 
 const ImagesSection = () => {
@@ -12,7 +11,7 @@ const ImagesSection = () => {
       <ImageList variant="masonry" cols={3} gap={8}>
         {imageData.map((item) => (
           <ImageListItem key={item.img}>
-            <Image
+            <img
               src={`${item.img}?w=248&fit=crop&auto=format`}
               srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
               alt={item.title}
