@@ -1,4 +1,6 @@
 import Users from '../../../models/api/user';
+const { connectToDatabase } = require('../../utils/mongodb');
+const ObjectId = require('mongodb').ObjectId;
 
 const userProfileHandler = async (req, res) => {
   if (req.method === 'GET') {
@@ -6,7 +8,7 @@ const userProfileHandler = async (req, res) => {
       const { username } = req.query;
 
       // Connect to the MongoDB Atlas cluster
-      const mongoClient = await connectToCluster(process.env.DB_URI);
+      const mongoClient = await connectToDatabase(process.env.DB_URI);
 
       // Find the user by unsername
       const user = await Users.findById(username);
@@ -26,7 +28,7 @@ const userProfileHandler = async (req, res) => {
       const updatedProfile = req.body;
 
       // Connect to the MongoDB Atlas cluster
-      const mongoClient = await connectToCluster(process.env.DB_URI);
+      const mongoClient = await connectToDatabase(process.env.DB_URI);
 
       // Update the user profile in the database
       await Users.findByIdAndUpdate(username, updatedProfile);
