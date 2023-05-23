@@ -1,8 +1,9 @@
 import { styled } from '@mui/system'
 
 const CardStyle = styled('div')(({ theme }) => ({
-    backgroundImage: `linear-gradient(to bottom, ${theme.palette.quinary.main}, ${theme.palette.tertiary.main})`,
-    height: '400px',
+    // backgroundImage: `linear-gradient(to bottom, ${theme.palette.quinary.main}, ${theme.palette.tertiary.main})`,
+    backgroundColor: theme.palette.tertiary.main,
+    height: '300px',
     width: '100%',
     cursor: 'pointer',
     border: `3px solid ${theme.palette.primary.main}`,

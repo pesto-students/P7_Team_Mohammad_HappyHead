@@ -1,23 +1,20 @@
-import Users from '../../../helpers/api/user';
-import { connectToCluster } from '../../../utils/db';
+const { connectToDatabase } = require('../../../utils/mongodb')
+const ObjectId = require('mongodb').ObjectId;
 
 const userProfileHandler = async (req, res) => {
   if (req.method === 'GET') {
     try {
+      // Connect to the MongoDB Atlas cluster
+      let { db } = await connectToDatabase();
       const { username } = req.query;
 
-      // Connect to the MongoDB Atlas cluster
-      const mongoClient = await connectToCluster(process.env.DB_URI);
-
       // Find the user by unsername
-      const user = await Users.findById(username);
-
+      const user = await db.collection('Users').findById({username});
+        
       // Send the user profile data as the response
       res.status(200).json(user);
-
-      // Close the MongoDB connection
-      await mongoClient.close();
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Failed to fetch user profile', error);
       res.status(500).json({ error: 'Failed to fetch user profile' });
     }
@@ -27,16 +24,14 @@ const userProfileHandler = async (req, res) => {
       const updatedProfile = req.body;
 
       // Connect to the MongoDB Atlas cluster
-      const mongoClient = await connectToCluster(process.env.DB_URI);
+      let { db } = await connectToDatabase();
 
       // Update the user profile in the database
-      await Users.findByIdAndUpdate(username, updatedProfile);
+      await db.collection('Users').findByIdAndUpdate(username, updatedProfile);
 
       // Send a success response
       res.status(200).json({ message: 'Profile updated successfully' });
 
-      // Close the MongoDB connection
-      await mongoClient.close();
     } catch (error) {
       console.error('Failed to update user profile', error);
       res.status(500).json({ error: 'Failed to update user profile' });

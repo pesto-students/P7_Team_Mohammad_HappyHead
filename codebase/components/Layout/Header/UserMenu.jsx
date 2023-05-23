@@ -14,8 +14,8 @@ const UserMenu = ({ anchorElUser, handleOpenUserMenu, handleCloseUserMenu, login
     <Box sx={{ flexGrow: 0 }}>
       {/* Login Button */}
       <Tooltip title="Login">
-        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Login alt="Login" src="" sx={{ color: theme.palette.text.primary }} />{/* Color applied to the Login icon */}
+        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} >
+          <Login alt="Login" src="" sx={{ color: theme.palette.text.primary }} fontSize="large"/>{/* Color applied to the Login icon */}
         </IconButton>
       </Tooltip>
       {/* User Menu */}

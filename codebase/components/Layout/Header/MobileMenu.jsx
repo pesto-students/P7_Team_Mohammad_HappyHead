@@ -16,6 +16,7 @@ const MobileMenu = ({ anchorElNav, handleOpenNavMenu, handleCloseNavMenu, pages,
         aria-haspopup="true"
         onClick={handleOpenNavMenu}
         sx={{ color: theme.palette.text.primary }}
+        
       >
         <MenuIcon />
       </IconButton>
