@@ -57,13 +57,7 @@ const buttonStyles = {
 
 const UserDashboard = ({ username, isLoggedIn }) => {
     // State variables
-    const [userProfile, setUserProfile] = useState({
-        name: 'Arjun',
-        username: 'ArjunS',
-        email: 'arjun@gmail.com',
-        dob: '1990-01-01',
-        password: '********',
-    });
+    const [userProfile, setUserProfile] = useState(null);
 
     const [openDialog, setOpenDialog] = useState(false);
     const [editedProfile, setEditedProfile] = useState({ ...userProfile });
@@ -72,6 +66,7 @@ const UserDashboard = ({ username, isLoggedIn }) => {
     // Open the profile edit dialog
     const handleOpenDialog = () => {
         setOpenDialog(true);
+        // console.log(userProfile)
         setEditedProfile({ ...userProfile });
     };
 
@@ -82,29 +77,28 @@ const UserDashboard = ({ username, isLoggedIn }) => {
 
 
     // Fetch user profile data when the component mounts
-  const getUserProfile = useCallback(async () => {
-    try {
-      const response = await fetch(`/api/users/${username}`);
-      const data = await response.json();
-      setUserProfile(data);
-      setEditedProfile(data);
-    } catch (error) {
-      console.error('Failed to fetch user profile', error);
-    }
-  }, [username]);
+    const getUserProfile = useCallback(async () => {
+        try {
+            const response = await fetch(`/api/users/dashboard/${username}`);
+            const data = await response.json();
+            console.log(data)
+            setUserProfile(data);
+            setEditedProfile(data);
+        } catch (error) {
+            console.error('Failed to fetch user profile', error);
+        }
+    }, [username]);
 
-  // 
+    // 
 
-     useEffect(() => {
-    if (username) {
-      getUserProfile();
-    }
-  }, [username, getUserProfile]);
+    useEffect(() => {
+        getUserProfile();
+    }, [getUserProfile]);
 
     // Save the edited profile
     const handleSaveProfile = async () => {
         try {
-            const response = await fetch(`/api/users/${username}`, {
+            const response = await fetch(`/api/users/dashboard/${username}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -124,11 +118,21 @@ const UserDashboard = ({ username, isLoggedIn }) => {
 
     // Handle input change in the profile edit form
     const handleInputChange = (e) => {
+        // console.log(e)
         const { name, value } = e.target;
-        setEditedProfile((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
+        if (name === 'dob') {
+            // Convert the date value to the required format "yyyy-MM-dd"
+            const formattedDate = new Date(value).toISOString().split('T')[0];
+            setEditedProfile((prevState) => ({
+                ...prevState,
+                [name]: formattedDate,
+            }));
+        } else {
+            setEditedProfile((prevState) => ({
+                ...prevState,
+                [name]: value,
+            }));
+        }
     };
 
     // Toggle password visibility
@@ -146,7 +150,9 @@ const UserDashboard = ({ username, isLoggedIn }) => {
             redirectToPage('/loginUser');
         }
     };
-
+    if (!userProfile) {
+        return <div>Loading...</div>;
+    }
     return (
         <ThemeProvider theme={theme}>
             {/* Custom styled root container */}
