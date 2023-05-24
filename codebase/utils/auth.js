@@ -1,3 +1,5 @@
+// To authenticate user sign in
+
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
