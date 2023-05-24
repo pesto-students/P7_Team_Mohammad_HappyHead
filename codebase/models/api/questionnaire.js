@@ -9,6 +9,10 @@ const QuestionnaireSchema = mongoose.Schema({
     type: [String],
     required: true,
   },
+  recommendation: {
+    type: [String],
+    required: true,
+  },
 });
 
 // Create the Questionnaire model using the schema
