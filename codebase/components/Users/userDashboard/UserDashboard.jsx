@@ -78,7 +78,7 @@ const UserDashboard = ({ isLoggedIn }) => {
     };
 
 
-
+    useEffect(() => {
     // Fetch user profile data when the component mounts and username changes
     const getUserProfile = async () => {
         try {
@@ -90,8 +90,6 @@ const UserDashboard = ({ isLoggedIn }) => {
             console.error('Failed to fetch user profile', error);
         }
     }
-
-    useEffect(() => {
         getUserProfile();
     }, [ username]);
 
