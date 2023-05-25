@@ -7,25 +7,32 @@ const UserProfile = ({ userProfile, handleOpenDialog }) => {
     justifyContent: 'center',
     marginBottom: '1rem',
   }
+  
+      return (
+      <Grid item xs={12} lg={4}>
+        <Card style={{ height: '100%' }}>
+          <CardContentStyle>
+          {userProfile && (
+            <>
+            <Avatar sx={{ marginTop: '1.4rem' }}>{userProfile?.name[0]}</Avatar>
+            <Typography variant="h6">{userProfile.name}</Typography>
+            <Typography color="textSecondary">{userProfile?.username}</Typography>
+            <Typography color="textSecondary">{userProfile?.email}</Typography>
+            <Typography color="textSecondary">{userProfile?.dob}</Typography>
+            </>
+          )}
+            
+            <CardActions style={cardActionsStyles}>
+              <Button variant="contained" color="secondary" onClick={handleOpenDialog}>
+                Edit Profile
+              </Button>
+            </CardActions>
+          </CardContentStyle>
+        </Card>
+      </Grid>
+    )
+  }
 
-  return (
-    <Grid item xs={12} lg={4}>
-      <Card style={{ height: '100%' }}>
-        <CardContentStyle>
-          <Avatar sx={{ marginTop: '1.4rem' }}>{userProfile.name[0]}</Avatar>
-          <Typography variant="h6">{userProfile.name}</Typography>
-          <Typography color="textSecondary">{userProfile.username}</Typography>
-          <Typography color="textSecondary">{userProfile.email}</Typography>
-          <Typography color="textSecondary">{userProfile.dob}</Typography>
-          <CardActions style={cardActionsStyles}>
-            <Button variant="contained" color="secondary" onClick={handleOpenDialog}>
-              Edit Profile
-            </Button>
-          </CardActions>
-        </CardContentStyle>
-      </Card>
-    </Grid>
-  )
-}
+
 
 export default UserProfile

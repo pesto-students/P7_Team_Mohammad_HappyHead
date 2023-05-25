@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { Grid, Button, Dialog, DialogTitle, DialogContent, TextField, InputAdornment, IconButton, DialogActions } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/system';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -55,19 +56,15 @@ const buttonStyles = {
     },
 };
 
-const UserDashboard = ({ username, isLoggedIn }) => {
+const UserDashboard = ({ isLoggedIn }) => {
+    const router = useRouter();
+    const { username } = router.query;
     // State variables
-    const [userProfile, setUserProfile] = useState({
-        name: 'Arjun',
-        username: 'ArjunS',
-        email: 'arjun@gmail.com',
-        dob: '1990-01-01',
-        password: '********',
-    });
+    const [userProfile, setUserProfile] = useState();
 
     const [openDialog, setOpenDialog] = useState(false);
     const [editedProfile, setEditedProfile] = useState({ ...userProfile });
-    const [showPassword, setShowPassword] = useState(false);
+    // const [showPassword, setShowPassword] = useState(false);
 
     // Open the profile edit dialog
     const handleOpenDialog = () => {
@@ -81,30 +78,27 @@ const UserDashboard = ({ username, isLoggedIn }) => {
     };
 
 
-    // Fetch user profile data when the component mounts
-  const getUserProfile = useCallback(async () => {
-    try {
-      const response = await fetch(`/api/users/${username}`);
-      const data = await response.json();
-      setUserProfile(data);
-      setEditedProfile(data);
-    } catch (error) {
-      console.error('Failed to fetch user profile', error);
-    }
-  }, [username]);
 
-  // 
-
-     useEffect(() => {
-    if (username) {
-      getUserProfile();
+    // Fetch user profile data when the component mounts and username changes
+    const getUserProfile = async () => {
+        try {
+            const response = await fetch(`/api/users/dashboard/${username}`)
+            const userProfile = await response.json();
+            setUserProfile(userProfile);
+            setEditedProfile(userProfile);
+        } catch (error) {
+            console.error('Failed to fetch user profile', error);
+        }
     }
-  }, [username, getUserProfile]);
+
+    useEffect(() => {
+        getUserProfile();
+    }, [ username]);
 
     // Save the edited profile
     const handleSaveProfile = async () => {
         try {
-            const response = await fetch(`/api/users/${username}`, {
+            const response = await fetch(`/api/users/dashboard/${username}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -125,16 +119,25 @@ const UserDashboard = ({ username, isLoggedIn }) => {
     // Handle input change in the profile edit form
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setEditedProfile((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
+        if (name === 'dob') {
+            // Convert the date value to the required format "yyyy-MM-dd"
+            const formattedDate = new Date(value).toISOString().split('T')[0];
+            setEditedProfile((prevState) => ({
+                ...prevState,
+                [name]: formattedDate,
+            }));
+        } else {
+            setEditedProfile((prevState) => ({
+                ...prevState,
+                [name]: value,
+            }));
+        }
     };
 
-    // Toggle password visibility
-    const handleTogglePassword = () => {
-        setShowPassword((prevShowPassword) => !prevShowPassword);
-    };
+    // // Toggle password visibility
+    // const handleTogglePassword = () => {
+    //     setShowPassword((prevShowPassword) => !prevShowPassword);
+    // };
 
     // Handle click on a tool card
     const handleCardClick = (tool) => {
@@ -146,7 +149,9 @@ const UserDashboard = ({ username, isLoggedIn }) => {
             redirectToPage('/loginUser');
         }
     };
-
+    if (!userProfile) {
+        return <div>Loading...</div>;
+    }
     return (
         <ThemeProvider theme={theme}>
             {/* Custom styled root container */}
@@ -215,7 +220,7 @@ const UserDashboard = ({ username, isLoggedIn }) => {
                         value={editedProfile.dob}
                         onChange={handleInputChange}
                     />
-                    <TextField
+                    {/* <TextField
                         fullWidth
                         margin="normal"
                         variant="outlined"
@@ -233,7 +238,7 @@ const UserDashboard = ({ username, isLoggedIn }) => {
                                 </InputAdornment>
                             ),
                         }}
-                    />
+                    /> */}
                 </DialogContent>
                 <DialogActions>
                     <Button style={buttonStyles.cancelButton} onClick={handleCloseDialog}>
@@ -247,5 +252,6 @@ const UserDashboard = ({ username, isLoggedIn }) => {
         </ThemeProvider>
     );
 };
+
 
 export default UserDashboard;

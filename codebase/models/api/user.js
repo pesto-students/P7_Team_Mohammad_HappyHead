@@ -1,6 +1,9 @@
 import mongoose from 'mongoose';
 // const bcrypt = require('bcrypt');
 
+// Define the BookingHistorySchema
+
+
 // Define the UserToolsSchema
 const UserToolsSchema = mongoose.Schema({
   type: {
@@ -17,11 +20,11 @@ const UserAnswersSchema = mongoose.Schema({
     required: true,
   },
   answers: {
-    type: [Number],
+    type: [String],
     required: true,
     validate: {
       validator: function (value) {
-        return value.length === 26;
+        return value.length === 25;
       },
       message: 'Answers array must have exactly 26 numbers.',
     },
@@ -31,7 +34,7 @@ const UserAnswersSchema = mongoose.Schema({
     required: true,
     validate: {
       validator: function (value) {
-        return value.length === 26;
+        return value.length === 25;
       },
       message: 'Recommendations array must have exactly 26 strings.',
     },
@@ -50,6 +53,7 @@ const UsersSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
+    unique: true,
     trim: true,
     minlength: 3,
     maxlength: 20,
