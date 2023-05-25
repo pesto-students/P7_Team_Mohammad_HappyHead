@@ -7,7 +7,7 @@ const UserProfile = ({ userProfile, handleOpenDialog }) => {
     justifyContent: 'center',
     marginBottom: '1rem',
   }
-// console.log(userProfile.user.name)
+  
       return (
       <Grid item xs={12} lg={4}>
         <Card style={{ height: '100%' }}>

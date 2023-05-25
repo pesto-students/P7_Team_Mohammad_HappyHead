@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { Grid, Button, Dialog, DialogTitle, DialogContent, TextField, InputAdornment, IconButton, DialogActions } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/system';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -55,18 +56,19 @@ const buttonStyles = {
     },
 };
 
-const UserDashboard = ({ username, isLoggedIn }) => {
+const UserDashboard = ({ isLoggedIn }) => {
+    const router = useRouter();
+    const { username } = router.query;
     // State variables
-    const [userProfile, setUserProfile] = useState(null);
+    const [userProfile, setUserProfile] = useState();
 
     const [openDialog, setOpenDialog] = useState(false);
     const [editedProfile, setEditedProfile] = useState({ ...userProfile });
-    const [showPassword, setShowPassword] = useState(false);
+    // const [showPassword, setShowPassword] = useState(false);
 
     // Open the profile edit dialog
     const handleOpenDialog = () => {
         setOpenDialog(true);
-        // console.log(userProfile)
         setEditedProfile({ ...userProfile });
     };
 
@@ -76,24 +78,22 @@ const UserDashboard = ({ username, isLoggedIn }) => {
     };
 
 
-    // Fetch user profile data when the component mounts
-    const getUserProfile = useCallback(async () => {
+
+    // Fetch user profile data when the component mounts and username changes
+    const getUserProfile = async () => {
         try {
-            const response = await fetch(`/api/users/dashboard/${username}`);
-            const data = await response.json();
-            console.log(data)
-            setUserProfile(data);
-            setEditedProfile(data);
+            const response = await fetch(`/api/users/dashboard/${username}`)
+            const userProfile = await response.json();
+            setUserProfile(userProfile);
+            setEditedProfile(userProfile);
         } catch (error) {
             console.error('Failed to fetch user profile', error);
         }
-    }, [username]);
-
-    // 
+    }
 
     useEffect(() => {
         getUserProfile();
-    }, [getUserProfile]);
+    }, [ username]);
 
     // Save the edited profile
     const handleSaveProfile = async () => {
@@ -118,7 +118,6 @@ const UserDashboard = ({ username, isLoggedIn }) => {
 
     // Handle input change in the profile edit form
     const handleInputChange = (e) => {
-        // console.log(e)
         const { name, value } = e.target;
         if (name === 'dob') {
             // Convert the date value to the required format "yyyy-MM-dd"
@@ -135,10 +134,10 @@ const UserDashboard = ({ username, isLoggedIn }) => {
         }
     };
 
-    // Toggle password visibility
-    const handleTogglePassword = () => {
-        setShowPassword((prevShowPassword) => !prevShowPassword);
-    };
+    // // Toggle password visibility
+    // const handleTogglePassword = () => {
+    //     setShowPassword((prevShowPassword) => !prevShowPassword);
+    // };
 
     // Handle click on a tool card
     const handleCardClick = (tool) => {
@@ -221,7 +220,7 @@ const UserDashboard = ({ username, isLoggedIn }) => {
                         value={editedProfile.dob}
                         onChange={handleInputChange}
                     />
-                    <TextField
+                    {/* <TextField
                         fullWidth
                         margin="normal"
                         variant="outlined"
@@ -239,7 +238,7 @@ const UserDashboard = ({ username, isLoggedIn }) => {
                                 </InputAdornment>
                             ),
                         }}
-                    />
+                    /> */}
                 </DialogContent>
                 <DialogActions>
                     <Button style={buttonStyles.cancelButton} onClick={handleCloseDialog}>
@@ -253,5 +252,6 @@ const UserDashboard = ({ username, isLoggedIn }) => {
         </ThemeProvider>
     );
 };
+
 
 export default UserDashboard;
