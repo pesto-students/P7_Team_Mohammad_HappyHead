@@ -61,9 +61,15 @@ const ToolPage = () => {
         const response = await fetch(`/api/users/practicetools/${username}/${toolId}`);
         const data = await response.json();
         const stagesCompleted = data.toolsCompleted
+
         if (response.ok) {
           // Set the completed stages based on the user's toolsCompleted array
           setCompletedStages(stagesCompleted);
+          // Check if the toolId is not in the completedStages array (except for meditationTools with toolID=1)
+          if (toolId !== '1' && !stagesCompleted.includes(toolId)) {
+            alert('Please finish the previous stages before moving on to this stage.');
+            redirectToPage(`/users/practicetools/${username}`);
+          }
         } else {
           console.error('Failed to fetch user profile:', data.error);
         }
