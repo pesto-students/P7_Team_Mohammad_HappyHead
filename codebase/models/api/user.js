@@ -7,8 +7,8 @@ import mongoose from 'mongoose';
 // Define the UserToolsSchema
 const UserToolsSchema = mongoose.Schema({
   type: {
-    type: Number,
-    enum: [1, 2, 3, 4, 5, 6, 7, 8],
+    type: Array,
+    enum: ["1", "2", "3", "4", "5", "6", "7", "8"],
     required: true,
   },
 });
@@ -77,7 +77,7 @@ const UsersSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  toolsCompleted: [UserToolsSchema],
+  toolsCompleted: UserToolsSchema,
   answers: UserAnswersSchema,
 });
 

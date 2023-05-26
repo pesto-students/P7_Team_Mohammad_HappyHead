@@ -10,7 +10,7 @@ const userProfileHandler = async (req, res) => {
       const { db } = await connectToDatabase();
 
       // Find the user by username
-      let user = await db.collection('Users').findOne({ username: username });
+      let user = await db.collection('Users').findOne({  username: username });
       // console.log(user)
       // // If user is not found, create a dummy user
       // if (!user) {
@@ -21,9 +21,9 @@ const userProfileHandler = async (req, res) => {
       //     phonenumber: '1234567890',
       //     dob: '1990-01-01',
       //     toolsCompleted: [
-      //       1,
-      //       2,
-      //       3,
+      //       { type: 1 },
+      //       { type: 2 },
+      //       { type: 3 },
       //       // Add more tool entries as needed
       //     ],
       //     answers: {

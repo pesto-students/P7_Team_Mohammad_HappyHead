@@ -1,12 +1,12 @@
 import React from 'react';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import UserToolsPage from '../../../components/Users/practiceTools/Index';
 
 const ToolPageUser = () => {
-  const router = useRouter();
-  const { username } = router.query;
+  // const router = useRouter();
+  // const { username } = router.query;
 
-  return <UserToolsPage username={username} />;
+  return <UserToolsPage/>;
 };
 
 export default ToolPageUser;
