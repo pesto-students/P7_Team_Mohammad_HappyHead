@@ -1,9 +1,9 @@
 import React from 'react'
 import { ThemeProvider } from '@mui/material'
-import Header from '../Layout/Header/Index'
-import Footer from '../Layout/Footer/Index'
-import Features from '../Features/Features'
-import theme from '../styles/theme'
+import Header from '../../Layout/Header/Index'
+import Footer from '../../Layout/Footer/Index'
+import Features from './Features'
+import theme from '../../styles/theme'
 
 const FeaturesPage = () => {
   return (

@@ -1,13 +1,13 @@
 import React from 'react'
 import { CardContent, Grid } from '@mui/material'
 import { ThemeProvider, styled } from '@mui/system'
-import {redirectToPage} from '../../utils/redirect'
-import RootContainer from '../styles/RootContainerStyles'
-import ContentContainer from '../styles/ContentContainerStyles'
-import CardStyle from '../styles/CardStyles'
-import theme from '../styles/theme'
-import MuiLink from '../MuiLink'
-import { toolsData } from './toolsData';
+import {redirectToPage} from '../../../utils/redirect'
+import RootContainer from '../../styles/RootContainerStyles'
+import ContentContainer from '../../styles/ContentContainerStyles'
+import CardStyle from '../../styles/CardStyles'
+import theme from '../../styles/theme'
+import MuiLink from '../../MuiLink'
+import { toolsData } from '../toolsData';
 
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
