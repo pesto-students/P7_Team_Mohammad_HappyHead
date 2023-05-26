@@ -1,5 +1,5 @@
 import React from 'react'
-import ContactPage from '../components/Contact/Index'
+import ContactPage from '../components/Contact/Main/Index'
 
 function ContactUs() {
   return (
