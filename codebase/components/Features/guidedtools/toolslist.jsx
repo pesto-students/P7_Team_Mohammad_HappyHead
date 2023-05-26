@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { Button, Card, CardContent, Typography } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/system';
 
@@ -39,38 +38,6 @@ const CustomDesc = styled(Typography)(({ theme }) => ({
 }));
 
 const Tools = () => {
-//   const router = useRouter();
-//   const { username } = router.query;
-//   const [completedStages, setCompletedStages] = useState([]);
-
-//   useEffect(() => {
-//     // Fetch the user's data, including the toolsCompleted array, based on the username
-//     const fetchUserSchema = async () => {
-//       try {
-//         // Make an API request to fetch the user's profile
-//         const response = await fetch(`/api/users/dashboard/${username}`);
-//         const data = await response.json();
-//         const stagesCompleted = data.toolsCompleted
-//         if (response.ok) {
-//           // Set the completed stages based on the user's toolsCompleted array
-//           setCompletedStages(stagesCompleted);
-//         } else {
-//           console.error('Failed to fetch user profile:', data.error);
-//         }
-//       } catch (error) {
-//         console.error('Failed to fetch user profile:', error);
-//       }
-//     };
-
-//     fetchUserSchema();
-//   }, [username]);
-
-//   const handleToolClick = (toolId) => {
-//     // Redirect to the tool page if it's the first tool or if the previous tool is completed
-//     if (toolId === 1 || completedStages.includes(toolId - 1)) {
-//       redirectToPage(`/users/practicetools/${username}/${toolId}`);
-//     }
-//   };
 
 return (
     <ThemeProvider theme={theme}>

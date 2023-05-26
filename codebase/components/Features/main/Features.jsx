@@ -32,7 +32,7 @@ const Features = ({ isLoggedIn }) => {
       redirectToPage(tool.path); // Call the redirect function with the tool's path
     } else {
       console.log('User not logged in. Redirecting to login page...')
-      redirectToPage('/loginUser'); // Redirect to the login page if user is not logged in
+      redirectToPage('/features/guidedtools'); // Redirect to the login page if user is not logged in
     }
   }
 
