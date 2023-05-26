@@ -4,7 +4,7 @@ import Header from '../Layout/Header/Index'
 import Footer from '../Layout/Footer/Index'
 import AboutTop from './AboutHero'
 import AboutTeam from './AboutTeam'
-import WhoWhatWe from './WhoWhatWe'
+import Aim from './Aim'
 import AboutEnd from './AboutEnd'
 import theme from '../styles/theme'
 
@@ -13,9 +13,9 @@ const AboutPage = () => {
     <ThemeProvider theme={theme}>
       <Header position="fixed"/>
       <AboutTop />
-      <WhoWhatWe/>
-      <AboutTeam/>
       <AboutEnd />
+      <Aim/>
+      <AboutTeam/>
       <Footer />
     </ThemeProvider>
   )

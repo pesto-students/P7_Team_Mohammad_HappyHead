@@ -16,18 +16,13 @@ import ButtonWrapper from '../styles/ButtonWrapperStyles'
 
 // Styled component for the custom root container
 const CustomRootContainer = styled(RootContainer)({
-  backgroundColor: theme.palette.secondary.main, // Replace 'your-desired-color' with the desired background color
+  backgroundColor: theme.palette.quinary.main, 
 })
 
 // Styled component for the custom content container
 const CustomContentContainer = styled(ContentContainer)({
-  backgroundColor: theme.palette.secondary.main, // Replace 'your-desired-color' with the desired background color
-  padding: '2rem 0',
-})
-
-// Styled component for the custom title
-const CustomTitle = styled(Title)({
-  padding: '0 2rem',
+  backgroundColor: theme.palette.quinary.main, 
+  padding: '2.5rem',
 })
 
 const LoginLinkTypography = styled(Typography)`
@@ -46,7 +41,7 @@ const AboutHero = () => {
         {/* Custom Content container */}
         <CustomContentContainer>
           {/* Title */}
-          <CustomTitle variant="h2">Try HappyHead for free today</CustomTitle>
+          <Title variant="h2">Try HappyHead for free today</Title>
 
           {/* Sub text */}
           <SubText variant="h5">Find more joy, less stress, and the best sleep ever with HappyHead. Try it for free today.</SubText>

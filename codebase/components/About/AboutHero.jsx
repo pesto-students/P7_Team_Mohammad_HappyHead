@@ -35,6 +35,7 @@ const AboutSection = styled('div')(({ theme }) => ({
   minWidth: '300px', // Set a minimum width for each section
 }))
 
+
 // Styled component for centered subtext
 const CenteredSubText = styled(SubText)({
   textAlign: 'center',
