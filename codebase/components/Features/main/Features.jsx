@@ -27,12 +27,13 @@ const CustomContentContainer = styled(ContentContainer)(({ theme }) => ({
 const Features = ({ isLoggedIn }) => {
   // Function to handle card click
   const handleCardClick = (tool) => {
-    if (isLoggedIn) {
+    if (tool.path) {
       console.log(`Redirecting to ${tool.path}`)
       redirectToPage(tool.path); // Call the redirect function with the tool's path
     } else {
       console.log('User not logged in. Redirecting to login page...')
-      redirectToPage('/features/guidedtools'); // Redirect to the login page if user is not logged in
+      window.alert('Login to access');
+      redirectToPage('/loginUser'); // Redirect to the login page if path doesnt exist
     }
   }
 
@@ -46,7 +47,7 @@ const Features = ({ isLoggedIn }) => {
                 <CardStyle onClick={() => handleCardClick(tool)}>
                   <CardContent>
                     <MuiLink
-                      href={isLoggedIn ? tool.path : '/loginUser'}
+                      href={tool.path ? tool.path : '/loginUser'}
                       underline="none"
                       color="inherit"
                       variant="h5"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Typography } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/system';
@@ -52,13 +52,14 @@ const ToolPage = () => {
   const router = useRouter();
   const { toolId, username } = router.query;
   const [completedStages, setCompletedStages] = useState([]);
+  const usernameRef = useRef(username);
 
   useEffect(() => {
     // Fetch the user's data, including the toolsCompleted array, based on the username
     const fetchUserSchema = async () => {
       try {
         // Make an API request to fetch the user's profile
-        const response = await fetch(`/api/users/practicetools/${username}/${toolId}`);
+        const response = await fetch(`/api/users/practicetools/${usernameRef.current}/${toolId}`);
         const data = await response.json();
         const stagesCompleted = data.toolsCompleted
 
@@ -68,7 +69,7 @@ const ToolPage = () => {
           // Check if the toolId is not in the completedStages array (except for meditationTools with toolID=1)
           if (toolId !== '1' && !stagesCompleted.includes(toolId)) {
             alert('Please finish the previous stages before moving on to this stage.');
-            redirectToPage(`/users/practicetools/${username}`);
+            redirectToPage(`/users/practicetools/${usernameRef.current}`);
           }
         } else {
           console.error('Failed to fetch user profile:', data.error);
@@ -89,7 +90,7 @@ const ToolPage = () => {
         const updatedToolsCompleted = [...completedStages, toolId];
 
         // Make an API request to update the user's profile
-        const response = await fetch(`/api/users/practicetools/${username}/${toolId}`, {
+        const response = await fetch(`/api/users/practicetools/${usernameRef.current}/${toolId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -112,7 +113,7 @@ const ToolPage = () => {
   };
 
   const handleBackClick = () => {
-    redirectToPage(`/users/practicetools/${username}`);
+    redirectToPage(`/users/practicetools/${usernameRef.current}`);
   };
 
   return (
@@ -124,7 +125,7 @@ const ToolPage = () => {
         {/* Render both buttons without any condition */}
         <ButtonContainer>
           <ButtonWrapper color="quaternary">
-            <Button variant="contained" color="primary" onClick={handleCompleteClick}>
+            <Button variant="contained" color="primary" onClick={handleCompleteClick(toolId)}>
               Practice Completed
             </Button>
           </ButtonWrapper>

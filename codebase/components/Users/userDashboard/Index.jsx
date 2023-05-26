@@ -3,6 +3,7 @@ import { ThemeProvider } from '@mui/material'
 import Header from '../../Layout/Header/Index'
 import Footer from '../../Layout/Footer/Index'
 import UserDashboard from './UserDashboard'
+// import NewDashboard from './NewDashboard'
 import theme from '../../styles/theme'
 
 const Dashboard = () => {
@@ -10,6 +11,7 @@ const Dashboard = () => {
     <ThemeProvider theme={theme}>
       <Header position="fixed" />
       <UserDashboard/>
+      {/* <NewDashboard/> */}
       <Footer />
     </ThemeProvider>
   );

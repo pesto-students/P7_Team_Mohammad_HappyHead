@@ -7,7 +7,7 @@ import RootContainer from '../../styles/RootContainerStyles';
 import ContentContainer from '../../styles/ContentContainerStyles';
 import theme from '../../styles/theme';
 import { redirectToPage } from '../../../utils/redirect';
-import { toolsData } from '../../Features/toolsData';
+// import { toolsData } from '../../Users/userDashboard/toolsData';
 
 import UserProfile from './UserProfile';
 import ToolCard from './ToolCard';
@@ -65,6 +65,26 @@ const UserDashboard = ({ isLoggedIn }) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [editedProfile, setEditedProfile] = useState({ ...userProfile });
     // const [showPassword, setShowPassword] = useState(false);
+
+    const toolsData = [
+        {
+            name: 'You Mental Health Report',
+            subtext:
+                'Answer a few questions related to your stressors & lifestyle and get personalized insights and recommendations',
+            path: '/users/questionnaire',
+        },
+        {
+            name: 'Connect with Experts',
+            subtext:
+                'Get personalized guidance and support from certified professionals to address your mental health concerns effectively.',
+            path: '/users/connect-with-experts',
+        },
+        {
+            name: 'Guided Practice Tools',
+            subtext: `Discover effective relaxation techniques and practices to enhance your well-being and find inner calm amidst life's challenges.`,
+            path: `/users/practicetools/${username}`,
+        },
+    ];
 
     // Open the profile edit dialog
     const handleOpenDialog = () => {
@@ -138,13 +158,8 @@ const UserDashboard = ({ isLoggedIn }) => {
 
     // Handle click on a tool card
     const handleCardClick = (tool) => {
-        if (isLoggedIn) {
             console.log(`Redirecting to ${tool.path}`);
             redirectToPage(tool.path);
-        } else {
-            console.log('User not logged in. Redirecting to login page...');
-            redirectToPage('/loginUser');
-        }
     };
     if (!userProfile) {
         return <div>Loading...</div>;
