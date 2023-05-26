@@ -3,12 +3,12 @@ import { useRouter } from 'next/router';
 import { Button, Card, CardContent, Typography } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/system';
 
-import theme from '../../styles/theme';
-import RootContainer from '../../styles/RootContainerStyles';
-import ButtonWrapper from '../../styles/ButtonWrapperStyles';
-import Title from '../../styles/TitleStyles';
-import { redirectToPage } from '../../../utils/redirect';
-import meditationTools from './toolsData';
+import theme from '../../../styles/theme';
+import RootContainer from '../../../styles/RootContainerStyles';
+import ButtonWrapper from '../../../styles/ButtonWrapperStyles';
+import Title from '../../../styles/TitleStyles';
+import { redirectToPage } from '../../../../utils/redirect';
+import meditationTools from '../toolsData';
 
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
   padding: '2rem 0',
@@ -51,7 +51,6 @@ const MeditationTools = () => {
         const response = await fetch(`/api/users/dashboard/${username}`);
         const data = await response.json();
         const stagesCompleted = data.toolsCompleted
-        console.log(stagesCompleted)
         if (response.ok) {
           // Set the completed stages based on the user's toolsCompleted array
           setCompletedStages(stagesCompleted);

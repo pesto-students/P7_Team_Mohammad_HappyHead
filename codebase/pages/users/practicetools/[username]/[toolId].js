@@ -1,5 +1,5 @@
 import React from 'react';
-import ToolPage from '../../../../components/Users/practiceTools/SingleTool';
+import ToolPage from '../../../../components/Users/practiceTools/singleTool/Index';
 
 const ToolPageUser = () => {
   return <ToolPage/>;
