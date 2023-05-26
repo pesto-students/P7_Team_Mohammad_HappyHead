@@ -12,7 +12,10 @@ const CustomAudio = styled('audio')(({ theme }) => ({
 
 const ToolPage = () => {
   const router = useRouter();
-  const { username, toolId } = router.query;
+  const { toolId, username } = router.query;
+  // console.log(router)
+  // console.log(username)
+  // console.log(toolId)
   const [completedStages, setCompletedStages] = useState([]);
   
   useEffect(() => {
@@ -20,7 +23,7 @@ const ToolPage = () => {
     const fetchUserSchema = async () => {
       try {
         // Make an API request to fetch the user's profile
-        const response = await fetch(`/api/users/dashboard/${username}`);
+        const response = await fetch(`/api/users/practicetools/${username}/${toolId}`);
         const data = await response.json();
         const stagesCompleted = data.toolsCompleted
         console.log(stagesCompleted)
@@ -36,7 +39,7 @@ const ToolPage = () => {
     };
 
     fetchUserSchema();
-  }, [username]);
+  }, [toolId]);
 
 
   const handleCompleteClick = async (toolId) => {
@@ -46,7 +49,7 @@ const ToolPage = () => {
         const updatedToolsCompleted = [...completedStages, toolId];
 
         // Make an API request to update the user's profile
-        const response = await fetch(`/api/users/dashboard/${username}`, {
+        const response = await fetch(`/api/users/practicetools/${username}/${toolId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -75,7 +78,7 @@ const ToolPage = () => {
   return (
     <div>
       <h2>{meditationTools[toolId - 1]?.title}</h2>
-      <CustomAudio controls src={meditationTools[toolId - 1]?.title || ''} />
+      <CustomAudio controls src={meditationTools[toolId - 1]?.audio || ''} />
       {/* Render both buttons without any condition */}
       <Button variant="contained" color="primary" onClick={handleBackClick}>
         Back
