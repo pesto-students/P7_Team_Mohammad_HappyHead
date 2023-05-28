@@ -1,43 +1,39 @@
-import React from 'react'
-import { Button, Typography } from '@mui/material'
-import { styled, ThemeProvider } from '@mui/system'
-import Face2OutlinedIcon from '@mui/icons-material/Face2Outlined'
-import FaceOutlinedIcon from '@mui/icons-material/FaceOutlined'
-import Face4OutlinedIcon from '@mui/icons-material/Face4Outlined'
-import Face5OutlinedIcon from '@mui/icons-material/Face5Outlined'
+import React from 'react';
+import { Button, Typography } from '@mui/material';
+import { styled, ThemeProvider } from '@mui/system';
+import Face2OutlinedIcon from '@mui/icons-material/Face2Outlined';
+import FaceOutlinedIcon from '@mui/icons-material/FaceOutlined';
+import Face4OutlinedIcon from '@mui/icons-material/Face4Outlined';
+import Face5OutlinedIcon from '@mui/icons-material/Face5Outlined';
 
-import theme from '../styles/theme'
-import RootContainer from '../styles/RootContainerStyles'
-import ContentContainer from '../styles/ContentContainerStyles'
-import IconContainer from '../styles/IconContainerStyles'
-import Title from '../styles/TitleStyles'
-import SubText from '../styles/SubTextStyles'
-import ButtonWrapper from '../styles/ButtonWrapperStyles'
+import theme from '../styles/theme';
+import RootContainer from '../styles/RootContainerStyles';
+import ContentContainer from '../styles/ContentContainerStyles';
+import IconContainer from '../styles/IconContainerStyles';
+import Title from '../styles/TitleStyles';
+import SubText from '../styles/SubTextStyles';
+import ButtonWrapper from '../styles/ButtonWrapperStyles';
 
 // Styled component for the custom root container
 const CustomRootContainer = styled(RootContainer)({
-  backgroundColor: theme.palette.secondary.main, // Replace 'your-desired-color' with the desired background color
-})
+  backgroundColor: theme.palette.quinary.main,
+});
 
 // Styled component for the custom content container
 const CustomContentContainer = styled(ContentContainer)({
-  backgroundColor: theme.palette.secondary.main, // Replace 'your-desired-color' with the desired background color
-  padding: '2rem 0',
-})
+  backgroundColor: theme.palette.quinary.main,
+  padding: '2.5rem',
+});
 
-// Styled component for the custom title
-const CustomTitle = styled(Title)({
-  padding: '0 2rem',
-})
+const LoginLinkTypography = styled(Typography)(({ theme }) => ({
+  paddingTop: 16,
+  color: theme.palette.text.primary,
 
-const LoginLinkTypography = styled(Typography)`
-  padding-top: 16px;
-  color: ${({ theme }) => theme.palette.text.primary};
+  '& a': {
+    color: theme.palette.text.primary,
+  },
+}));
 
-  a {
-    color: ${({ theme }) => theme.palette.text.primary};
-  }
-`;
 const AboutHero = () => {
   return (
     <ThemeProvider theme={theme}>
@@ -46,10 +42,12 @@ const AboutHero = () => {
         {/* Custom Content container */}
         <CustomContentContainer>
           {/* Title */}
-          <CustomTitle variant="h2">Try HappyHead for free today</CustomTitle>
+          <Title variant="h2">Try HappyHead for free today</Title>
 
           {/* Sub text */}
-          <SubText variant="h5">Find more joy, less stress, and the best sleep ever with HappyHead. Try it for free today.</SubText>
+          <SubText variant="h5">
+            Find more joy, less stress, and the best sleep ever with HappyHead. Try it for free today.
+          </SubText>
 
           {/* Icons */}
           <IconContainer>
@@ -74,17 +72,13 @@ const AboutHero = () => {
           </ButtonWrapper>
 
           {/* Link for "Already a user? Login" */}
-          <LoginLinkTypography
-            variant="body2"
-            color="primary"
-            align="center"
-          >
+          <LoginLinkTypography variant="body2" color="primary" align="center">
             Already a user? <a href="/login">Login</a>
           </LoginLinkTypography>
         </CustomContentContainer>
       </CustomRootContainer>
     </ThemeProvider>
-  )
-}
+  );
+};
 
-export default AboutHero
+export default AboutHero;

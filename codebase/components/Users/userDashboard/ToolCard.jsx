@@ -3,7 +3,7 @@ import { Grid, CardContent } from '@mui/material';
 import CardStyle from '../../styles/CardStyles';
 import MuiLink from '../../MuiLink';
 
-const ToolCard = ({ tool, handleCardClick, isLoggedIn }) => {
+const ToolCard = ({ tool, handleCardClick }) => {
   const muiLinkStyles = {
     display: 'flex',
     alignItems: 'center',
@@ -15,7 +15,7 @@ const ToolCard = ({ tool, handleCardClick, isLoggedIn }) => {
       <CardStyle onClick={() => handleCardClick(tool)}>
         <CardContent>
           <MuiLink
-            href={isLoggedIn ? tool.path : '/loginUser'}
+            href={tool.path}
             underline="none"
             color="inherit"
             variant="h5"
@@ -26,7 +26,7 @@ const ToolCard = ({ tool, handleCardClick, isLoggedIn }) => {
             {tool.name}
           </MuiLink>
           <MuiLink
-            href={isLoggedIn ? tool.path : '/loginUser'}
+            href={tool.path}
             underline="none"
             color="inherit"
             variant="body1"

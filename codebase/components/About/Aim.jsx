@@ -16,13 +16,13 @@ import Why from '@mui/icons-material/SentimentVerySatisfiedOutlined'
 
 // Styled component for the root container
 const CustomRoot = styled(RootContainer)(({ theme }) => ({
-  backgroundColor: theme.palette.quinary.main,
+  backgroundColor: theme.palette.tertiary.main,
 }));
 
 // Styled component for the main content container
 const CustomAboutContainer = styled(ContentContainer)(({ theme }) => ({
   maxWidth: 'none', // Exclude the maxWidth property
-  backgroundColor: theme.palette.quinary.main,
+  backgroundColor: theme.palette.tertiary.main,
   margin: theme.spacing(2),
 }));
 
@@ -34,6 +34,11 @@ const StyledIconContainer = styled(IconContainer)(({ theme }) => ({
   },
 }));
 
+const CustomTitle = styled(Title)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+  paddingTop: theme.spacing(4),
+}));
+
 const WhoWhatWe = () => {
   return (
     <ThemeProvider theme={theme}>
@@ -41,6 +46,7 @@ const WhoWhatWe = () => {
       <CustomRoot>
         {/* Main content container */}
         <CustomAboutContainer>
+        <CustomTitle variant="h3">The Aim</CustomTitle>
           <Grid container spacing={2}>
             {/* First column */}
             <Grid item xs={12} sm={4} sx={{ textAlign: 'center' }}>

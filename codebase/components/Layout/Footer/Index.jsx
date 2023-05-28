@@ -19,7 +19,7 @@ const featureLinks = [
   },
   {
     name: 'Guided Mindfulness Tools',
-    path: '/features/mindfulness-tools',
+    path: `/features/guidedtools`,
   },
   {
     name: 'Connect with Experts',

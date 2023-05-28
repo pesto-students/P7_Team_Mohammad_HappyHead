@@ -21,9 +21,9 @@ const userProfileHandler = async (req, res) => {
       //     phonenumber: '1234567890',
       //     dob: '1990-01-01',
       //     toolsCompleted: [
-      //       { type: 1 },
-      //       { type: 2 },
-      //       { type: 3 },
+      //       1,
+      //       2,
+      //       3,
       //       // Add more tool entries as needed
       //     ],
       //     answers: {
@@ -48,7 +48,7 @@ const userProfileHandler = async (req, res) => {
     }
   } else if (req.method === 'PUT') {
     try {
-      const { username, ...updatedProfile } = req.body;
+      const { username } = req.body;
 
       // Connect to the MongoDB Atlas cluster
       let { db } = await connectToDatabase();

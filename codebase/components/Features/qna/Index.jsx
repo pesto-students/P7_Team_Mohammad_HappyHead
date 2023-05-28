@@ -2,19 +2,16 @@ import React from 'react'
 import { ThemeProvider } from '@mui/material'
 import Header from '../../Layout/Header/Index'
 import Footer from '../../Layout/Footer/Index'
-import UserDashboard from './UserDashboard'
-// import NewDashboard from './NewDashboard'
 import theme from '../../styles/theme'
 
-const Dashboard = () => {
+const QnA = () => {
   return (
     <ThemeProvider theme={theme}>
-      <Header position="fixed" />
-      <UserDashboard/>
-      {/* <NewDashboard/> */}
+      <Header position="fixed"/>
+      <div>Questionnaire page here</div>
       <Footer />
     </ThemeProvider>
-  );
-};
+  )
+}
 
-export default Dashboard
+export default QnA

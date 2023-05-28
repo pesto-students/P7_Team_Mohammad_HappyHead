@@ -12,22 +12,19 @@ import ColumnContainer from '../styles/ColumnContainerStyle';
 
 // Styled component for the root container
 const CustomRoot = styled(RootContainer)(({ theme }) => ({
-  backgroundColor: theme.palette.tertiary.main,
+  backgroundColor: theme.palette.secondary.main,
 }));
 
 // Styled component for the main content container
 const CustomAboutContainer = styled(ContentContainer)(({ theme }) => ({
-  maxWidth: 'none', // Exclude the maxWidth property
-  backgroundColor: theme.palette.tertiary.main,
+  maxWidth: 'none', 
+  backgroundColor: theme.palette.secondary.main,
   margin: theme.spacing(2),
   marginTop: '3rem',
 }));
 
 // Styled component for the circular ImageContainer
 const ImageContainer = styled(PhotoContainer)(({ theme }) => ({
-  // Additional styling specific to the ImageContainer
-  // ...
-
   '& .MuiAvatar-root': {
     width: '10rem',
     height: '10rem',
@@ -39,6 +36,11 @@ const ImageContainer = styled(PhotoContainer)(({ theme }) => ({
 
 const CustomTitle = styled(Title)(({ theme }) => ({
   marginBottom: theme.spacing(2),
+  paddingTop: theme.spacing(4),
+}));
+
+const CustomSubTitle = styled(Title)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
   paddingTop: theme.spacing(6),
 }));
 
@@ -48,7 +50,9 @@ const Team = () => {
       {/* Root container */}
       <CustomRoot>
         {/* Main content container */}
+        <CustomTitle variant="h3">The Team</CustomTitle>
         <CustomAboutContainer>
+        
           <Grid container spacing={2}>
             {/* First column */}
             <Grid item xs={12} sm={4} sx={{ textAlign: 'center' }}>
@@ -57,7 +61,7 @@ const Team = () => {
                 <ImageContainer>
                   <Avatar alt="Chaitra" src="/images/chaitra.jpg" />
                 </ImageContainer>
-                <CustomTitle variant="h5">Chaitra</CustomTitle>
+                <CustomSubTitle variant="h5">Chaitra</CustomSubTitle>
                 <SubText variant="body1">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem quod libero natus quas a omnis. Numquam qui fuga modi ex soluta.
                 </SubText>
@@ -71,7 +75,7 @@ const Team = () => {
                 <ImageContainer>
                   <Avatar alt="Parisha" src="/images/parisha.jpeg" />
                 </ImageContainer>
-                <CustomTitle variant="h5">Parisha</CustomTitle>
+                <CustomSubTitle variant="h5">Parisha</CustomSubTitle>
                 <SubText variant="body1">
                   An unboxabe chameleon who is too interesting to categorise, she is a marketer, coder, rower, ukulele player, avid reader, pet parent, pizza eater and music lover.
                 </SubText>
@@ -85,7 +89,7 @@ const Team = () => {
                 <ImageContainer>
                   <Avatar alt="Shubham" src="/images/shubham.jpeg" />
                 </ImageContainer>
-                <CustomTitle variant="h5">Shubham</CustomTitle>
+                <CustomSubTitle variant="h5">Shubham</CustomSubTitle>
                 <SubText variant="body1">
                   Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora et magnam, ab, voluptatum numquam rem excepturi id voluptatem obcaecati eos eveniet porro.
                 </SubText>

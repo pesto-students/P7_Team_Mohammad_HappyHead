@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { Button, Card, CardContent, Typography } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/system';
 
-import theme from '../../styles/theme';
-import RootContainer from '../../styles/RootContainerStyles';
-import ButtonWrapper from '../../styles/ButtonWrapperStyles';
-import Title from '../../styles/TitleStyles';
-import { redirectToPage } from '../../../utils/redirect';
-import meditationTools from './toolsData';
+import theme from '../../../styles/theme';
+import RootContainer from '../../../styles/RootContainerStyles';
+import ButtonWrapper from '../../../styles/ButtonWrapperStyles';
+import Title from '../../../styles/TitleStyles';
+import { redirectToPage } from '../../../../utils/redirect';
+import meditationTools from '../toolsData';
 
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
   padding: '2rem 0',
@@ -37,7 +38,9 @@ const CustomDesc = styled(Typography)(({ theme }) => ({
   marginTop: '0.5rem',
 }));
 
-const MeditationTools = ({ username }) => {
+const MeditationTools = () => {
+  const router = useRouter();
+  const { username } = router.query;
   const [completedStages, setCompletedStages] = useState([]);
 
   useEffect(() => {
@@ -45,12 +48,13 @@ const MeditationTools = ({ username }) => {
     const fetchUserSchema = async () => {
       try {
         // Make an API request to fetch the user's profile
-        const response = await fetch(`/api/users/${username}`);
+        const response = await fetch(`/api/users/practicetools/${username}`);
         const data = await response.json();
-
+        
+        const stagesCompleted = data.toolsCompleted
         if (response.ok) {
           // Set the completed stages based on the user's toolsCompleted array
-          setCompletedStages(data.toolsCompleted);
+          setCompletedStages(stagesCompleted);
         } else {
           console.error('Failed to fetch user profile:', data.error);
         }
@@ -60,52 +64,23 @@ const MeditationTools = ({ username }) => {
     };
 
     fetchUserSchema();
-  }, [username]);
+  });
 
-  const handleToolClick = (id) => {
+  const handleToolClick = (toolId) => {
     // Redirect to the tool page if it's the first tool or if the previous tool is completed
-    if (id === 1 || completedStages.includes(id - 1)) {
-      redirectToPage(`/users/practicetools/${username}/${id}`);
+    if (toolId === 1 || completedStages.includes(toolId - 1)) {
+      redirectToPage(`/users/practicetools/${username}/${toolId}`);
     }
   };
 
-  const handleAudioEnd = async (id) => {
-    if (!completedStages.includes(id)) {
-      try {
-        // Update the toolsCompleted array for the user
-        const updatedToolsCompleted = [...completedStages, id];
-
-        // Make an API request to update the user's profile
-        const response = await fetch(`/api/users/${username}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            toolsCompleted: updatedToolsCompleted,
-          }),
-        });
-
-        if (response.ok) {
-          // Update the completedStages state with the updated array
-          setCompletedStages(updatedToolsCompleted);
-        } else {
-          console.error('Failed to update user profile:', data.error);
-        }
-      } catch (error) {
-        console.error('Failed to update user profile:', error);
-      }
-    }
-  };
-
-  return (
+return (
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
         <Title variant="h4" component="h1" gutterBottom>
           Guided Meditation Tools
         </Title>
         {meditationTools.map((tool) => (
-          <CustomCard key={tool.id} variant="outlined">
+          <CustomCard key={tool.toolId} variant="outlined">
             <CardContent>
               <CustomTitle variant="h5" component="h2">
                 {tool.title}
@@ -117,8 +92,8 @@ const MeditationTools = ({ username }) => {
                 <Button
                   variant="contained"
                   color="quinary"
-                  onClick={() => handleToolClick(tool.id)}
-                  disabled={tool.id !== 1 && !completedStages.includes(tool.id - 1)}
+                  onClick={() => handleToolClick(tool.toolId)}
+                  disabled={tool.toolId !== 1 && !completedStages.includes(tool.toolId - 1)}
                 >
                   Start Practice
                 </Button>

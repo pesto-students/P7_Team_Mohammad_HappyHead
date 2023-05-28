@@ -1,13 +1,13 @@
 import React from 'react'
 import { CardContent, Grid } from '@mui/material'
 import { ThemeProvider, styled } from '@mui/system'
-import {redirectToPage} from '../../utils/redirect'
-import RootContainer from '../styles/RootContainerStyles'
-import ContentContainer from '../styles/ContentContainerStyles'
-import CardStyle from '../styles/CardStyles'
-import theme from '../styles/theme'
-import MuiLink from '../MuiLink'
-import { toolsData } from './toolsData';
+import {redirectToPage} from '../../../utils/redirect'
+import RootContainer from '../../styles/RootContainerStyles'
+import ContentContainer from '../../styles/ContentContainerStyles'
+import CardStyle from '../../styles/CardStyles'
+import theme from '../../styles/theme'
+import MuiLink from '../../MuiLink'
+import { toolsData } from '../toolsData';
 
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -27,12 +27,13 @@ const CustomContentContainer = styled(ContentContainer)(({ theme }) => ({
 const Features = ({ isLoggedIn }) => {
   // Function to handle card click
   const handleCardClick = (tool) => {
-    if (isLoggedIn) {
+    if (tool.path) {
       console.log(`Redirecting to ${tool.path}`)
       redirectToPage(tool.path); // Call the redirect function with the tool's path
     } else {
       console.log('User not logged in. Redirecting to login page...')
-      redirectToPage('/loginUser'); // Redirect to the login page if user is not logged in
+      window.alert('Login to access');
+      redirectToPage('/loginUser'); // Redirect to the login page if path doesnt exist
     }
   }
 
@@ -46,7 +47,7 @@ const Features = ({ isLoggedIn }) => {
                 <CardStyle onClick={() => handleCardClick(tool)}>
                   <CardContent>
                     <MuiLink
-                      href={isLoggedIn ? tool.path : '/loginUser'}
+                      href={tool.path ? tool.path : '/loginUser'}
                       underline="none"
                       color="inherit"
                       variant="h5"
