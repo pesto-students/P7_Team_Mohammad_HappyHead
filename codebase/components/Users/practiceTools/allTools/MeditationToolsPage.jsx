@@ -48,8 +48,9 @@ const MeditationTools = () => {
     const fetchUserSchema = async () => {
       try {
         // Make an API request to fetch the user's profile
-        const response = await fetch(`/api/users/dashboard/${username}`);
+        const response = await fetch(`/api/users/practicetools/${username}`);
         const data = await response.json();
+        
         const stagesCompleted = data.toolsCompleted
         if (response.ok) {
           // Set the completed stages based on the user's toolsCompleted array

@@ -1,4 +1,4 @@
-const { connectToDatabase } = require('../../../../../utils/mongodb')
+const { connectToDatabase } = require('../../../../utils/mongodb')
 const ObjectId = require('mongodb').ObjectId;
 
 const userProfileHandler = async (req, res) => {
@@ -11,7 +11,7 @@ const userProfileHandler = async (req, res) => {
 
       // Find the user by username
       let user = await db.collection('Users').findOne({ username: username });
-  
+    //  console.log(user)
       // Send the user profile data as the response
       res.status(200).json(user);
     } catch (error) {
@@ -20,20 +20,18 @@ const userProfileHandler = async (req, res) => {
     }
   } else if (req.method === 'PUT') {
     try {
-      const { username, toolsCompleted } = req.body;
-     
+      const { username, ...updatedToolsCompleted } = req.body;
+
       // Connect to the MongoDB Atlas cluster
       let { db } = await connectToDatabase();
      
-      // // Find the user by username
-      // let user = await db.collection('Users').findOne({ username: username });
       // Update the user profile in the database
       await db.collection('Users').updateOne({ username: username }, {
         $set: {
-        toolsCompleted: toolsCompleted
+        toolsCompleted: updatedToolsCompleted
         }
       });
-     
+
       // Send a success response
       res.status(200).json({ message: 'Profile updated successfully' });
 

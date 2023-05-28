@@ -52,24 +52,27 @@ const ToolPage = () => {
   const router = useRouter();
   const { toolId, username } = router.query;
   const [completedStages, setCompletedStages] = useState([]);
-  const usernameRef = useRef(username);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Fetch the user's data, including the toolsCompleted array, based on the username
     const fetchUserSchema = async () => {
       try {
         // Make an API request to fetch the user's profile
-        const response = await fetch(`/api/users/practicetools/${usernameRef.current}/${toolId}`);
+        const response = await fetch(`/api/users/practicetools/${username}/${toolId}`);
         const data = await response.json();
+
         const stagesCompleted = data.toolsCompleted
 
         if (response.ok) {
           // Set the completed stages based on the user's toolsCompleted array
           setCompletedStages(stagesCompleted);
+
           // Check if the toolId is not in the completedStages array (except for meditationTools with toolID=1)
-          if (toolId !== '1' && !stagesCompleted.includes(toolId)) {
+          if (toolId !== '1' && !stagesCompleted.includes(Number(toolId)) && Number(toolId) !== Math.max(...stagesCompleted) + 1) {
+            console.log('Condition is true');
             alert('Please finish the previous stages before moving on to this stage.');
-            redirectToPage(`/users/practicetools/${usernameRef.current}`);
+            redirectToPage(`/users/practicetools/${username}`);
           }
         } else {
           console.error('Failed to fetch user profile:', data.error);
@@ -77,43 +80,52 @@ const ToolPage = () => {
       } catch (error) {
         console.error('Failed to fetch user profile:', error);
       }
+      finally {
+        setIsLoading(false); // Set loading state to false regardless of success or failure
+      }
     };
 
     fetchUserSchema();
   }, [toolId]);
 
+  // Render loading state or placeholder component while fetching data
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   const handleCompleteClick = async (toolId) => {
-    if (!completedStages.includes(toolId)) {
+    if (!completedStages.includes(Number(toolId))) {
       try {
         // Update the toolsCompleted array for the user
-        const updatedToolsCompleted = [...completedStages, toolId];
-
+        const updatedToolsCompleted = [...completedStages, Number(toolId)];
+        console.log(updatedToolsCompleted)
         // Make an API request to update the user's profile
-        const response = await fetch(`/api/users/practicetools/${usernameRef.current}/${toolId}`, {
+        const response = await fetch(`/api/users/practicetools/${username}/${toolId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            toolsCompleted: updatedToolsCompleted,
+            username: username,
+            toolsCompleted: updatedToolsCompleted
           }),
         });
-
         if (response.ok) {
           // Update the completedStages state with the updated array
           setCompletedStages(updatedToolsCompleted);
+          redirectToPage(`/users/practicetools/${username}`)
         } else {
-          console.error('Failed to update user profile:', data.error);
+          console.error('Failed to update user profile:', response.statusText);
         }
       } catch (error) {
         console.error('Failed to update user profile:', error);
       }
     }
+    else redirectToPage(`/users/practicetools/${username}`);
   };
 
   const handleBackClick = () => {
-    redirectToPage(`/users/practicetools/${usernameRef.current}`);
+    redirectToPage(`/users/practicetools/${username}`);
   };
 
   return (
@@ -125,7 +137,7 @@ const ToolPage = () => {
         {/* Render both buttons without any condition */}
         <ButtonContainer>
           <ButtonWrapper color="quaternary">
-            <Button variant="contained" color="primary" onClick={handleCompleteClick(toolId)}>
+            <Button variant="contained" color="primary" onClick={() => handleCompleteClick(toolId)}>
               Practice Completed
             </Button>
           </ButtonWrapper>
