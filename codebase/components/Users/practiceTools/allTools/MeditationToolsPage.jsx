@@ -64,7 +64,7 @@ const MeditationTools = () => {
     };
 
     fetchUserSchema();
-  }, [username]);
+  });
 
   const handleToolClick = (toolId) => {
     // Redirect to the tool page if it's the first tool or if the previous tool is completed

@@ -2,7 +2,7 @@
 const meditationTools = [
   {
     toolId: 1,
-    title: 'Buiding Awareness',
+    title: 'Building Awareness',
     description: ' This guided meditation tool helps you cultivate a sense of present-moment awareness by focusing on your breath, bodily sensations, and thoughts. It promotes mindfulness and self-reflection.',
     audio: '/audio/BuildingAwareness.mp3'
   },

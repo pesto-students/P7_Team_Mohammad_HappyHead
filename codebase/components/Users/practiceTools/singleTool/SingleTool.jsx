@@ -86,7 +86,7 @@ const ToolPage = () => {
     };
 
     fetchUserSchema();
-  }, [toolId]);
+  });
 
   // Render loading state or placeholder component while fetching data
   if (isLoading) {
