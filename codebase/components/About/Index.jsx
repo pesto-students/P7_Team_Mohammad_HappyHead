@@ -1,7 +1,6 @@
 import React from 'react';
 import { ThemeProvider } from '@mui/material';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { Element } from 'react-scroll';
+import { Element, scroller } from 'react-scroll';
 import Header from '../Layout/Header/Index';
 import Footer from '../Layout/Footer/Index';
 import AboutTop from './AboutHero';
@@ -11,9 +10,17 @@ import AboutEnd from './AboutEnd';
 import theme from '../styles/theme';
 
 const AboutPage = () => {
+  const scrollToElement = (name) => {
+    scroller.scrollTo(name, {
+      duration: 800,
+      smooth: true,
+      offset: -50, // Optional offset for scrolled position
+    });
+  };
+
   return (
     <ThemeProvider theme={theme}>
-      <Router>
+      <div>
         <Header position="fixed" />
         <Element name="about-happyhead">
           <AboutTop />
@@ -25,10 +32,11 @@ const AboutPage = () => {
         <Element name="about-team">
           <AboutTeam />
         </Element>
-        <Footer />
-      </Router>
+        <Footer scrollToElement={scrollToElement} />
+      </div>
     </ThemeProvider>
   );
 };
 
 export default AboutPage;
+
