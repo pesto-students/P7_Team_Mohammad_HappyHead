@@ -16,7 +16,7 @@ const UserToolsSchema = mongoose.Schema({
 // Define the UserAnswersSchema
 const UserAnswersSchema = mongoose.Schema({
   question: {
-    type: String,
+    type: [String],
     required: true,
   },
   answers: {

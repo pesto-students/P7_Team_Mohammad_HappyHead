@@ -32,11 +32,11 @@ const QnAMain = () => {
   const { username } = router.query
 
   const handleStart = () => {
-    redirectToPage(`/pages/users/qna/form/${username}`)
+    redirectToPage(`/users/qna/form/${username}`)
   };
 
   const handleGoBack = () => {
-    redirectToPage(`/pages/users/dashboard/${username}`)
+    redirectToPage(`/users/dashboard/${username}`)
   };
 
   return (
