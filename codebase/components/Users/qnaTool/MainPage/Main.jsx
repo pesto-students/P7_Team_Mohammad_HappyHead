@@ -1,8 +1,9 @@
-import { Button, Container } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { ThemeProvider, styled } from '@mui/system';
 import RootContainer from '../../../styles/RootContainerStyles';
 import ContentContainer from '../../../styles/ContentContainerStyles';
 import SubText from '../../../styles/SubTextStyles';
+import ButtonWrapper from '../../../styles/ButtonWrapperStyles';
 import theme from '../../../styles/theme';
 import { useRouter } from 'next/router';
 import { redirectToPage } from '../../../../utils/redirect';
@@ -21,6 +22,20 @@ const CustomContentContainer = styled(ContentContainer)({
 // Styled component for the centered subtext
 const CenteredSubText = styled(SubText)({
   textAlign: 'center',
+  padding: '0 1rem',
+});
+
+// Styled component for the button wrappers container
+const ButtonWrapperContainer = styled(Box)({
+  display: 'flex',
+  justifyContent: 'center',
+  gap: '1rem',
+  marginTop: '1rem',
+  paddingBottom: '3rem',
+  flexDirection: 'row',
+  [theme.breakpoints.up('md')]: {
+    flexDirection: 'row',
+  },
 });
 
 const info = {
@@ -35,7 +50,7 @@ const QnAMain = () => {
     redirectToPage(`/users/qna/form/${username}`)
   };
 
-  const handleGoBack = () => {
+  const handleViewReport = () => {
     redirectToPage(`/users/dashboard/${username}`)
   };
 
@@ -48,12 +63,18 @@ const QnAMain = () => {
           <CenteredSubText variant="h6">
             {info.text}
           </CenteredSubText>
-          <Button variant="contained" color="primary" onClick={handleStart}>
-            Start
-          </Button>
-          <Button variant="contained" color="primary" onClick={handleGoBack}>
-            Go Back
-          </Button>
+          <ButtonWrapperContainer>
+          <ButtonWrapper color="tertiary" >
+              <Button variant="contained" onClick={handleViewReport}>
+                View Report
+              </Button>
+            </ButtonWrapper>
+            <ButtonWrapper color="primary">
+              <Button variant="contained" onClick={handleStart}>
+                Start
+              </Button>
+            </ButtonWrapper>
+          </ButtonWrapperContainer>
         </CustomContentContainer>
       </CustomRootContainer>
     </ThemeProvider>
