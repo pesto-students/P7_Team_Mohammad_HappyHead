@@ -2,6 +2,10 @@ import mongoose from 'mongoose';
 
 const QuestionnaireSchema = mongoose.Schema({
   question: {
+    type: [String],
+    required: true,
+  },
+  type: {
     type: String,
     required: true,
   },
