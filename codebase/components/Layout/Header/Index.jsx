@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
@@ -19,19 +20,23 @@ const pages = [
   { name: 'Contact', path: '/contact' },
 ]
 
-// Array of login options
-const login = [
-  { name: 'Logout', path: '/logout' },
-  { name: 'Sign In', path: '/signin' },
-  { name: 'Sign Up', path: '/signup' },
-]
 
 // ResponsiveAppBar component
 function ResponsiveAppBar({ isLoggedIn }) {
+  const router = useRouter();
+  const { username } = router.query;
   // State variables
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
 
+
+  // Array of login options
+const login = [
+  { name: 'Sign In', path: '/signin' },
+  { name: 'Sign Up', path: '/signup' },
+  { name: 'Dashboard', path: `/user/dashboard/${username}` },
+  { name: 'Logout', path: '/logout' },
+]
   // Event handlers for opening and closing navigation menu
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget)
@@ -50,8 +55,7 @@ function ResponsiveAppBar({ isLoggedIn }) {
   };
 
   // Filtering login options based on user's login status
-  const filteredLoginOptions = isLoggedIn ? [login[0]] : login.slice(1)
-
+  const filteredLoginOptions = username ? login.slice(2, 4)  : login.slice(0, 2);
   return (
     <ThemeProvider theme={theme}>
       <AppBar position="static">
