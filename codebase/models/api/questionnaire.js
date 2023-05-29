@@ -22,6 +22,7 @@ const Questionnaire = mongoose.model('Questionnaire', QuestionnaireSchema);
 const defaultQuestionnaire = [
   {
     question: 'Do you experience any personal difficulties that cause you stress? (tick all that apply)',
+    type: 'checkbox',
     options: [
       'Conflict with loved ones',
       'Being alone',
@@ -35,6 +36,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'Do you experience any problems at work that cause you stress? (tick all that apply)',
+    type: 'checkbox',
     options: [
       'Conflict with colleagues',
       'An extremely demanding or insecure job',
@@ -43,6 +45,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'Do you experience any major threats in your community that cause you stress? (tick all that apply)',
+    type: 'checkbox',
     options: [
       'Violence',
       'Disease',
@@ -53,6 +56,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'Do you experience any physical symptoms of stress? (tick all that apply)',
+    type: 'checkbox',
     options: [
       'Headaches',
       'Neck & shoulder pain',
@@ -70,6 +74,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'Do you experience any emotional symptoms of stress? (tick all that apply)',
+    type: 'checkbox',
     options: [
       'Cannot focus',
       'Get angry easily',
@@ -85,6 +90,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'Do you experience any behavioural symptoms of stress? (tick all that apply)',
+    type: 'checkbox',
     options: [
       'Being hooked by difficult thoughts and feelings',
       'Being hooked by angry thoughts and feelings',
@@ -111,6 +117,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'Do you have any financial concerns or stressors?',
+    type: 'radio',
     options: [
       'Yes',
       'No',
@@ -122,6 +129,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'Do you have any concerns about your lifestyle? (tick all that apply)',
+    type: 'checkbox',
     options: [
       'Sleeping habits',
       'Screen time',
@@ -137,6 +145,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'Sleep: On average, how many hours of sleep do you get per night?',
+    type: 'radio',
     options: [
       'Less than 5 hours',
       '5-6 hours',
@@ -154,6 +163,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'Exercise: How often do you engage in physical exercise or activity?',
+    type: 'radio',
     options: [
       'Never',
       'Rarely (once a month or less)',
@@ -171,6 +181,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'Screen time: On average, how many hours per day do you spend looking at screens (e.g. phone, computer, TV)?',
+    type: 'radio',
     options: [
       'Less than 1 hour',
       '1-2 hours',
@@ -188,6 +199,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'Eating: On average, how many meals per day do you eat?',
+    type: 'radio',
     options: [
       '1 meal',
       '2 meals',
@@ -203,6 +215,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'How often do you eat fruits and vegetables?',
+    type: 'radio',
     options: [
       'Never',
       'Rarely (once a week or less)',
@@ -220,6 +233,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'How often do you eat processed or fast food?',
+    type: 'radio',
     options: [
       'Never',
       'Rarely (once a month or less)',
@@ -237,6 +251,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'Do you smoke or use any tobacco products?',
+    type: 'radio',
     options: [
       'Yes',
       'No',
@@ -248,6 +263,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'Do you consume alcohol, and if so, how frequently?',
+    type: 'radio',
     options: [
       'Daily',
       'Several times a week',
@@ -267,6 +283,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'How often do you engage in activities that you enjoy or find relaxing?',
+    type: 'radio',
     options: [
       'Multiple times a day',
       'Once a day',
@@ -284,6 +301,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'How often do you socialize with friends or family?',
+    type: 'radio',
     options: [
       'Daily',
       'Several times a week',
@@ -301,6 +319,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'Do you have any hobbies or interests that you enjoy?',
+    type: 'radio',
     options: [
       'Yes',
       'No',
@@ -312,6 +331,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'How often do you take breaks throughout the day to rest and recharge?',
+    type: 'radio',
     options: [
       'Multiple times a day',
       'Once a day',
@@ -327,6 +347,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'How do you typically cope with stress or difficult situations?',
+    type: 'radio',
     options: [
       'Exercise',
       'Meditation or mindfulness practices',
@@ -354,6 +375,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'Have you ever sought professional help for your mental health?',
+    type: 'radio',
     options: [
       'Yes',
       'No',
@@ -365,6 +387,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'Have you ever been diagnosed with a mental health condition? (Pick one)',
+    type: 'radio',
     options: [
       'Yes',
       'No',
@@ -376,6 +399,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'Have you ever received treatment for a mental health condition? (Pick one)',
+    type: 'radio',
     options: [
       'Yes',
       'No',
@@ -387,6 +411,7 @@ const defaultQuestionnaire = [
   },
   {
     question: 'Are you currently taking any medication for your mental health?',
+    type: 'radio',
     options: [
       'Yes',
       'No',
