@@ -328,7 +328,7 @@ const ReportGenerator = () => {
                 ))}
                 <CenteredButtonWrapper color="tertiary" >
                     <Button variant="contained" onClick={handleGoBack}>
-                        Download Report
+                        Go Back
                     </Button>
                 </CenteredButtonWrapper>
             </Container>
