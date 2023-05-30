@@ -40,7 +40,7 @@ const ButtonWrapperContainer = styled(Box)({
 });
 
 const info = {
-  text: `We are constantly looking for ways to continue to build a more inclusive product and ensure we’re operating according to our mission and values. Accessibility will remain a top priority as HappyHead's offerings evolve as we want to empower all members with tools to improve their health and happiness.`,
+  text: `This feature on HappyHead is designed to provide users with tailored recommendations and actionable steps to improve their mental health and well-being. By answering a series of simple questions about their current state of mind, lifestyle, and perceived problems, the platform generates a personalized report that identifies areas for improvement and suggests specific actions the user can take to feel healthier and happier again. This feature aims to empower individuals with personalized guidance and support on their mental health journey.`,
 };
 
 const QnAMain = () => {
