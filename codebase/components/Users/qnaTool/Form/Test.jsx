@@ -38,25 +38,39 @@ const QnAPage = () => {
 
     // State to hold the user's answers
     const [answers, setAnswers] = useState(Array(defaultQuestionnaireData.length).fill(''));
+    const [isFormValid, setIsFormValid] = useState(false);
+
 
     // Function to handle selecting an answer
-    const handleSelectAnswer = (questionIndex, answerIndex, checked) => {
+    const handleSelectAnswer = (questionIndex, answerIndex, checked, question) => {
         const newAnswers = [...answers];
-        const selectedOptions = answers[questionIndex];
-      
-        if (checked) {
-          // Option is checked, add it to the selected options
-          newAnswers[questionIndex] = [...selectedOptions, answerIndex];
+        const selectedOptions = newAnswers[questionIndex];
+
+        if (question.type === 'checkbox') {
+            // Checkbox: update selected options array
+            if (checked) {
+                // Option is checked, add it to the selected options
+                newAnswers[questionIndex] = [...selectedOptions, answerIndex];
+            } else {
+                // Option is unchecked, remove it from the selected options
+                const updatedOptions = selectedOptions.filter((option) => option !== answerIndex);
+                newAnswers[questionIndex] = updatedOptions;
+            }
         } else {
-          // Option is unchecked, remove it from the selected options
-          const updatedOptions = selectedOptions.filter((option) => option !== answerIndex);
-          newAnswers[questionIndex] = updatedOptions;
+            // Radio button: update selected option directly
+            newAnswers[questionIndex] = answerIndex.toString();
         }
-      
+
         setAnswers(newAnswers);
-      };
-      
-      
+
+        // Check if all questions are answered
+        const isAllQuestionsAnswered = newAnswers.every((answer) => answer !== '');
+        setIsFormValid(isAllQuestionsAnswered);
+    };
+
+
+
+
 
     // Function to handle submitting the answers
     const handleSubmit = async () => {
@@ -73,7 +87,7 @@ const QnAPage = () => {
             const recommendations = answersWithRecommendations.map((answer, index) => {
                 console.log(answer)
                 console.log(index)
-                if (defaultQuestionnaireData[index].recommendation.length === 1 && answer == defaultQuestionnaireData[index].options.length -1 ) {
+                if (defaultQuestionnaireData[index].recommendation.length === 1 && answer == defaultQuestionnaireData[index].options.length - 1) {
                     return "";
                 }
                 else if (defaultQuestionnaireData[index].recommendation.length === 1) {
@@ -94,7 +108,7 @@ const QnAPage = () => {
 
             console.log(data)
             // Send a POST request to save the data
-            const response = await fetch(`/api/qna/${username}`, {
+            const response = await fetch(`/api/users/qna/${username}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -130,7 +144,7 @@ const QnAPage = () => {
                                         control={
                                             <Checkbox
                                                 checked={answers[index].includes(optionIndex)}
-                                                onChange={(event) => handleSelectAnswer(index, optionIndex, event.target.checked)}
+                                                onChange={(event) => handleSelectAnswer(index, optionIndex, event.target.checked, question)}
 
                                             />
                                         }
@@ -144,7 +158,8 @@ const QnAPage = () => {
                         <FormControl component="fieldset">
                             <RadioGroup
                                 value={answers[index]}
-                                onChange={(event) => handleSelectAnswer(index, event.target.value)}
+                                onChange={(event) => handleSelectAnswer(index, event.target.value, false, question)}
+
                             >
                                 {question.options.map((option, optionIndex) => (
                                     <FormControlLabel
@@ -164,7 +179,9 @@ const QnAPage = () => {
                     <Button variant="contained" onClick={handleSubmit}>Reset</Button>
                 </ButtonWrapper>
                 <ButtonWrapper color="tertiary">
-                    <Button variant="contained" onClick={handleSubmit}>Submit</Button>
+                    <Button variant="contained" onClick={handleSubmit} disabled={!isFormValid}>
+                        Submit
+                    </Button>
                 </ButtonWrapper>
             </ButtonWrapperContainer>
         </CustomContentContainer>
