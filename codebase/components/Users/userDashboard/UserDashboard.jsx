@@ -71,7 +71,7 @@ const UserDashboard = ({ isLoggedIn }) => {
             name: 'You Mental Health Report',
             subtext:
                 'Answer a few questions related to your stressors & lifestyle and get personalized insights and recommendations',
-            path: '/users/questionnaire',
+            path: `/users/qna/${username}`,
         },
         {
             name: 'Connect with Experts',
