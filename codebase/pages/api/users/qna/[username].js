@@ -1,10 +1,27 @@
-// pages/api/qna.js
 import { connectToDatabase } from '../../../../utils/mongodb';
 
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
+  if (req.method === 'GET') {
     try {
-      const { questions, answers, recommendation } = req.body;
+     const username = req.query.username;
+
+      // Connect to the MongoDB Atlas cluster
+      const { db } = await connectToDatabase();
+
+      // Find the user by username
+      let user = await db.collection('Users').findOne({ username: username });
+    //  console.log(user)
+      // Send the user profile data as the response
+      res.status(200).json(user);
+    } catch (error) {
+      console.error('Failed to fetch user profile', error);
+      res.status(500).json({ error: 'Failed to fetch user profile' });
+    }
+  }
+  else if (req.method === 'POST') {
+    try {
+      const { questions, answers, recommendations } = req.body;
+      console.log(req.body)
       const { db } = await connectToDatabase();
       const collection = db.collection('Users');
 
@@ -15,7 +32,7 @@ export default async function handler(req, res) {
           $set: {
             questions,
             answers,
-            recommendation,
+            recommendations,
           },
         }
       );

@@ -18,6 +18,12 @@ const UserAnswersSchema = mongoose.Schema({
   question: {
     type: [String],
     required: true,
+    validate: {
+      validator: function (value) {
+        return value.length === 25;
+      },
+      message: 'Questions array must have exactly 26 numbers.',
+    },
   },
   answers: {
     type: [String],

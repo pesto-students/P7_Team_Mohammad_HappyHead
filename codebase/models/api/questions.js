@@ -11,8 +11,9 @@ const defaultQuestionnaire = [
         'Worries about the future',
         'Loss or sickness of loved ones',
         'Lifestyle issues (sleep, eating, etc)',
+        'None',
       ],
-      recommendation: 'Since you are experiencing personal difficulties, our reccomendation would be to connect with a therapist who specializes in family therapy or stress management.'
+      recommendation: [`Since you are experiencing personal difficulties, our recommendation would be to connect with a therapist who specializes in family therapy or stress management.`]
     },
     {
       question: 'Do you experience any problems at work that cause you stress? (tick all that apply)',
@@ -20,8 +21,9 @@ const defaultQuestionnaire = [
       options: [
         'Conflict with colleagues',
         'An extremely demanding or insecure job',
+        'None',
       ],
-      recommendation: 'Since you are experiencing work-related stress, our reccomendation would be to connect with a therapist who specializes in workplace stress management or career counseling.'
+      recommendation: [`Since you are experiencing work-related stress, our recommendation would be to connect with a therapist who specializes in workplace stress management or career counseling.`]
     },
     {
       question: 'Do you experience any major threats in your community that cause you stress? (tick all that apply)',
@@ -31,8 +33,9 @@ const defaultQuestionnaire = [
         'Disease',
         'Lack of economic opportunity',
         'Displacement from home',
+        'None',
       ],
-      recommendation: 'Since you are experiencing stress due to major threats in your community, our reccomendation would be to connect with a therapist who specializes in trauma counseling or community support services.'
+      recommendation: [`Since you are experiencing stress due to major threats in your community, our recommendation would be to connect with a therapist who specializes in trauma counseling or community support services.`]
     },
     {
       question: 'Do you experience any physical symptoms of stress? (tick all that apply)',
@@ -49,8 +52,9 @@ const defaultQuestionnaire = [
         'Skin rashes',
         'Infections, illnesses or bowel problems',
         'Sudden weight gain/loss',
+        'None',
       ],
-      recommendation: 'Since you are experiencing physical symptoms of stress, our reccomendation would be to connect with a therapist who specializes in somatic therapy or stress reduction techniques.'
+      recommendation: [`Since you are experiencing physical symptoms of stress, our recommendation would be to connect with a therapist who specializes in somatic therapy or stress reduction techniques.`]
     },
     {
       question: 'Do you experience any emotional symptoms of stress? (tick all that apply)',
@@ -65,8 +69,9 @@ const defaultQuestionnaire = [
         'Cry',
         'Feel very tired',
         'Have changes in appetite',
+        'None',
       ],
-      recommendation: 'Since you are experiencing emotional symptoms of stress, our reccomendation would be to connect with a therapist who specializes in cognitive-behavioral therapy or emotion-focused therapy.'
+      recommendation: [`Since you are experiencing emotional symptoms of stress, our recommendation would be to connect with a therapist who specializes in cognitive-behavioral therapy or emotion-focused therapy.`]
     },
     {
       question: 'Do you experience any behavioural symptoms of stress? (tick all that apply)',
@@ -92,8 +97,9 @@ const defaultQuestionnaire = [
         'Using illicit drugs',
         'Starting arguments',
         'Blaming or criticizing oneself',
+        'None',
       ],
-      recommendation: 'Since you are behavioural physical symptoms of stress, our reccomendation would be to connect with a therapist who specializes in addiction counseling or behavioral therapy.'
+      recommendation: [`Since you are behavioural physical symptoms of stress, our recommendation would be to connect with a therapist who specializes in addiction counseling or behavioral therapy.`]
     },
     {
       question: 'Do you have any financial concerns or stressors?',
@@ -117,9 +123,6 @@ const defaultQuestionnaire = [
         'Exercise routine',
       ],
       recommendation: [
-        `Here's our specific recommendations based on your responses concerning your liefestyle: `,
-        `Here's our specific recommendations based on your responses concerning your liefestyle: `,
-        `Here's our specific recommendations based on your responses concerning your liefestyle: `,
         `Here's our specific recommendations based on your responses concerning your liefestyle: `,
       ]
     },

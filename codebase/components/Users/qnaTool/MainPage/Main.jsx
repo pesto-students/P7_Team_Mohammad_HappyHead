@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Box, Button } from '@mui/material';
 import { ThemeProvider, styled } from '@mui/system';
 import RootContainer from '../../../styles/RootContainerStyles';
@@ -44,14 +45,35 @@ const info = {
 
 const QnAMain = () => {
   const router = useRouter();
-  const { username } = router.query
+  const { username } = router.query;
+
+  const [answersExist, setAnswersExist] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/users/practicetools/${username}`);
+        if (response.ok) {
+          const userData = await response.json();
+          const answers = userData.answers;
+          setAnswersExist(answers && answers.recommendations.length == 25);
+        } else {
+          console.error('Failed to fetch user data');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchData();
+  }, [username]);
 
   const handleStart = () => {
-    redirectToPage(`/users/qna/form/${username}`)
+    redirectToPage(`/users/qna/form/${username}`);
   };
 
   const handleViewReport = () => {
-    redirectToPage(`/users/dashboard/${username}`)
+    redirectToPage(`/users/qna/report/${username}`);
   };
 
   return (
@@ -60,12 +82,10 @@ const QnAMain = () => {
         <CustomContentContainer>
           <h1>Personalised Mental Health Recommendations </h1>
           {/* Centered Sub text */}
-          <CenteredSubText variant="h6">
-            {info.text}
-          </CenteredSubText>
+          <CenteredSubText variant="h6">{info.text}</CenteredSubText>
           <ButtonWrapperContainer>
-          <ButtonWrapper color="tertiary" >
-              <Button variant="contained" onClick={handleViewReport}>
+            <ButtonWrapper color="tertiary">
+              <Button variant="contained" onClick={handleViewReport} disabled={!answersExist}>
                 View Report
               </Button>
             </ButtonWrapper>
