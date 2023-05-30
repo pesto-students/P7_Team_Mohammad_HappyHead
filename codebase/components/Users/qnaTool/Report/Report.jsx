@@ -2,26 +2,33 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import RootContainer from '../../../styles/RootContainerStyles';
-import { Container, Typography } from '@mui/material';
+import { Container, Typography, Button } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { ThemeProvider, styled } from '@mui/system';
+import { styled } from '@mui/system';
 import Title from '../../../styles/TitleStyles';
-import SubText from '../../../styles/SubTextStyles';
 import ButtonWrapper from '../../../styles/ButtonWrapperStyles';
-import theme from '../../../styles/theme';
 
-
+// Styled component for customizing the root container
 const CustRootContainer = styled(RootContainer)(({ theme }) => ({
     backgroundColor: theme.palette.secondary.main,
     color: theme.palette.text.primary,
     textAlign: 'left',
 }))
 
+// Styled component for customizing the title typography
 const CustTitle = styled(Typography)(({ theme }) => ({
     marginBottom: theme.spacing(2),
     fontWeight: theme.typography.fontWeightBold,
     fontSize: '1.4rem',
 }))
+
+// Styled component for centering the button
+const CenteredButtonWrapper = styled(ButtonWrapper)({
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '2rem',
+  });
+  
 
 const ReportGenerator = () => {
     const router = useRouter();
@@ -32,6 +39,7 @@ const ReportGenerator = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                // Fetch user data from the API
                 const response = await fetch(`/api/users/qna/${username}`);
                 if (response.ok) {
                     const userData = await response.json();
@@ -49,19 +57,32 @@ const ReportGenerator = () => {
     }, [username]);
 
     const sentences = [
+        // Sentence 1: Introduction to the report
         `Based on the information provided, we have identified several areas where improvements can be made to support better mental health and well-being. The following recommendations are intended to provide guidance and support in these areas, and to help you develop a plan for managing your mental health.`,
-        `Here's our specific recommendations based on your responses concerning your liefestyle:`,
+    
+        // Sentence 2: Recommendations based on lifestyle responses
+        `Here's our specific recommendations based on your responses concerning your lifestyle:`,
+    
+        // Sentence 3: Suggestion to start with a general therapist
         `If you're not sure which specialized therapist would be best for you, we suggest starting with a general therapist who can help you identify your specific needs and refer you to the appropriate specialist if necessary. Our platform has a wide range of qualified therapists who can help you explore your options and make the best decision for your mental health. You don't have to figure it out on your own, let us help you get started.`,
+    
+        // Sentence 4: Suggestion to explore tools for self-care and stress management
         `Along with connecting you with a therapist or mental health expert, we also suggest exploring the tools available on our platform related to grounding, being aware, and other techniques prescribed by WHO for people experiencing stress. These tools can help you practice self-care and manage your stress levels on your own. We encourage you to give them a try and see what works best for you.`,
-        `Disclaimer: Please note that these recommendations are not a substitute for professional advice, and we recommend consulting with a healthcare provider or mental health professional as needed.`,
-    ];
+    
+        // Sentence 5: Disclaimer that recommendations are not a substitute for professional advice
+        `Please note that these recommendations are not a substitute for professional advice, and we recommend consulting with a healthcare provider or mental health professional as needed.`,
+      ];
 
+    const handleGoBack = () => {
+        redirectToPage(`/users/dashboard/${username}`);
+    }
     return (
         <CustRootContainer>
-            <Container maxWidth="md">
-                <Title variant="h4" component="h1" align="center" gutterBottom>
+            <Container maxWidth="md" sx={{ padding: '1rem' }}>
+                <Title variant="h4" component="h1" align="center" sx={{ paddingBottom: '0.7rem' }} gutterBottom>
                     Report
                 </Title>
+                {/* Render the sentences */}
                 {sentences.map((sentence, index) => (
                     <React.Fragment key={index}>
                         {index === 0 && (
@@ -77,6 +98,7 @@ const ReportGenerator = () => {
                                 <CustTitle gutterBottom>
                                     Sleep:
                                 </CustTitle>
+                                {/* Render the user's answers and recommendations */}
                                 {userRecommendations.map((recommendation, index) => (
                                     <React.Fragment key={index}>
                                         {index === 8 && recommendation && (
@@ -90,9 +112,9 @@ const ReportGenerator = () => {
                         )}
                         {index === 1 && (
                             <React.Fragment>
-                                <Typography variant="h6" component="h2" gutterBottom>
+                                <CustTitle gutterBottom>
                                     Physical Activity:
-                                </Typography>
+                                </CustTitle>
                                 {userRecommendations.map((recommendation, index) => (
                                     <React.Fragment key={index}>
                                         {index === 9 && recommendation && (
@@ -106,9 +128,9 @@ const ReportGenerator = () => {
                         )}
                         {index === 1 && (
                             <React.Fragment>
-                                <Typography variant="h6" component="h2" gutterBottom>
+                                <CustTitle gutterBottom>
                                     Screen Time:
-                                </Typography>
+                                </CustTitle>
                                 {userRecommendations.map((recommendation, index) => (
                                     <React.Fragment key={index}>
                                         {index === 10 && recommendation && (
@@ -122,9 +144,9 @@ const ReportGenerator = () => {
                         )}
                         {index === 1 && (
                             <React.Fragment>
-                                <Typography variant="h6" component="h2" gutterBottom>
+                                <CustTitle gutterBottom>
                                     Food Habits:
-                                </Typography>
+                                </CustTitle>
                                 {userRecommendations.map((recommendation, index) => (
                                     <React.Fragment key={index}>
                                         {index === 11 && recommendation && (
@@ -148,9 +170,9 @@ const ReportGenerator = () => {
                         )}
                         {index === 1 && (
                             <React.Fragment>
-                                <Typography variant="h6" component="h2" gutterBottom>
+                                <CustTitle gutterBottom>
                                     Tobacco:
-                                </Typography>
+                                </CustTitle>
                                 {userRecommendations.map((recommendation, index) => (
                                     <React.Fragment key={index}>
                                         {index === 14 && recommendation && (
@@ -164,9 +186,9 @@ const ReportGenerator = () => {
                         )}
                         {index === 1 && (
                             <React.Fragment>
-                                <Typography variant="h6" component="h2" gutterBottom>
+                                <CustTitle gutterBottom>
                                     Alcohol Consumption:
-                                </Typography>
+                                </CustTitle>
                                 {userRecommendations.map((recommendation, index) => (
                                     <React.Fragment key={index}>
                                         {index === 15 && recommendation && (
@@ -180,9 +202,9 @@ const ReportGenerator = () => {
                         )}
                         {index === 1 && (
                             <React.Fragment>
-                                <Typography variant="h6" component="h2" gutterBottom>
+                                <CustTitle gutterBottom>
                                     Social Life:
-                                </Typography>
+                                </CustTitle>
                                 {userRecommendations.map((recommendation, index) => (
                                     <React.Fragment key={index}>
                                         {index === 17 && recommendation && (
@@ -196,9 +218,9 @@ const ReportGenerator = () => {
                         )}
                         {index === 1 && (
                             <React.Fragment>
-                                <Typography variant="h6" component="h2" gutterBottom>
+                                <CustTitle gutterBottom>
                                     Leisure & Relaxation:
-                                </Typography>
+                                </CustTitle>
                                 {userRecommendations.map((recommendation, index) => (
                                     <React.Fragment key={index}>
                                         {index === 16 && recommendation && (
@@ -217,9 +239,9 @@ const ReportGenerator = () => {
                         )}
                         {index === 1 && (
                             <React.Fragment>
-                                <Typography variant="h6" component="h2" gutterBottom>
+                                <CustTitle gutterBottom>
                                     De-stressing:
-                                </Typography>
+                                </CustTitle>
                                 {userRecommendations.map((recommendation, index) => (
                                     <React.Fragment key={index}>
                                         {index === 19 && recommendation && (
@@ -241,9 +263,9 @@ const ReportGenerator = () => {
                             <React.Fragment>
                                 {userRecommendations.slice(21, 24).some(recommendation => recommendation) && (
                                     <React.Fragment>
-                                        <Typography variant="h6" component="h2" gutterBottom>
+                                        <CustTitle gutterBottom>
                                             Current Medical Condition:
-                                        </Typography>
+                                        </CustTitle>
                                         {userRecommendations.slice(21, 24).map((recommendation, index) => (
                                             <React.Fragment key={index}>
                                                 {recommendation && (
@@ -261,9 +283,9 @@ const ReportGenerator = () => {
                             <React.Fragment>
                                 {userRecommendations.slice(0, 5).some(recommendation => recommendation) && (
                                     <React.Fragment>
-                                        <Typography variant="h6" component="h2" gutterBottom>
+                                        <CustTitle gutterBottom>
                                             Recommendation for Expert Connect:
-                                        </Typography>
+                                        </CustTitle>
                                         {userRecommendations.slice(0, 5).map((recommendation, index) => (
                                             <React.Fragment key={index}>
                                                 {recommendation && (
@@ -285,9 +307,9 @@ const ReportGenerator = () => {
                         )}
                         {index === 3 && (
                             <React.Fragment>
-                                <Typography variant="h6" component="h2" gutterBottom>
+                                <CustTitle gutterBottom>
                                     Practice tools:
-                                </Typography>
+                                </CustTitle>
                                 <Typography paragraph>{sentence}</Typography>
                             </React.Fragment>
 
@@ -295,15 +317,20 @@ const ReportGenerator = () => {
 
                         {index === 4 && (
                             <React.Fragment>
-                                <Typography variant="h6" component="h2" gutterBottom>
+                                <CustTitle gutterBottom>
                                     Disclaimer:
-                                </Typography>
+                                </CustTitle>
                                 <Typography paragraph>{sentence}</Typography>
                             </React.Fragment>
 
                         )}
                     </React.Fragment>
                 ))}
+                <CenteredButtonWrapper color="tertiary" >
+                    <Button variant="contained" onClick={handleGoBack}>
+                        Download Report
+                    </Button>
+                </CenteredButtonWrapper>
             </Container>
         </CustRootContainer>
 
