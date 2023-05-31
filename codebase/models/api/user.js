@@ -1,8 +1,5 @@
 import mongoose from 'mongoose';
-// const bcrypt = require('bcrypt');
-
-// Define the BookingHistorySchema
-
+import bcrypt from 'bcrypt';
 
 // Define the UserToolsSchema
 const UserToolsSchema = mongoose.Schema({
@@ -20,7 +17,7 @@ const UserAnswersSchema = mongoose.Schema({
     required: true,
     validate: {
       validator: function (value) {
-        return value.length === 25;
+        return value.length === 26;
       },
       message: 'Questions array must have exactly 26 numbers.',
     },
@@ -30,7 +27,7 @@ const UserAnswersSchema = mongoose.Schema({
     required: true,
     validate: {
       validator: function (value) {
-        return value.length === 25;
+        return value.length === 26;
       },
       message: 'Answers array must have exactly 26 numbers.',
     },
@@ -40,7 +37,7 @@ const UserAnswersSchema = mongoose.Schema({
     required: true,
     validate: {
       validator: function (value) {
-        return value.length === 25;
+        return value.length === 26;
       },
       message: 'Recommendations array must have exactly 26 strings.',
     },
@@ -71,7 +68,7 @@ const UsersSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
   },
-  hash_password: {
+  password: {
     type: String,
     required: true,
   },
@@ -85,9 +82,28 @@ const UsersSchema = new mongoose.Schema({
   },
   toolsCompleted: UserToolsSchema,
   answers: UserAnswersSchema,
+  bookedSlots: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Expert'
+  }]
 });
 
- 
+// Hash the password before saving
+UsersSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    return next();
+  }
+
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(this.password, salt);
+    this.hash_password = hashedPassword;
+    return next();
+  } catch (error) {
+    return next(error);
+  }
+});
+
 // Create the Users model using the schema
 const Users = mongoose.models.Users || mongoose.model('Users', UsersSchema);
 

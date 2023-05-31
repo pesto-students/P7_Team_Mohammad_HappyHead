@@ -60,6 +60,7 @@ const userProfileHandler = async (req, res) => {
           email: req.body.email,
           phonenumber: req.body.phonenumber,
           dob: req.body.dob,
+          password: req.body.password,
         }
       });
 

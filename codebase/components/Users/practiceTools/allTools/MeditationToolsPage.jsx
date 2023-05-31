@@ -32,6 +32,8 @@ const CustomButtonWrapper = styled(ButtonWrapper)(({ theme }) => ({
 
 const CustomTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 'bold',
+  paddingTop: '0.5rem',
+  paddingBottom: '0.5rem',
 }));
 
 const CustomDesc = styled(Typography)(({ theme }) => ({

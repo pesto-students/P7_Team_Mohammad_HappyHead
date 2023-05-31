@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { Box, FormControl, FormGroup, FormControlLabel, Checkbox, Radio, RadioGroup, Button } from '@mui/material';
+import { Box, FormControl, FormGroup, FormControlLabel, Checkbox, Radio, RadioGroup, Button,IconButton } from '@mui/material';
 import { styled } from '@mui/system';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 
 // Import the default questionnaire data array
@@ -33,6 +35,13 @@ const ButtonWrapperContainer = styled(Box)({
    flexDirection: 'row',
  },
 });
+
+const CustButtonWrapper = styled('div')(({ theme, color }) => ({
+  marginTop: theme.spacing(2),
+  '& .MuiIconButton-root': {
+    backgroundColor: theme.palette[color].main,
+  },
+}));
 
 
 const QnAPage = () => {
@@ -203,27 +212,27 @@ const QnAPage = () => {
        )}
      </div>
      <ButtonWrapperContainer>
-       {currentQuestionIndex > 0 && (
-         <ButtonWrapper color="primary">
-           <Button variant="contained" onClick={goToPreviousQuestion}>
-             Previous Question
-           </Button>
-         </ButtonWrapper>
-       )}
-       {currentQuestionIndex < totalQuestions - 1 ? (
-         <ButtonWrapper color="tertiary">
-           <Button variant="contained" onClick={goToNextQuestion}>
-             Next Question
-           </Button>
-         </ButtonWrapper>
-       ) : (
-         <ButtonWrapper color="tertiary">
-           <Button variant="contained" onClick={handleSubmit} disabled={!isFormValid}>
-             Submit Form
-           </Button>
-         </ButtonWrapper>
-       )}
-     </ButtonWrapperContainer>
+        {currentQuestionIndex > 0 && (
+          <CustButtonWrapper color="primary">
+            <IconButton onClick={goToPreviousQuestion}>
+              <ArrowBackIcon />
+            </IconButton>
+          </CustButtonWrapper>
+        )}
+        {currentQuestionIndex < totalQuestions - 1 ? (
+          <CustButtonWrapper color="primary">
+            <IconButton onClick={goToNextQuestion}>
+              <ArrowForwardIcon />
+            </IconButton>
+          </CustButtonWrapper>
+        ) : (
+          <ButtonWrapper color="tertiary">
+            <Button variant="contained" onClick={handleSubmit} disabled={!isFormValid}>
+              Submit Form
+            </Button>
+          </ButtonWrapper>
+        )}
+      </ButtonWrapperContainer>
    </CustomContentContainer>
  );
 };
