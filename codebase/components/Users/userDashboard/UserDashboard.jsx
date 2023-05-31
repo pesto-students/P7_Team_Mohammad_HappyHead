@@ -77,7 +77,7 @@ const UserDashboard = ({ isLoggedIn }) => {
             name: 'Connect with Experts',
             subtext:
                 'Get personalized guidance and support from certified professionals to address your mental health concerns effectively.',
-            path: '/users/connect-with-experts',
+            path: '/users/connect/experts',
         },
         {
             name: 'Guided Practice Tools',
