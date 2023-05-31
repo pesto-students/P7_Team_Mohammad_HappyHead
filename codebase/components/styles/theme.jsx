@@ -20,9 +20,23 @@ const theme = createTheme({
     text: {
       primary: '#000000', // Black font color
     },
-    typography: {
-      fontFamily: 'Roboto, Arial, sans-serif',
-      fontWeightBold: 700,
+   typography: {
+      h1: {
+        fontFamily: 'Roboto Condensed',
+        fontSize: '70pt',
+        letterSpacing: '-30px',
+        fontWeight: 'bold',
+      },
+      h2: {
+        fontFamily: 'Roboto Condensed',
+        fontSize: '24pt',
+        letterSpacing: '120px',
+        textTransform: 'uppercase',
+      },
+      h3: {
+        fontFamily: 'Roboto Condensed',
+        fontSize: '16pt',
+      },
     },
     breakpoints: {
       values: {

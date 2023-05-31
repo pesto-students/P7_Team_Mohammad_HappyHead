@@ -1,7 +1,7 @@
 import { styled, Typography } from '@mui/material'
 
 const SubText= styled(Typography)(({ theme }) => ({
-  fontFamily: 'Roboto, Arial, sans-serif',
+  fontFamily: theme.typography.h3.fontFamily,
   marginBottom: theme.spacing(2),
   marginTop: theme.spacing(2),
   [theme.breakpoints.down('sm')]: {
