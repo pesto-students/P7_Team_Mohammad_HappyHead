@@ -1,5 +1,4 @@
 import React from 'react';
-import { ThemeProvider } from '@mui/material';
 import { Element, scroller } from 'react-scroll';
 import Header from '../Layout/Header/Index';
 import Footer from '../Layout/Footer/Index';
@@ -7,7 +6,6 @@ import AboutTop from './AboutHero';
 import AboutTeam from './AboutTeam';
 import Aim from './Aim';
 import AboutEnd from './AboutEnd';
-import theme from '../styles/theme';
 
 const AboutPage = () => {
   const scrollToElement = (name) => {
@@ -19,7 +17,7 @@ const AboutPage = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <div>
         <Header position="fixed" />
         <Element name="about-happyhead">
@@ -34,7 +32,7 @@ const AboutPage = () => {
         </Element>
         <Footer scrollToElement={scrollToElement} />
       </div>
-    </ThemeProvider>
+    </>
   );
 };
 
