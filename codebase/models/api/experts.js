@@ -34,6 +34,11 @@ const expertSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  consultationFee: {
+    type: Number,
+    integer: true,
+    required: true
+  },
   password: {
     type: String,
     required: true
@@ -68,6 +73,7 @@ const expertSchema = new mongoose.Schema({
     ref: 'Users'
   }
 });
+
 
 // Pre-save middleware to hash the password before saving
 expertSchema.pre('save', async function (next) {
