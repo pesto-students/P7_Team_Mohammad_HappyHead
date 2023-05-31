@@ -167,7 +167,7 @@ const QnAPage = () => {
 
 
   return (
-    <ThemeProvider>
+    <ThemeProvider theme={theme}>
       <CustomContentContainer>
         <h1 style={{ textAlign: 'center' }}>Questionnaire</h1>
         <div style={{ padding: '0.2rem 1rem' }}>
