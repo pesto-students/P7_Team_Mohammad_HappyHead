@@ -55,14 +55,14 @@ const expertSchema = new mongoose.Schema({
             type: String,
             required: true
           },
-          booked: {
-            type: Boolean,
-            default: false
-          }
         }
       ]
     }
-  ]
+  ],
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Users'
+  }
 });
 
 // Pre-save middleware to hash the password before saving

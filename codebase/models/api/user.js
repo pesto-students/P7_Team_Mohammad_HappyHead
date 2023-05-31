@@ -82,6 +82,10 @@ const UsersSchema = new mongoose.Schema({
   },
   toolsCompleted: UserToolsSchema,
   answers: UserAnswersSchema,
+  bookedSlots: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Expert'
+  }]
 });
 
 // Hash the password before saving
