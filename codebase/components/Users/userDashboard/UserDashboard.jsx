@@ -63,8 +63,8 @@ const UserDashboard = ({ isLoggedIn }) => {
     const [userProfile, setUserProfile] = useState();
 
     const [openDialog, setOpenDialog] = useState(false);
-    const [editedProfile, setEditedProfile] = useState({ ...userProfile });
-    // const [showPassword, setShowPassword] = useState(false);
+    const [editedProfile, setEditedProfile] = useState({ ...userProfile, password: '' }); // Initialize with empty password
+    const [showPassword, setShowPassword] = useState(false);
 
     const toolsData = [
         {
@@ -151,10 +151,10 @@ const UserDashboard = ({ isLoggedIn }) => {
         }
     };
 
-    // // Toggle password visibility
-    // const handleTogglePassword = () => {
-    //     setShowPassword((prevShowPassword) => !prevShowPassword);
-    // };
+    // Toggle password visibility
+    const handleTogglePassword = () => {
+        setShowPassword((prevShowPassword) => !prevShowPassword);
+    };
 
     // Handle click on a tool card
     const handleCardClick = (tool) => {
@@ -232,7 +232,7 @@ const UserDashboard = ({ isLoggedIn }) => {
                         value={editedProfile.dob}
                         onChange={handleInputChange}
                     />
-                    {/* <TextField
+                    <TextField
                         fullWidth
                         margin="normal"
                         variant="outlined"
@@ -250,7 +250,7 @@ const UserDashboard = ({ isLoggedIn }) => {
                                 </InputAdornment>
                             ),
                         }}
-                    /> */}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button style={buttonStyles.cancelButton} onClick={handleCloseDialog}>
