@@ -64,14 +64,19 @@ const expertSchema = new mongoose.Schema({
             type: String,
             required: true
           },
+          booked: {
+            type: Boolean,
+            required: true,
+            default: false,
+          },
+          user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Users'
+          }
         }
       ]
     }
   ],
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Users'
-  }
 });
 
 

@@ -11,9 +11,6 @@ import { redirectToPage } from '../../../../utils/redirect';
 // Import the default questionnaire data array
 import defaultQuestionnaireData from '../../../../models/api/questions';
 
-
-
-
 // Styled component for the custom content container
 const CustomContentContainer = styled(Box)({
   backgroundColor: theme.palette.secondary.main,
