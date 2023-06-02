@@ -22,7 +22,7 @@ const BookSlot = () => {
     const [bookingConfirmed, setBookingConfirmed] = useState(false);
 
 
-    useEffect(() => {   
+    useEffect(() => {
         const fetchExpert = async () => {
             try {
                 const response = await fetch(`/api/users/connect/${expertname}`);
@@ -45,12 +45,12 @@ const BookSlot = () => {
         fetchUser();
     }, [expertname, username]);
 
-    
 
-    const parsedAvailability = JSON.parse(availability ?? '');
-    const parsedSlot = JSON.parse(slot ?? '');
 
-   
+    const parsedAvailability = availability ? JSON.parse(availability) : null;
+    const parsedSlot = slot ? JSON.parse(slot) : null;
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const phoneNumber = e.target.elements.phoneNumber.value;
@@ -75,7 +75,7 @@ const BookSlot = () => {
                                         ...timeSlot,
                                         booked: true,
                                         user: {
-                                            name: userDetails.name, 
+                                            name: userDetails.name,
                                             phoneNumber: phoneNumber,
                                         },
                                     };
@@ -98,13 +98,13 @@ const BookSlot = () => {
                         booked: true,
                         user: {
                             name: expertProfile.name,
-                            phoneNumber: expertProfile,phoneNumber,
+                            phoneNumber: expertProfile, phoneNumber,
                         },
                     },
                 ],
             };
-    
-            setExpertProfile(updatedExpertProfile);   
+
+            setExpertProfile(updatedExpertProfile);
             setUserDetails(updatedUserProfile);
 
             try {
