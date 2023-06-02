@@ -48,6 +48,7 @@ const CustomDialog = styled(Dialog)(({ theme }) => ({
 const StyledSlotButton = styled(Button)(({ theme, isSelected }) => ({
     backgroundColor: isSelected ? theme.palette.primary.main : 'transparent',
     color: isSelected ? theme.palette.primary.contrastText : theme.palette.text.primary,
+    border: `2px solid ${theme.palette.tertiary.main}`, 
     '&:hover': {
         backgroundColor: isSelected ? theme.palette.primary.main : theme.palette.primary.light,
     },
