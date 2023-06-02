@@ -1,91 +1,149 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-// import {
-//     Box,
-//     Button,
-//     Card,
-//     CardContent,
-//     Grid,
-//     Typography,
-//     useMediaQuery,
-// } from '@mui/material';
-// import ButtonWrapper from '../../../styles/ButtonWrapperStyles';
-// import theme from '../../../styles/theme';
-// import { ThemeProvider, styled } from '@mui/system';
-// import redirectToPage from '../../../../utils/redirect'
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 
 const BookSlot = () => {
     const router = useRouter();
     const { username, expertname, availability, slot } = router.query;
-    // console.log(router.query)
-    // console.log(availability, slot);
     const [expertProfile, setExpertProfile] = useState(null);
+    const [userDetails, setUserDetails] = useState(null);
+    const [bookingConfirmed, setBookingConfirmed] = useState(false);
 
     useEffect(() => {
-        fetchExperts();
+        fetchExpert();
+        fetchUser();
     }, []);
 
-    const fetchExperts = async () => {
+    const fetchExpert = async () => {
         try {
             const response = await fetch(`/api/users/connect/${expertname}`);
             const data = await response.json();
-            // console.log(data)
             setExpertProfile(data);
         } catch (error) {
             console.error('Error fetching experts:', error);
         }
     };
 
+    const parsedAvailability = JSON.parse(availability ?? '');
+    const parsedSlot = JSON.parse(slot ?? '');
 
-    // Parse the updatedAvailability string back into an object
-    const parsedAvailability = JSON.parse(availability);
-    const parsedSlot = JSON.parse(slot);
-
-
-
-
+    const fetchUser = async () => {
+        try {
+            const response = await fetch(`/api/users/dashboard/${username}`);
+            const data = await response.json();
+            setUserDetails(data);
+        } catch (error) {
+            console.error('Error fetching user:', error);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const phoneNumber = e.target.elements.phoneNumber.value;
-        const additionalInfo = e.target.elements.additionalInfo.value;
-
-        // Update the expert profile object
-        const updatedExpertProfile = {
-            ...expertProfile,
-            phoneNumber,
-            additionalInfo,
-            updatedAvailability: {
-                ...parsedSlot,
-                booked: true,
-            },
-        };
 
         try {
-            const response = await fetch(`/api/users/connect/${expertname}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(updatedExpertProfile),
-            });
+            const response = await fetch(`/api/users/dashboard/${username}`);
+            const data = await response.json();
+            setUserDetails(data);
 
-            if (response.ok) {
-                // Handle success
-                console.log('Expert profile updated successfully');
-                // Redirect or display a success message
-                redirectToPage('/success'); // Assuming you have a function to redirect to a success page
-            } else {
-                // Handle error
-                console.error('Failed to update expert profile');
+            const updatedExpertProfile = {
+                ...expertProfile,
+                availability: expertProfile.availability.map((day) => {
+                    if (day.date === parsedAvailability.date) {
+                        return {
+                            ...day,
+                            timeSlots: day.timeSlots.map((timeSlot) => {
+                                if (
+                                    timeSlot.startTime === parsedSlot.startTime &&
+                                    timeSlot.endTime === parsedSlot.endTime
+                                ) {
+                                    return {
+                                        ...timeSlot,
+                                        booked: true,
+                                        user: {
+                                            name: userDetails.name, 
+                                            phoneNumber: phoneNumber,
+                                        },
+                                    };
+                                }
+                                return timeSlot;
+                            }),
+                        };
+                    }
+                    return day;
+                }),
+            };
+            const updatedUserProfile = {
+                ...userDetails,
+                bookedSlots: [
+                    {
+                        day: parsedAvailability.day,
+                        date: parsedAvailability.date,
+                        startTime: parsedSlot.startTime,
+                        endTime: parsedSlot.endTime,
+                        booked: true,
+                        user: {
+                            name: expertProfile.name,
+                            phoneNumber: expertProfile,phoneNumber,
+                        },
+                    },
+                ],
+            };
+    
+            setExpertProfile(updatedExpertProfile);   
+            setUserDetails(updatedUserProfile);
+
+            try {
+                const response = await fetch(`/api/users/connect/${expertname}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedExpertProfile),
+                });
+
+                if (response.ok) {
+                    console.log('Expert profile updated successfully');
+                } else {
+                    console.error('Failed to update expert profile');
+                    // Display an error message
+                }
+            } catch (error) {
+                console.error('Error updating expert profile:', error);
+                // Display an error message
+            }
+
+            try {
+                // Update user's profile with booking details
+                const response = await fetch(`/api/users/connect/booking/${username}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedUserProfile),
+                });
+
+                if (response.ok) {
+                    console.log('User profile updated successfully');
+                    setBookingConfirmed(true); // Set booking confirmed state to true
+                } else {
+                    console.error('Failed to update user profile');
+                    // Display an error message
+                }
+            } catch (error) {
+                console.error('Error updating user profile:', error);
                 // Display an error message
             }
         } catch (error) {
-            console.error('Error updating expert profile:', error);
+            console.error('Error fetching user details:', error);
             // Display an error message
         }
     };
 
+    const handleCloseDialog = () => {
+        setBookingConfirmed(false); // Reset booking confirmed state
+        // redirectToPage('/success'); // Assuming you have a function to redirect to a success page
+    };
 
     return (
         <div>
@@ -94,7 +152,7 @@ const BookSlot = () => {
                 <>
                     <h2>{expertProfile.name}</h2>
                     <p>Qualifications: {expertProfile.qualifications}</p>
-                    <p>Experience: {expertProfile.experience}</p>
+                    <p>Experience: {expertProfile.yearsOfExperience}</p>
                     <p>Consultation Fee: {expertProfile.consultationFee}</p>
                 </>
             ) : (
@@ -104,29 +162,42 @@ const BookSlot = () => {
             <h2>Selected Slot Details</h2>
             {parsedAvailability ? (
                 <>
-                    <p>Date: {new Date(parsedAvailability.date).toLocaleDateString('en-US', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric',
-                    })}</p>
-                    <p>Time: {parsedSlot.startTime} - {parsedSlot.endTime}</p>
+                    <p>
+                        Date:{' '}
+                        {new Date(parsedAvailability.date).toLocaleDateString('en-US', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric',
+                        })}
+                    </p>
+                    <p>
+                        Time: {parsedSlot.startTime} - {parsedSlot.endTime}
+                    </p>
                 </>
             ) : (
                 <p>Loading slot details...</p>
             )}
+
             <h2>Confirm Booking</h2>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="phoneNumber">Phone Number:</label>
                 <input type="text" id="phoneNumber" name="phoneNumber" required />
-
-                <label htmlFor="additionalInfo">Additional Information:</label>
-                <textarea id="additionalInfo" name="additionalInfo"></textarea>
-
-                <button type="submit">Submit</button>
+                <button type="submit">Confirm Booking</button>
             </form>
+
+            {/* Dialog to show booking confirmation */}
+            <Dialog open={bookingConfirmed} onClose={handleCloseDialog}>
+                <DialogTitle>Booking Confirmed!</DialogTitle>
+                <DialogContent>
+                    <p>Your booking has been confirmed.</p>
+                    {/* Additional confirmation details */}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog}>Close</Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 };
 
-export default BookSlot
-
+export default BookSlot;

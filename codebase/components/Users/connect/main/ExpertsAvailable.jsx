@@ -96,13 +96,13 @@ const ExpertsPage = () => {
         // };
         // setSelectedSlot(updatedAvailability);
         // // console.log(updatedAvailability)
-        const { expertname } = selectedExpert; 
+        const { expertname } = selectedExpert;
 
         // Redirect the user to the slot booking path
         router.push({
             pathname: `/users/expertConnect/${username}/${expertname}`,
-            query: { username, expertname, availability: JSON.stringify(availability),  slot: JSON.stringify(slot) },
-          });
+            query: { username, expertname, availability: JSON.stringify(availability), slot: JSON.stringify(slot) },
+        });
     };
 
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -136,31 +136,33 @@ const ExpertsPage = () => {
                     ))}
 
                     <CustomDialog open={dialogOpen} onClose={handleCloseDialog}>
-                        <DialogTitle style={{ fontWeight: 'bold', }}>Book Appointment</DialogTitle>
+                        <DialogTitle style={{ fontWeight: 'bold' }}>Book Appointment</DialogTitle>
                         <CustomDialogContainer>
                             {selectedExpert && (
                                 <div>
-                                    <Typography variant="h6" style={{ paddingTop: '1rem', }}>{selectedExpert.name}</Typography>
-                                    <Typography variant="subtitle1" >Availability:</Typography>
+                                    <Typography variant="h6" style={{ paddingTop: '1rem' }}>{selectedExpert.name}</Typography>
+                                    <Typography variant="subtitle1">Availability:</Typography>
                                     {selectedExpert.availability.map((availability) => (
-                                        <div style={{ paddingTop: '1rem', }} key={availability._id}>
-                                            <Typography variant="subtitle2" >{availability.day}</Typography>
-                                            <Typography variant="subtitle2" style={{ fontWeight: 'bold', }}>{new Date(availability.date).toLocaleDateString('en-US', {
+                                        <div style={{ paddingTop: '1rem' }} key={availability._id}>
+                                            <Typography variant="subtitle2">{availability.day}</Typography>
+                                            <Typography variant="subtitle2" style={{ fontWeight: 'bold' }}>{new Date(availability.date).toLocaleDateString('en-US', {
                                                 day: 'numeric',
                                                 month: 'long',
                                                 year: 'numeric',
                                             })}</Typography>
-                                            {availability.timeSlots.map((slot) => (
-                                                <Button key={slot._id}>
-                                                    <StyledSlotButton
-                                                        variant="outlined"
-                                                        onClick={() => handleSlotSelection(availability, slot)}
-                                                        isSelected={slot.isSelected}
-                                                    >
-                                                        {slot.startTime} - {slot.endTime}
-                                                    </StyledSlotButton>
-                                                </Button>
-                                            ))}
+                                            {availability.timeSlots
+                                                .filter((slot) => !slot.booked) // Exclude slots that are booked
+                                                .map((slot) => (
+                                                    <Button key={slot._id}>
+                                                        <StyledSlotButton
+                                                            variant="outlined"
+                                                            onClick={() => handleSlotSelection(availability, slot)}
+                                                            isSelected={slot.isSelected}
+                                                        >
+                                                            {slot.startTime} - {slot.endTime}
+                                                        </StyledSlotButton>
+                                                    </Button>
+                                                ))}
                                         </div>
                                     ))}
                                 </div>
