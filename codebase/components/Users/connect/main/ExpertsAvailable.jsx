@@ -85,17 +85,6 @@ const ExpertsPage = () => {
     };
 
     const handleSlotSelection = (availability, slot) => {
-        // console.log(availability)
-        // console.log(slot)
-        // const updatedAvailability = {
-        //     ...availability,
-        //     timeSlots: availability.timeSlots.map((s) => ({
-        //         ...s,
-        //         isSelected: s._id === slot._id,
-        //     })),
-        // };
-        // setSelectedSlot(updatedAvailability);
-        // // console.log(updatedAvailability)
         const { expertname } = selectedExpert;
 
         // Redirect the user to the slot booking path
@@ -145,11 +134,13 @@ const ExpertsPage = () => {
                                     {selectedExpert.availability.map((availability) => (
                                         <div style={{ paddingTop: '1rem' }} key={availability._id}>
                                             <Typography variant="subtitle2">{availability.day}</Typography>
-                                            <Typography variant="subtitle2" style={{ fontWeight: 'bold' }}>{new Date(availability.date).toLocaleDateString('en-US', {
-                                                day: 'numeric',
-                                                month: 'long',
-                                                year: 'numeric',
-                                            })}</Typography>
+                                            {!availability.timeSlots.every((slot) => slot.booked) && (
+                                                <Typography variant="subtitle2" style={{ fontWeight: 'bold' }}>{new Date(availability.date).toLocaleDateString('en-US', {
+                                                    day: 'numeric',
+                                                    month: 'long',
+                                                    year: 'numeric',
+                                                })}</Typography>
+                                            )}
                                             {availability.timeSlots
                                                 .filter((slot) => !slot.booked) // Exclude slots that are booked
                                                 .map((slot) => (

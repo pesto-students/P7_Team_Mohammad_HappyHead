@@ -20,7 +20,6 @@ const userProfileHandler = async (req, res) => {
     }
   } else if (req.method === 'PUT') {
     try {
-      console.log(req.body)
       const { username } = req.body;
 
       // Connect to the MongoDB Atlas cluster
