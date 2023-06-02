@@ -31,7 +31,7 @@ const BookSlot = () => {
     
         fetchExpert();
         fetchUser();
-    }, [fetchExpert, fetchUser]);
+    }, [expertname, username]);
 
     
 
