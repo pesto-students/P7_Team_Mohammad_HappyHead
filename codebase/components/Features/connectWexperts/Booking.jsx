@@ -5,7 +5,6 @@ import { ThemeProvider } from '@mui/system'
 import theme from '../../styles/theme'
 import Title from '../../styles/TitleStyles'
 import SubText from '../../styles/SubTextStyles'
-// import ImageList from './ImagesSection'
 import RootContainer from '../../styles/RootContainerStyles'
 import ContentContainer from '../../styles/ContentContainerStyles'
 
@@ -37,13 +36,13 @@ const AboutSection = styled('div')(({ theme }) => ({
 
 // Styled component for the image
 const CustomImage = styled('img')({
-    border: `0.3rem solid ${theme.palette.primary.main}`,
-    borderRadius: theme.shape.borderRadius,
-    width: '50%',
-    [theme.breakpoints.down('sm')]: {
-        width: '90%',
-    },
-});
+  border: `0.3rem solid ${theme.palette.primary.main}`,
+  borderRadius: theme.shape.borderRadius,
+  width: '50%',
+  [theme.breakpoints.down('sm')]: {
+    width: '90%',
+  },
+})
 
 // Styled component for centered subtext
 const CenteredSubText = styled(SubText)({
@@ -59,14 +58,14 @@ const AboutHero = () => {
         <CustomAboutContainer>
           {/* First section */}
           <AboutSection>
-          <CustomImage src="/images/connectwexperts/bookingMob.png" alt="Image 2" />
+            <CustomImage src="/images/connectwexperts/bookingMob.png" alt="Image 2" />
           </AboutSection>
          
           {/* Second section */}
           <AboutSection>
             <Title variant="h4">Quick And Easy Booking</Title>
             <CenteredSubText variant="h5">
-            Once you find an expert that suits your needs, you can view detailed profiles that include information about the expert's qualifications, years of experience, specializations, and consultation fees. You can also explore the availability of the experts, including available dates and time slots for appointments.
+              Once you find an expert that suits your needs, you can view detailed profiles that include information about the expert&apos;s qualifications, years of experience, specializations, and consultation fees. You can also explore the availability of the experts, including available dates and time slots for appointments.
             </CenteredSubText>
           </AboutSection>
         </CustomAboutContainer>
