@@ -42,7 +42,7 @@ const Tools = () => {
 return (
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
-        <Title variant="h4" component="h1" gutterBottom>
+        <Title variant="h3" component="h1" gutterBottom>
           Guided Meditation Tools
         </Title>
         {meditationTools.map((tool) => (

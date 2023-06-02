@@ -1,54 +1,45 @@
-import { Button, Container } from '@mui/material'
-import { ThemeProvider, styled } from '@mui/system'
-import RootContainer from '../../styles/RootContainerStyles'
-import ContentContainer from '../../styles/ContentContainerStyles'
-import ButtonWrapper from '../../styles/ButtonWrapperStyles'
-import SubText from '../../styles/SubTextStyles'
-import theme from '../../styles/theme'
-
-// Styled component for the root container
-const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
-    backgroundColor: theme.palette.secondary.main,
-}))
+import { ThemeProvider, styled } from '@mui/system';
+import ContentContainer from '../../styles/ContentContainerStyles';
+import SubText from '../../styles/SubTextStyles';
+import Title from '../../styles/TitleStyles'
+import theme from '../../styles/theme';
+import Section1 from './Experts'
+import Section2 from './Booking'
 
 // Styled component for the custom content container
-const CustomContentContainer = styled(ContentContainer)({
+const CustomHeaderContainer = styled(ContentContainer)({
     backgroundColor: theme.palette.secondary.main,
-    padding: '2rem 0',
+    padding: '2rem 1rem 4rem',
+    textAlign: 'center',
+    [theme.breakpoints.up('md')]: {
+        padding: '4rem',
+    },
 });
 
 // Styled component for the centered subtext
 const CenteredSubText = styled(SubText)({
     textAlign: 'center',
+    color: theme.palette.text.primary,
 });
 
 
-export default function Resources() {
-
+export default function Connect() {
     return (
         <ThemeProvider theme={theme}>
-            <CustomRootContainer>
-                <CustomContentContainer>
-                    <h1>Mental health resources</h1>
-                    {/* Centered Sub text */}
-                    <CenteredSubText variant="h6">
-                        Looking for more help beyond meditation and mindfulness? These trusted mental health resources from India can provide you with extra support when you need it. Explore them below, and feel free to share this page with anyone you care about.
-                    </CenteredSubText>
-                    <CenteredSubText variant="h6">
-                        Vandrevala Foundation Helpline: 1-860-2662-345 / 91-22-2570-6666
-                    </CenteredSubText>
-                    <CenteredSubText variant="h6">
-                        Snehi Helpline: +91-22-2772-6773 / +91-22-2772-6774
-                    </CenteredSubText>
-                    <CenteredSubText variant="h6">
-                        iCall Helpline: 022-2556-3291 / 022-2556-3292
-                    </CenteredSubText>
-                    <CenteredSubText variant="h6">
-                        Sumaitri Helpline: 011-2338-9090
-                    </CenteredSubText>
 
-                </CustomContentContainer>
-            </CustomRootContainer>
+            {/* Page heading */}
+            <CustomHeaderContainer>
+                <Title variant="h3">Connect With Experts</Title>             
+                <CenteredSubText variant="h5">
+                    HappyHead provides users with a convenient and reliable way to connect and seek guidance from qualified mental health professionals. We understand the importance of mental well-being and aim to make professional support easily accessible to those in need.
+                </CenteredSubText>
+            </CustomHeaderContainer>
+
+             {/* Page sections */}
+            <Section1 />
+            <Section2 />
+
+
         </ThemeProvider>
-    )
+    );
 }

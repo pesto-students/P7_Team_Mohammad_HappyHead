@@ -15,7 +15,7 @@ const pages = [
 const featureLinks = [
   {
     name: 'Personalised Mental Health Report & Recommendation',
-    path: '/features/personalised-report',
+    path: '/features/qna',
   },
   {
     name: 'Guided Mindfulness Tools',
@@ -23,11 +23,11 @@ const featureLinks = [
   },
   {
     name: 'Connect with Experts',
-    path: '/features/connect-with-experts',
+    path: '/features/connect',
   },
   {
     name: 'Login as an Expert',
-    path: '/features/login-as-expert',
+    path: '/login',
   },
 ]
 

@@ -6,7 +6,7 @@ import ContentContainer from '../../styles/ContentContainerStyles';
 import SubText from '../../styles/SubTextStyles';
 import ButtonWrapper from '../../styles/ButtonWrapperStyles';
 import theme from '../../styles/theme';
-import { useRouter } from 'next/router';
+import Title from '../../styles/TitleStyles'
 import { redirectToPage } from '../../../utils/redirect';
 
 // Styled component for the root container
@@ -54,7 +54,8 @@ const QnAMain = () => {
         <ThemeProvider theme={theme}>
             <CustomRootContainer>
                 <CustomContentContainer>
-                    <h1>Personalised Mental Health Recommendations </h1>
+                <Title variant="h3">Personalised Mental Health Recommendations</Title>
+                    
                     {/* Centered Sub text */}
                     <CenteredSubText variant="h6">{info.text}</CenteredSubText>
                     <ButtonWrapperContainer>
