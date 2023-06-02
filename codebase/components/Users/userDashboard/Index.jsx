@@ -1,19 +1,17 @@
 import React from 'react'
-import { ThemeProvider } from '@mui/material'
 import Header from '../../Layout/Header/Index'
 import Footer from '../../Layout/Footer/Index'
 import UserDashboard from './UserDashboard'
-// import NewDashboard from './NewDashboard'
-import theme from '../../styles/theme'
+import UpcomingAppointments from './Upcoming Appointments'
 
 const Dashboard = () => {
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Header position="fixed" />
-      <UserDashboard/>
-      {/* <NewDashboard/> */}
+      <UserDashboard />
+      <UpcomingAppointments />
       <Footer />
-    </ThemeProvider>
+    </>
   );
 };
 

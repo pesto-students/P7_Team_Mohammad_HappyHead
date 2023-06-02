@@ -68,7 +68,7 @@ const UserDashboard = ({ isLoggedIn }) => {
 
     const toolsData = [
         {
-            name: 'You Mental Health Report',
+            name: 'Your Mental Health Report',
             subtext:
                 'Answer a few questions related to your stressors & lifestyle and get personalized insights and recommendations',
             path: `/users/qna/${username}`,
@@ -77,7 +77,7 @@ const UserDashboard = ({ isLoggedIn }) => {
             name: 'Connect with Experts',
             subtext:
                 'Get personalized guidance and support from certified professionals to address your mental health concerns effectively.',
-            path: '/users/connect-with-experts',
+            path: `/users/expertConnect/${username}`,
         },
         {
             name: 'Guided Practice Tools',

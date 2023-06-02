@@ -1,16 +1,15 @@
 import React from 'react'
-import { ThemeProvider } from '@mui/material'
 import Header from '../../Layout/Header/Index'
 import Footer from '../../Layout/Footer/Index'
-import theme from '../../styles/theme'
+import About from './About'
 
 const Connect = () => {
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Header position="fixed"/>
-      <div>Connect w/ experts</div>
+      <About />
       <Footer />
-    </ThemeProvider>
+    </>
   )
 }
 

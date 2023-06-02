@@ -84,7 +84,9 @@ const UsersSchema = new mongoose.Schema({
   answers: UserAnswersSchema,
   bookedSlots: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Expert'
+    ref: 'Expert',
+    booked: { type: Boolean, default: false },
+    expert: { type: Object, default: {} }
   }]
 });
 
