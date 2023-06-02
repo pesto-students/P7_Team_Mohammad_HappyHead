@@ -1,18 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import { Box, Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, TextField } from '@mui/material';
 import ButtonWrapper from '../../../styles/ButtonWrapperStyles'
 import theme from '../../../styles/theme'
 import { ThemeProvider, styled } from '@mui/system';
+import {redirectToPage} from '../../../../utils/redirect'
 
 // Styled component for the custom content container
 const CustomContentContainer = styled(Box)(({ theme }) => ({
     backgroundColor: theme.palette.secondary.main,
     padding: '1rem 8rem',
+    minHeight: '60vh',
     [theme.breakpoints.down('sm')]: {
         padding: '0.5rem 1.5rem',
     },
 }));
+
+// Styled component for the grid container
+const GridContainer = styled('div')(({ theme }) => ({
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '2rem',
+    [theme.breakpoints.down('sm')]: {
+        gridTemplateColumns: '1fr',
+    },
+}));
+
+// Styled component for the left column
+const LeftColumn = styled('div')(({ theme }) => ({
+    alignSelf: 'start',
+}));
+
+// Styled component for the right column
+const RightColumn = styled('div')(({ theme }) => ({
+    alignSelf: 'start',
+}));
+
+// Styled component for the button
+const StyledButton = styled(Button)(({ theme }) => ({
+    border: `2px solid ${theme.palette.primary.main}`,
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+    '&:hover': {
+        backgroundColor: theme.palette.quinary.main, // Set the desired hover background color
+        color: theme.palette.getContrastText(theme.palette.primary.main), // Set the desired hover text color
+      },
+    }));
 
 const BookSlot = () => {
     const router = useRouter();
@@ -54,7 +86,12 @@ const BookSlot = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const phoneNumber = e.target.elements.phoneNumber.value;
-
+        // Validate phone number format
+        const phoneNumberRegex = /^\d{10}$/;
+        if (!phoneNumber.match(phoneNumberRegex)) {
+            alert('Please enter a valid 10-digit phone number.');
+            return;
+        }
         try {
             const response = await fetch(`/api/users/dashboard/${username}`);
             const data = await response.json();
@@ -98,7 +135,7 @@ const BookSlot = () => {
                         booked: true,
                         user: {
                             name: expertProfile.name,
-                            phoneNumber: expertProfile, phoneNumber,
+                            phoneNumber: expertProfile.phoneNumber,
                         },
                     },
                 ],
@@ -156,61 +193,90 @@ const BookSlot = () => {
 
     const handleCloseDialog = () => {
         setBookingConfirmed(false); // Reset booking confirmed state
-        // redirectToPage('/success'); // Assuming you have a function to redirect to a success page
+        redirectToPage(`/users/dashboard/${username}`);  // Assuming you have a function to redirect to a success page
     };
 
     return (
-        <div>
-            <h1>Expert Profile</h1>
-            {expertProfile ? (
-                <>
-                    <h2>{expertProfile.name}</h2>
-                    <p>Qualifications: {expertProfile.qualifications}</p>
-                    <p>Experience: {expertProfile.yearsOfExperience}</p>
-                    <p>Consultation Fee: {expertProfile.consultationFee}</p>
-                </>
-            ) : (
-                <p>Loading expert profile...</p>
-            )}
+        <ThemeProvider theme={theme}>
+            <CustomContentContainer>
+                <h1>Appointment Booking</h1>
+                <GridContainer>
+                    <LeftColumn>
+                        {expertProfile ? (
+                            <>
+                                <h2>{expertProfile.name}</h2>
+                                <Typography variant="subtitle1"><strong>Experience:</strong> {expertProfile.yearsOfExperience} years</Typography>
+                                <Typography variant="subtitle1"><strong>Qualifications:</strong> {expertProfile.qualifications}</Typography>
+                                <Typography variant="subtitle1"><strong>Speciality:</strong> {expertProfile.speciality}</Typography>
+                                <Typography variant="subtitle1"><strong>Consultation Fee:</strong> ₹{Math.floor(expertProfile.consultationFee)}</Typography>
+                                {/* <p>Qualifications: {expertProfile.qualifications}</p>
+                <p>Experience: {expertProfile.yearsOfExperience}</p>
+                <p>Consultation Fee: {expertProfile.consultationFee}</p> */}
+                            </>
+                        ) : (
+                            <p>Loading expert profile...</p>
+                        )}
+                    </LeftColumn>
+                    <RightColumn>
+                        <h2>Selected Slot Details</h2>
+                        {parsedAvailability ? (
+                            <>
+                                <Typography variant="subtitle1">
+                                    <strong> Date:</strong>{' '}
+                                    {new Date(parsedAvailability.date).toLocaleDateString('en-US', {
+                                        day: 'numeric',
+                                        month: 'long',
+                                        year: 'numeric',
+                                    })}
+                                </Typography>
+                                <Typography variant="subtitle1">
+                                    <strong> Time: </strong>{parsedSlot.startTime} - {parsedSlot.endTime}
+                                </Typography>
+                            </>
+                        ) : (
+                            <p>Loading slot details...</p>
+                        )}
 
-            <h2>Selected Slot Details</h2>
-            {parsedAvailability ? (
-                <>
-                    <p>
-                        Date:{' '}
-                        {new Date(parsedAvailability.date).toLocaleDateString('en-US', {
-                            day: 'numeric',
-                            month: 'long',
-                            year: 'numeric',
-                        })}
-                    </p>
-                    <p>
-                        Time: {parsedSlot.startTime} - {parsedSlot.endTime}
-                    </p>
-                </>
-            ) : (
-                <p>Loading slot details...</p>
-            )}
+                        <h2>Confirm Booking</h2>
+                        <form onSubmit={handleSubmit}>
+                            <TextField
+                                id="phoneNumber"
+                                name="phoneNumber"
+                                label="Phone Number"
+                                variant="outlined"
+                                required
+                                fullWidth
+                                inputProps={{
+                                    maxLength: 10,
+                                }}
+                                sx={{
+                                    width: { xs: '90%', sm: '90%', md: '70%', lg: '60%', xl: '50%' },
+                                    '& .MuiFormLabel-root': {
+                                        color: theme.palette.text.primary, // Set the label color to red (change it to your desired color)
+                                    },
+                                }}
+                            />
+                            <ButtonWrapper color='tertiary'>
+                                <StyledButton type="submit">Confirm Booking</StyledButton>
+                            </ButtonWrapper>
+                        </form>
+                    </RightColumn>
+                </GridContainer>
 
-            <h2>Confirm Booking</h2>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="phoneNumber">Phone Number:</label>
-                <input type="text" id="phoneNumber" name="phoneNumber" required />
-                <button type="submit">Confirm Booking</button>
-            </form>
+                {/* Dialog to show booking confirmation */}
+                <Dialog open={bookingConfirmed} onClose={handleCloseDialog}>
+                    <DialogTitle>Booking Confirmed!</DialogTitle>
+                    <DialogContent>
+                        <p>Your booking has been confirmed.</p>
+                        {/* Additional confirmation details */}
+                    </DialogContent>
+                    <DialogActions>
+                        <StyledButton onClick={handleCloseDialog}>Close</StyledButton>
+                    </DialogActions>
+                </Dialog>
+            </CustomContentContainer>
+        </ThemeProvider>
 
-            {/* Dialog to show booking confirmation */}
-            <Dialog open={bookingConfirmed} onClose={handleCloseDialog}>
-                <DialogTitle>Booking Confirmed!</DialogTitle>
-                <DialogContent>
-                    <p>Your booking has been confirmed.</p>
-                    {/* Additional confirmation details */}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseDialog}>Close</Button>
-                </DialogActions>
-            </Dialog>
-        </div>
     );
 };
 
