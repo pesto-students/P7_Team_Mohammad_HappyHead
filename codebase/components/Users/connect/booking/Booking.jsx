@@ -129,6 +129,7 @@ const BookSlot = () => {
             const updatedUserProfile = {
                 ...userDetails,
                 bookedSlots: [
+                    ...userDetails.bookedSlots,
                     {
                         day: parsedAvailability.day,
                         date: parsedAvailability.date,
@@ -254,7 +255,7 @@ const BookSlot = () => {
                                 sx={{
                                     width: { xs: '90%', sm: '90%', md: '70%', lg: '60%', xl: '50%' },
                                     '& .MuiFormLabel-root': {
-                                        color: theme.palette.text.primary, // Set the label color to red (change it to your desired color)
+                                        color: theme.palette.text.primary,
                                     },
                                 }}
                             />
