@@ -18,16 +18,17 @@ const BookSlot = () => {
             } catch (error) {
                 console.error('Error fetching experts:', error);
             }
-            const fetchUser = async () => {
-                try {
-                    const response = await fetch(`/api/users/dashboard/${username}`);
-                    const data = await response.json();
-                    setUserDetails(data);
-                } catch (error) {
-                    console.error('Error fetching user:', error);
-                }
-            };
         };
+        const fetchUser = async () => {
+            try {
+                const response = await fetch(`/api/users/dashboard/${username}`);
+                const data = await response.json();
+                setUserDetails(data);
+            } catch (error) {
+                console.error('Error fetching user:', error);
+            }
+        };
+    
         fetchExpert();
         fetchUser();
     }, [fetchExpert, fetchUser]);
@@ -38,7 +39,6 @@ const BookSlot = () => {
     const parsedSlot = JSON.parse(slot ?? '');
 
    
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         const phoneNumber = e.target.elements.phoneNumber.value;
