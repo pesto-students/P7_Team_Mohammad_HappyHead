@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import { Box, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import ButtonWrapper from '../../../styles/ButtonWrapperStyles'
+import theme from '../../../styles/theme'
+import { ThemeProvider, styled } from '@mui/system';
+
+// Styled component for the custom content container
+const CustomContentContainer = styled(Box)(({ theme }) => ({
+    backgroundColor: theme.palette.secondary.main,
+    padding: '1rem 8rem',
+    [theme.breakpoints.down('sm')]: {
+        padding: '0.5rem 1.5rem',
+    },
+}));
 
 const BookSlot = () => {
     const router = useRouter();
@@ -10,26 +22,25 @@ const BookSlot = () => {
     const [bookingConfirmed, setBookingConfirmed] = useState(false);
 
 
-    const fetchExpert = async () => {
-        try {
-            const response = await fetch(`/api/users/connect/${expertname}`);
-            const data = await response.json();
-            setExpertProfile(data);
-        } catch (error) {
-            console.error('Error fetching experts:', error);
-        }
-    };
-    const fetchUser = async () => {
-        try {
-            const response = await fetch(`/api/users/dashboard/${username}`);
-            const data = await response.json();
-            setUserDetails(data);
-        } catch (error) {
-            console.error('Error fetching user:', error);
-        }
-    };
-
     useEffect(() => {   
+        const fetchExpert = async () => {
+            try {
+                const response = await fetch(`/api/users/connect/${expertname}`);
+                const data = await response.json();
+                setExpertProfile(data);
+            } catch (error) {
+                console.error('Error fetching experts:', error);
+            }
+        };
+        const fetchUser = async () => {
+            try {
+                const response = await fetch(`/api/users/dashboard/${username}`);
+                const data = await response.json();
+                setUserDetails(data);
+            } catch (error) {
+                console.error('Error fetching user:', error);
+            }
+        };
         fetchExpert();
         fetchUser();
     }, [expertname, username]);
