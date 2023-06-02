@@ -38,11 +38,13 @@ const RightColumn = styled('div')(({ theme }) => ({
 
 // Styled component for the button
 const StyledButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.primary.contrastText,
     border: `2px solid ${theme.palette.primary.main}`,
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+    // color: theme.palette.text.primary,
     '&:hover': {
-        backgroundColor: theme.palette.quinary.main, // Set the desired hover background color
-        color: theme.palette.getContrastText(theme.palette.primary.main), // Set the desired hover text color
+        backgroundColor: theme.palette.tertiary.main, // Set the desired hover background color
+        color: theme.palette.getContrastText(theme.palette.primary.contrastText), // Set the desired hover text color
       },
     }));
 
@@ -256,7 +258,7 @@ const BookSlot = () => {
                                     },
                                 }}
                             />
-                            <ButtonWrapper color='tertiary'>
+                            <ButtonWrapper color='primary'>
                                 <StyledButton type="submit">Confirm Booking</StyledButton>
                             </ButtonWrapper>
                         </form>
