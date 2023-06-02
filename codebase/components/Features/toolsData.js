@@ -9,7 +9,7 @@ export const toolsData = [
     name: 'Connect with Experts',
     subtext:
       'Get personalized guidance and support from certified professionals to address your mental health concerns effectively.',
-    // path: '/features/connect',
+    path: '/features/connect',
   },
   {
     name: 'Guided Practice Tools',
