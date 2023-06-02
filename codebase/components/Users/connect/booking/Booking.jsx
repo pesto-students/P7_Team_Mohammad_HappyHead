@@ -12,7 +12,7 @@ const CustomContentContainer = styled(Box)(({ theme }) => ({
     padding: '1rem 8rem',
     minHeight: '60vh',
     [theme.breakpoints.down('sm')]: {
-        padding: '0.5rem 1.5rem',
+        padding: '0.5rem 1.5rem 2rem',
     },
 }));
 

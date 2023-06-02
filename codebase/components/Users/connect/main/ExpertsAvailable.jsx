@@ -18,7 +18,7 @@ const CustomContentContainer = styled(Box)(({ theme }) => ({
 const StyledCard = styled(Card)(({ theme }) => ({
     marginBottom: '1.5rem',
     backgroundColor: theme.palette.quaternary.main,
-    border: `2px solid ${theme.palette.primary.dark}`,
+    border: `2px solid ${theme.palette.primary.main}`,
     borderRadius: '8px',
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
 }));
