@@ -10,32 +10,34 @@ const BookSlot = () => {
     const [bookingConfirmed, setBookingConfirmed] = useState(false);
 
     useEffect(() => {
+        const fetchExpert = async () => {
+            try {
+                const response = await fetch(`/api/users/connect/${expertname}`);
+                const data = await response.json();
+                setExpertProfile(data);
+            } catch (error) {
+                console.error('Error fetching experts:', error);
+            }
+            const fetchUser = async () => {
+                try {
+                    const response = await fetch(`/api/users/dashboard/${username}`);
+                    const data = await response.json();
+                    setUserDetails(data);
+                } catch (error) {
+                    console.error('Error fetching user:', error);
+                }
+            };
+        };
         fetchExpert();
         fetchUser();
-    }, []);
+    }, [fetchExpert, fetchUser]);
 
-    const fetchExpert = async () => {
-        try {
-            const response = await fetch(`/api/users/connect/${expertname}`);
-            const data = await response.json();
-            setExpertProfile(data);
-        } catch (error) {
-            console.error('Error fetching experts:', error);
-        }
-    };
+    
 
     const parsedAvailability = JSON.parse(availability ?? '');
     const parsedSlot = JSON.parse(slot ?? '');
 
-    const fetchUser = async () => {
-        try {
-            const response = await fetch(`/api/users/dashboard/${username}`);
-            const data = await response.json();
-            setUserDetails(data);
-        } catch (error) {
-            console.error('Error fetching user:', error);
-        }
-    };
+   
 
     const handleSubmit = async (e) => {
         e.preventDefault();

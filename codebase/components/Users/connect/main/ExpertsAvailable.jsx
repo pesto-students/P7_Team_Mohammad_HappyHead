@@ -132,14 +132,18 @@ const ExpertsPage = () => {
                                     <Typography variant="h6" style={{ paddingTop: '1rem' }}>{selectedExpert.name}</Typography>
                                     <Typography variant="subtitle1">Availability:</Typography>
                                     {selectedExpert.availability.map((availability) => (
-                                        <div style={{ paddingTop: '1rem' }} key={availability._id}>
-                                            <Typography variant="subtitle2">{availability.day}</Typography>
+                                        <div style={{ paddingTop: '0.4rem' }} key={availability._id}>
+                                           
                                             {!availability.timeSlots.every((slot) => slot.booked) && (
+                                                <>
+                                                <Typography variant="subtitle2">{availability.day}</Typography>
                                                 <Typography variant="subtitle2" style={{ fontWeight: 'bold' }}>{new Date(availability.date).toLocaleDateString('en-US', {
                                                     day: 'numeric',
                                                     month: 'long',
                                                     year: 'numeric',
                                                 })}</Typography>
+                                                </>
+                                                
                                             )}
                                             {availability.timeSlots
                                                 .filter((slot) => !slot.booked) // Exclude slots that are booked
