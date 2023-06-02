@@ -99,7 +99,7 @@ const ExpertsPage = () => {
   return (
     <ThemeProvider theme={theme}>
       <CustomContentContainer>
-        <h1 style={{ textAlign: 'center' }}>Available Experts</h1>
+        <h1 style={{ textAlign: 'center' }}>Mental Health Experts</h1>
         <div style={{ padding: '0.2rem 1rem' }}>
           {experts.map((expert) => (
             <StyledCard key={expert._id}>
