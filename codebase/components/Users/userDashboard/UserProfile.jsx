@@ -19,7 +19,6 @@ const UserProfile = ({ userProfile, handleOpenDialog }) => {
             <Typography color="textSecondary">{userProfile?.username}</Typography>
             <Typography color="textSecondary">{userProfile?.email}</Typography>
             <Typography color="textSecondary">{userProfile?.dob}</Typography>
-            {/* <Typography color="textSecondary">{userProfile?.password}</Typography> */}
             </>
           )}
             

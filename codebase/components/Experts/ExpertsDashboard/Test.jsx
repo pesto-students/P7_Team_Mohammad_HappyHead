@@ -1,3 +1,51 @@
+import React, { useState } from 'react';
+import Calendar from './Calendar';
+import TimeSlot from './TimeSlot';
+import { Button, Box } from '@mui/material';
+
+const AvailabilityForm = () => {
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedSlots, setSelectedSlots] = useState([]);
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const handleSlotChange = (time, selected) => {
+    if (selected) {
+      setSelectedSlots((prevSlots) => [...prevSlots, time]);
+    } else {
+      setSelectedSlots((prevSlots) => prevSlots.filter((slot) => slot !== time));
+    }
+  };
+
+  const handleSubmit = () => {
+    // Submit the selected date and slots to MongoDB
+    console.log('Selected Date:', selectedDate);
+    console.log('Selected Slots:', selectedSlots);
+    // You can make an API call here to store the data in MongoDB
+  };
+
+  return (
+    <Box>
+      <Calendar selectedDate={selectedDate} handleDateChange={handleDateChange} />
+      <Box>
+        <h3>Select Time Slots:</h3>
+        <TimeSlot time="09:00 AM" selected={selectedSlots.includes('09:00 AM')} handleSlotChange={handleSlotChange} />
+        <TimeSlot time="10:00 AM" selected={selectedSlots.includes('10:00 AM')} handleSlotChange={handleSlotChange} />
+        {/* Add more TimeSlot components for other time slots */}
+      </Box>
+      <Button variant="contained" color="primary" onClick={handleSubmit}>
+        Save Availability
+      </Button>
+    </Box>
+  );
+};
+
+export default AvailabilityForm;
+
+
+
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Box } from '@mui/material';
@@ -7,20 +55,16 @@ import TimeSlot from './TimeSlot';
 const AvailabilityForm = () => {
   const router = useRouter();
   const { expertname } = router.query;
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
   const [selectedSlots, setSelectedSlots] = useState([]);
   const [expertAvailability, setExpertAvailability] = useState([]);
 
   useEffect(() => {
     const fetchExpertAvailability = async (date) => {
       try {
-        console.log(date)
         // Convert the date to the required format "2023-07-03T00:00:00.000Z"
-        // const formattedDate = new Date(date).toISOString();
-        const formattedDate = '2023-07-03T00:00:00.000Z';
-        const currentDate= new Date(date).toISOString();
-        console.log(currentDate)
-        console.log(formattedDate)
+        const formattedDate = new Date(date).toISOString();
+
         // Make an API call to fetch expert's availability for the selected date
         // Replace this with your own API endpoint
         const response = await fetch(`/api/experts/availability/${expertname}?date=${formattedDate}`);

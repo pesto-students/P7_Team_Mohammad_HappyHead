@@ -1,17 +1,18 @@
 import React from 'react';
 import { Checkbox, FormControlLabel } from '@mui/material';
 
-const TimeSlot = ({ time, selected, handleSlotChange }) => {
-  const handleCheckboxChange = (event) => {
-    handleSlotChange(time, event.target.checked);
-  };
-
+const TimeSlot = ({ startTime, endTime, selected, handleSlotChange }) => {
   return (
-    <FormControlLabel
-      control={<Checkbox checked={selected} onChange={handleCheckboxChange} />}
-      label={time}
-    />
+    <div>
+      <input
+        type="checkbox"
+        checked={selected}
+        onChange={() => handleSlotChange(startTime, !selected)}
+      />
+      <label>{startTime} - {endTime}</label>
+    </div>
   );
 };
+
 
 export default TimeSlot;
