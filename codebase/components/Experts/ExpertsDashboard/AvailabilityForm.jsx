@@ -12,15 +12,11 @@ const AvailabilityForm = () => {
   const [expertAvailability, setExpertAvailability] = useState([]);
 
   useEffect(() => {
-    const fetchExpertAvailability = async (date) => {
-      try {
-        console.log(date)
-        // Convert the date to the required format "2023-07-03T00:00:00.000Z"
-        // const formattedDate = new Date(date).toISOString();
-        const formattedDate = '2023-07-03T00:00:00.000Z';
-        const currentDate= new Date(date).toISOString();
-        console.log(currentDate)
-        console.log(formattedDate)
+    const fetchExpertAvailability = async (selectedDate) => {
+      try {      
+        const formattedDate= new Date(selectedDate).toISOString();
+        console.log(`sent date ${formattedDate}`)
+        
         // Make an API call to fetch expert's availability for the selected date
         // Replace this with your own API endpoint
         const response = await fetch(`/api/experts/availability/${expertname}?date=${formattedDate}`);
@@ -36,10 +32,14 @@ const AvailabilityForm = () => {
     fetchExpertAvailability(selectedDate);
   }, [selectedDate]);
 
-
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    // Create a new Date object with the same year, month, and day, but with the time set to 00:00:00 in UTC
+    const startOfDayUTC = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  
+    setSelectedDate(startOfDayUTC);
   };
+  
+  
 
   const handleSlotChange = (time, selected) => {
     if (selected) {

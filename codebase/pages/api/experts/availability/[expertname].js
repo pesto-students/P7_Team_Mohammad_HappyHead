@@ -6,7 +6,7 @@ const expertAvailabilityHandler = async (req, res) => {
   if (req.method === 'GET') {
     try {
       const { date } = req.query;
-      console.log(date)
+      console.log(`received date ${date}`)
       // Connect to the MongoDB Atlas cluster
       const { db } = await connectToDatabase();
 
