@@ -15,13 +15,13 @@ const AvailabilityForm = () => {
     const fetchExpertAvailability = async (selectedDate) => {
       try {      
         const formattedDate= new Date(selectedDate).toISOString();
-        console.log(`sent date ${formattedDate}`)
+        // console.log(`sent date ${formattedDate}`)
         
         // Make an API call to fetch expert's availability for the selected date
         // Replace this with your own API endpoint
         const response = await fetch(`/api/experts/availability/${expertname}?date=${formattedDate}`);
         const data = await response.json();
-        console.log(data);
+             // console.log(`recceived data ${data}`)
         setExpertAvailability(data.availability);
       } catch (error) {
         console.log('Error fetching expert availability:', error);
@@ -51,24 +51,31 @@ const AvailabilityForm = () => {
 
   const handleSubmit = () => {
     // Save the selected date and slots to the expert's availability
-    const updatedAvailability = expertAvailability.map((day) => {
-      if (day.date === selectedDate) {
-        // If the day already exists, overwrite the timeSlots
-        return {
-          ...day,
-          timeSlots: selectedSlots.map((slot) => ({
-            startTime: slot,
-            endTime: slot.includes('AM') ? `${slot.slice(0, 5)} PM` : `${slot.slice(0, 5)} AM`,
-            booked: false,
-            user: null,
-          })),
-        };
-      }
-      return day;
-    });
-
+    let updatedAvailability = [];
+  
+    if (Array.isArray(expertAvailability)) {
+      updatedAvailability = expertAvailability.map((day) => {
+        if (day.date === selectedDate) {
+          // If the day already exists, overwrite the timeSlots
+          return {
+            ...day,
+            timeSlots: selectedSlots.map((slot) => ({
+              startTime: slot,
+              endTime: slot.includes('AM') ? `${slot.slice(0, 5)} PM` : `${slot.slice(0, 5)} AM`,
+              booked: false,
+              user: null,
+            })),
+          };
+        }
+        return day;
+      });
+    }
+  
     // If the day doesn't exist in the expert's availability, add it as a new object
-    if (!expertAvailability.some((day) => day.date === selectedDate)) {
+    if (
+      Array.isArray(expertAvailability) &&
+      !expertAvailability.some((day) => day.date === selectedDate)
+    ) {
       updatedAvailability.push({
         day: getDayOfWeek(selectedDate), // Implement the function to get the day of the week
         date: selectedDate,
@@ -80,15 +87,18 @@ const AvailabilityForm = () => {
         })),
       });
     }
-
+    console.log(`sent updatedAvailability ${updatedAvailability}`)
     // Submit the updated availability to MongoDB
     saveExpertAvailability(updatedAvailability);
   };
+  
+  
 
   const saveExpertAvailability = async (availability) => {
     try {
       // Make an API call to save the updated availability to MongoDB
       // Replace this with your own API endpoint
+      console.log(`sent availability ${availability}`)
       await fetch(`/api/experts/availability/${expertname}`, {
         method: 'POST',
         body: JSON.stringify({ availability }),

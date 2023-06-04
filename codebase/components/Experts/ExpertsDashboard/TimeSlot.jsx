@@ -1,5 +1,4 @@
 import React from 'react';
-import { Checkbox, FormControlLabel } from '@mui/material';
 
 const TimeSlot = ({ startTime, endTime, selected, handleSlotChange }) => {
   return (

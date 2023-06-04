@@ -6,7 +6,7 @@ const expertAvailabilityHandler = async (req, res) => {
   if (req.method === 'GET') {
     try {
       const { date } = req.query;
-      console.log(`received date ${date}`)
+      // console.log(`received date ${date}`)
       // Connect to the MongoDB Atlas cluster
       const { db } = await connectToDatabase();
 
@@ -19,11 +19,12 @@ const expertAvailabilityHandler = async (req, res) => {
 
       // Find the availability object that matches the date
       
-      const availability = expert.availability.find((item) => {
-        const itemDate = new Date(item.date);
-        // console.log(itemDate)
-        return itemDate.getTime() === new Date(date).getTime();
-      });
+      // const availability = expert.availability.find((item) => {
+      //   const itemDate = new Date(item.date);
+      //   // console.log(itemDate)
+      //   return itemDate.getTime() === new Date(date).getTime();
+      // });
+      const availability = expert.availability
       
       console.log(availability)
         
@@ -39,9 +40,16 @@ const expertAvailabilityHandler = async (req, res) => {
   } else if (req.method === 'POST') {
     // Implement the logic to save expert availability by expertname
     const { availability } = req.body;
+    console.log(`received date ${availability}`)
+    // Connect to the MongoDB Atlas cluster
+    const { db } = await connectToDatabase();
 
-    // Replace this with your own logic to save expert's availability
-    saveExpertAvailability(expertname, availability);
+    // Find the expert by expertname
+    await db.collection('Experts').updateOne({ expertname: expertname }, {
+      $set: {
+        // availability: req.body.availability,
+      }
+    });
 
     return res.json({ message: 'Expert availability saved successfully' });
   }
@@ -50,9 +58,3 @@ const expertAvailabilityHandler = async (req, res) => {
 };
 
 export default expertAvailabilityHandler;
-
-// Helper function to save expert availability
-function saveExpertAvailability(expertname, availability) {
-  // Implement the logic to save expert's availability
-  // You can update the database or perform any required operations
-}
