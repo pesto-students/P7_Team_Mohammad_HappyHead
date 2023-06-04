@@ -12,6 +12,7 @@ import MuiLink from '../../MuiLink'
 import DesktopMenu from './DesktopMenu'
 import MobileMenu from './MobileMenu'
 import UserMenu from './UserMenu'
+import {signIn} from 'next-auth/react'
 
 // Array of pages for navigation
 const pages = [
@@ -32,7 +33,7 @@ function ResponsiveAppBar({ isLoggedIn }) {
 
   // Array of login options
 const login = [
-  { name: 'Sign In', path: '/signin' },
+  { name: 'Sign In', path: '/api/auth/signin'},
   { name: 'Sign Up', path: '/signup' },
   { name: 'Dashboard', path: `/user/dashboard/${username}` },
   { name: 'Logout', path: '/logout' },
@@ -50,7 +51,9 @@ const login = [
     setAnchorElNav(null)
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (e) => {
+    e.preventDetault();
+    signIn();
     setAnchorElUser(null)
   };
 
