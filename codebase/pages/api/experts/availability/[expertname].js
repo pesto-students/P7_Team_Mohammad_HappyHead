@@ -9,7 +9,7 @@ const expertAvailabilityHandler = async (req, res) => {
 
       // Find the expert by expertname
       const expert = await db.collection('Experts').findOne({ expertname: expertname });
-      // console.log(`experts is: ${expert}`)
+    
       if (!expert) {
         return res.status(404).json({ error: 'Expert not found' });
       }
@@ -29,7 +29,7 @@ const expertAvailabilityHandler = async (req, res) => {
     try {
       // Implement the logic to save expert availability by expertname
       const { expertname } = req.body;
-      console.log(req.body)
+    
       // Connect to the MongoDB Atlas cluster
       const { db } = await connectToDatabase();
 

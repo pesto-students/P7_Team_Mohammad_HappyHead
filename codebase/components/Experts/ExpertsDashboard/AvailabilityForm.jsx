@@ -7,14 +7,15 @@ import { styled, ThemeProvider } from '@mui/system';
 import theme from '../../styles/theme';
 import DialogBox from '../../styles/DialogBox';
 
+// Styled component for heading
 const Heading = styled('h2')(({ theme }) => ({
   textAlign: 'center',
-
   [theme.breakpoints.down('sm')]: {
     paddingBottom: '1rem',
   },
 }));
 
+// Styled component for button wrapper
 const ButtonWrapper = styled('div')(({ theme, color }) => ({
   '& button': {
     backgroundColor: theme.palette[color].main,
@@ -33,6 +34,7 @@ const AvailabilityForm = () => {
   const [openSetAvailabilityDialog, setOpenSetAvailabilityDialog] = useState(false);
   const [openCheckAvailabilityDialog, setOpenCheckAvailabilityDialog] = useState(false);
 
+  // Fetch expert availability from the server
   useEffect(() => {
     const fetchExpertAvailability = async () => {
       try {
@@ -47,11 +49,13 @@ const AvailabilityForm = () => {
     fetchExpertAvailability();
   }, [expertname]);
 
+  // Handle date change
   const handleDateChange = (date) => {
     const startOfDayUTC = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
     setSelectedDate(startOfDayUTC);
   };
 
+  // Handle slot change (checkbox)
   const handleSlotChange = (time, selected) => {
     if (selected) {
       setSelectedSlots((prevSlots) => [...prevSlots, time]);
@@ -60,6 +64,7 @@ const AvailabilityForm = () => {
     }
   };
 
+  // Save expert availability to the server
   const saveExpertAvailability = async (expertAvailability) => {
     try {
       const payload = {
@@ -85,7 +90,7 @@ const AvailabilityForm = () => {
     }
   };
 
-
+  // Format time slot for display
   const formatTimeSlot = (slot) => {
     const startHour = parseInt(slot.slice(0, 2));
     const startHour12 = startHour === 0 ? 12 : startHour > 12 ? startHour - 12 : startHour;
@@ -104,16 +109,19 @@ const AvailabilityForm = () => {
     };
   };
 
+  // Handle form submission
   const handleSubmit = () => {
     let updatedAvailability = [];
     const formattedDate = selectedDate.toISOString();
 
+    // Get the day of the week
     const getDayOfWeek = (selectedDate) => {
       const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
       const dayIndex = selectedDate.getDay();
       return daysOfWeek[dayIndex];
     };
 
+    // Update availability based on the selected date and slots
     if (expertAvailability === null || expertAvailability === undefined || expertAvailability.length === 0) {
       updatedAvailability.push({
         day: getDayOfWeek(selectedDate),
@@ -140,6 +148,7 @@ const AvailabilityForm = () => {
       }
     }
 
+    // Save the updated availability
     saveExpertAvailability(updatedAvailability);
 
     // Clear the selected slots after saving
@@ -152,8 +161,7 @@ const AvailabilityForm = () => {
     });
   };
 
-
-
+  // Render time slots checkboxes
   const renderTimeSlots = () => {
     const timeSlots = [];
 
@@ -178,19 +186,22 @@ const AvailabilityForm = () => {
     return timeSlots;
   };
 
-
+  // Open set availability dialog
   const handleOpenSetAvailabilityDialog = () => {
     setOpenSetAvailabilityDialog(true);
   };
 
+  // Close set availability dialog
   const handleCloseSetAvailabilityDialog = () => {
     setOpenSetAvailabilityDialog(false);
   };
 
+  // Open check availability dialog
   const handleOpenCheckAvailabilityDialog = () => {
     setOpenCheckAvailabilityDialog(true);
   };
 
+  // Close check availability dialog
   const handleCloseCheckAvailabilityDialog = () => {
     setOpenCheckAvailabilityDialog(false);
   };
@@ -284,3 +295,10 @@ const AvailabilityForm = () => {
 };
 
 export default AvailabilityForm;
+
+// This component represents a form for managing availability slots for appointments.
+// It imports various dependencies and components from external libraries and local files.
+
+// The component starts by importing the necessary dependencies and components.
+
+// The `AvailabilityForm` function is defined, representing the main
