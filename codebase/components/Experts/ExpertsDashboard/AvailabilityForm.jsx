@@ -3,6 +3,20 @@ import { useRouter } from 'next/router';
 import { Button, Box, Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, Checkbox } from '@mui/material';
 import Calendar from './Calendar';
 import TimeSlot from './TimeSlot';
+import { styled, ThemeProvider } from '@mui/system';
+import theme from '../../styles/theme';
+// import ButtonWrapper from '../../styles/ButtonWrapperStyles';
+
+const ButtonWrapper = styled('div')(({ theme, color }) => ({
+  '& button': {
+    backgroundColor: theme.palette[color].main,
+  },
+  '& button + button': {
+    marginTop: theme.spacing(2),
+  },
+}));
+
+
 
 const AvailabilityForm = () => {
   const router = useRouter();
@@ -134,75 +148,92 @@ const AvailabilityForm = () => {
   };
 
   return (
-    <Box>
-      <Calendar selectedDate={selectedDate} handleDateChange={handleDateChange} />
-
-      <Button variant="contained" color="primary" onClick={handleOpenCheckAvailabilityDialog}>
-        Check Current Availability
-      </Button>
-
-      <Button variant="contained" color="primary" onClick={handleOpenSetAvailabilityDialog}>
-        Set Availability
-      </Button>
-
-      <Dialog open={openSetAvailabilityDialog} onClose={handleCloseSetAvailabilityDialog}>
-        <DialogTitle>Set Availability</DialogTitle>
-        <DialogContent>{renderTimeSlots()}</DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseSetAvailabilityDialog}>Close</Button>
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
-            Save
+    <ThemeProvider theme={theme}>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Calendar selectedDate={selectedDate} handleDateChange={handleDateChange} />
+        <ButtonWrapper color="tertiary" sx={{ marginTop: theme.spacing(0), }}>
+          <Button variant="contained" onClick={handleOpenCheckAvailabilityDialog}>
+            Check Current Availability
           </Button>
-        </DialogActions>
-      </Dialog>
+        </ButtonWrapper>
 
-      <Dialog open={openCheckAvailabilityDialog} onClose={handleCloseCheckAvailabilityDialog}>
-  <DialogTitle>Check Current Availability</DialogTitle>
-  <DialogContent>
-  {expertAvailability.some((day) => {
-  const dayDate = new Date(day.date);
-  const selected = dayDate.toISOString().slice(0, 10) === selectedDate.toISOString().slice(0, 10);
-  return selected;
-}) ? (
-  <ul>
-    {expertAvailability.map((day) => {
-      const dayDate = new Date(day.date);
-      const selected = dayDate.toISOString().slice(0, 10) === selectedDate.toISOString().slice(0, 10);
-      const formattedDate = dayDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        <ButtonWrapper color="quinary" sx={{ marginTop: theme.spacing(2), }}>
+          <Button variant="contained" onClick={handleOpenSetAvailabilityDialog}>
+            Set Availability
+          </Button>
+        </ButtonWrapper>
 
-      if (selected && day.timeSlots.length > 0) {
-        return (
-          <li key={day.date}>
-            {`${formattedDate}: ${day.timeSlots.length} slots available`}
-            <ul>
-              {day.timeSlots.map((slot) => (
-                <li key={`${day.date}-${slot.startTime}-${slot.endTime}`}>
-                  {`${slot.startTime} - ${slot.endTime}`}
-                </li>
-              ))}
-            </ul>
-          </li>
-        );
-      }
-      
-      return null;
-    })}
-  </ul>
-) : (
-  <p>No availability information set currently</p>
-)}
+        <Dialog open={openSetAvailabilityDialog} onClose={handleCloseSetAvailabilityDialog}
+          PaperProps={{
+            style: {
+              backgroundColor: theme.palette.quinary.main,
+            },
+          }}>
+          <DialogTitle>Set Availability</DialogTitle>
+          <DialogContent>{renderTimeSlots()}</DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseSetAvailabilityDialog}>Close</Button>
+            <Button variant="contained" color="primary" onClick={handleSubmit}>
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
 
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={handleCloseCheckAvailabilityDialog}>Close</Button>
-  </DialogActions>
-</Dialog>
+        <Dialog open={openCheckAvailabilityDialog} onClose={handleCloseCheckAvailabilityDialog}
+          PaperProps={{
+            style: {
+              backgroundColor: theme.palette.tertiary.main,
+            },
+          }}
+        >
+          <DialogTitle>Check Current Availability</DialogTitle>
+          <DialogContent sx={{ textAlign: 'center' }}>
+            {expertAvailability.some((day) => {
+              const dayDate = new Date(day.date);
+              const selected = dayDate.toISOString().slice(0, 10) === selectedDate.toISOString().slice(0, 10);
+              return selected;
+            }) ? (
+              <ul style={{ listStyle: 'none', padding: 0 }}>
+                {expertAvailability.map((day) => {
+                  const dayDate = new Date(day.date);
+                  const selected = dayDate.toISOString().slice(0, 10) === selectedDate.toISOString().slice(0, 10);
+                  const formattedDate = dayDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+                  if (selected && day.timeSlots.length > 0) {
+                    return (
+                      <li key={day.date}>
+                        {`${formattedDate}: ${day.timeSlots.length} slots available`}
+                        <ul style={{ listStyle: 'none', padding: 0 }}>
+                          {day.timeSlots.map((slot) => (
+                            <li key={`${day.date}-${slot.startTime}-${slot.endTime}`} style={{ textDecoration: 'none' }}>
+                              {`${slot.startTime} - ${slot.endTime}`}
+                            </li>
+                          ))}
+                        </ul>
+                      </li>
+                    );
+                  }
+
+                  return null;
+                })}
+              </ul>
+            ) : (
+              <p>No availability information set currently</p>
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseCheckAvailabilityDialog}>Close</Button>
+          </DialogActions>
+        </Dialog>
 
 
 
 
 
-    </Box>
+
+      </Box>
+    </ThemeProvider>
+
   );
 };
 

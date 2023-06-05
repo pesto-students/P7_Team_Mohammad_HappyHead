@@ -1,16 +1,20 @@
 import React from 'react'
 import { Avatar, CardActions, Typography, Grid, Card, Button } from '@mui/material'
 import CardContentStyle from '../../styles/CardContentStyle'
+import theme from '../../styles/theme';
 
 const ExpertProfile = ({ expertProfile, handleOpenDialog }) => {
   const cardActionsStyles = {
     justifyContent: 'center',
     margin: '1rem',
+    [theme.breakpoints.up('lg')]: {
+      marginLeft: '4rem',
+  },
   }
 
   return (
-    <Grid item xs={12} lg={9}>
-      <Card style={{ height: '80%'}}>
+    <Grid item xs={12} lg={11}>
+      <Card style={{ height: '80%', width: '100%',}}>
         <CardContentStyle>
           <Avatar sx={{ marginTop: '1.2rem' }}>{expertProfile.name[0]}</Avatar>
           <Typography variant="h6">{expertProfile.name}</Typography>

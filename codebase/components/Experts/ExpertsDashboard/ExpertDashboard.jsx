@@ -13,6 +13,10 @@ import AvailabilityForm from './AvailabilityForm';
 // Custom styled components for the root container, content container, and dialog
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
     backgroundColor: theme.palette.secondary.main,
+    padding: '2rem',
+    [theme.breakpoints.up('lg')]: {
+        padding: '4rem',
+    },
 }));
 
 const CustomContentContainer = styled(ContentContainer)(({ theme }) => ({
@@ -48,12 +52,10 @@ const buttonStyles = {
     cancelButton: {
         color: theme.palette.text.secondary,
         backgroundColor: theme.palette.tertiary.main,
-        // Add more styling properties as needed
     },
     saveButton: {
         color: theme.palette.common.white,
         backgroundColor: theme.palette.quinary.main,
-        // Add more styling properties as needed
     },
 };
 
@@ -145,13 +147,12 @@ const ExpertsDashboard = ({ isLoggedIn }) => {
             <CustomRootContainer>
                 <Grid container spacing={2}>
                     {/* Expert profile component */}
-
-                    <Grid item xs={6} container spacing={2}>
+                    <Grid item xs={12} lg={6} sx={{  marginBottom: { xs: '2rem', lg: '0' }}}>
                         <ExpertProfile expertProfile={expertProfile} handleOpenDialog={handleOpenDialog} />
                     </Grid>
 
                     {/*  Availability form component */}
-                    <Grid item xs={4} container spacing={2}>
+                    <Grid item xs={12} lg={6} sx={{ marginBottom: { xs: '2rem', lg: '0' } }}>
                         <AvailabilityForm />
                     </Grid>
                 </Grid>
