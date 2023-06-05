@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { styled, ThemeProvider } from '@mui/system';
 import { Typography } from '@mui/material';
-import TextStyle from '../../styles/SubTextStyles';
 import theme from '../../styles/theme';
 
 // Custom styled component for the container
@@ -23,7 +22,7 @@ const CustomListItem = styled('li')({
   display: 'inline-block',
   border: '0.2rem solid white',
   borderRadius: '8px',
-  background: 'transparent',
+  background: theme.palette.quinary.main,
   padding: '1rem',
   marginBottom: '1rem',
   [theme.breakpoints.up('lg')]: {
@@ -42,6 +41,20 @@ const Heading = styled('h2')(({ theme }) => ({
   },
 }));
 
+const SubText = styled(Typography)(({ theme }) => ({
+  fontFamily: theme.typography.h3.fontFamily,
+  marginBottom: theme.spacing(2),
+  marginTop: theme.spacing(2),
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '1.2rem',
+    width: '100%',
+    paddingLeft: '2rem',
+  },
+  width: '90%',
+  paddingLeft: '3rem',
+}));
+
+
 const LoadingState = styled('p')({
   textAlign: 'center',
   fontSize: '1.2rem',
@@ -58,7 +71,6 @@ const UpcomingAppointments = () => {
       try {
         const response = await fetch(`/api/experts/availability/${expertname}`);
         const data = await response.json();
-        console.log(data);
 
         const availability = data.availability || [];
         const expertAvailability = availability.reduce((slots, day) => {
@@ -80,7 +92,6 @@ const UpcomingAppointments = () => {
           return slots;
         }, []);
 
-        console.log(expertAvailability);
         setUpcomingAppointments(expertAvailability);
         setIsLoading(false);
       } catch (error) {
@@ -111,29 +122,29 @@ const UpcomingAppointments = () => {
                 .filter((slot) => slot.booked)
                 .map((slot) => (
                   <CustomListItem key={`${appointment.date}-${slot.startTime}`}>
-                    <TextStyle style={{ whiteSpace: 'nowrap' }}>
+                    <SubText style={{ whiteSpace: 'nowrap' }}>
                       <strong>Date:</strong>{' '}
                       {new Date(appointment.date).toLocaleDateString('en-US', {
                         day: 'numeric',
                         month: 'long',
                         year: 'numeric',
                       })}
-                    </TextStyle>
-                    <TextStyle>
+                    </SubText>
+                    <SubText>
                       <strong>Day:</strong> {appointment.day}
-                    </TextStyle>
-                    <TextStyle>
+                    </SubText>
+                    <SubText>
                       <strong>Time:</strong> {slot.startTime} - {slot.endTime}
-                    </TextStyle>
-                    <TextStyle color="tertiary" sx={{  color: theme.palette.primary.main}}>
+                    </SubText>
+                    <SubText color="tertiary" sx={{ color: theme.palette.primary.main }}>
                       <strong>{`Patient's Details:`}</strong>
-                    </TextStyle>
-                    <TextStyle>
+                    </SubText>
+                    <SubText>
                       <strong>Name:</strong> {slot.user.name}
-                    </TextStyle>
-                    <TextStyle>
+                    </SubText>
+                    <SubText>
                       <strong>Contact:</strong> {slot.user.phoneNumber}
-                    </TextStyle>
+                    </SubText>
                   </CustomListItem>
                 ))
             )}

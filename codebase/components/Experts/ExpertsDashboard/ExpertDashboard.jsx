@@ -28,9 +28,11 @@ const CustomContentContainer = styled(ContentContainer)(({ theme }) => ({
 }));
 
 const CustomDialog = styled(Dialog)(({ theme }) => ({
-    '& .MuiDialog-paper': {
+   '& .MuiDialog-paper': {
         backgroundColor: theme.palette.secondary.main,
-    },
+        border: `3px solid ${theme.palette.text.primary}`, 
+        borderRadius: '8px', 
+      },
     '& .MuiInputLabel-outlined': {
         color: theme.palette.text.primary,
     },

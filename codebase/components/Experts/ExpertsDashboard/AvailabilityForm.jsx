@@ -9,7 +9,7 @@ import DialogBox from '../../styles/DialogBox';
 
 const Heading = styled('h2')(({ theme }) => ({
   textAlign: 'center',
-  
+
   [theme.breakpoints.down('sm')]: {
     paddingBottom: '1rem',
   },
@@ -24,8 +24,6 @@ const ButtonWrapper = styled('div')(({ theme, color }) => ({
   },
 }));
 
-
-
 const AvailabilityForm = () => {
   const router = useRouter();
   const { expertname } = router.query;
@@ -36,19 +34,18 @@ const AvailabilityForm = () => {
   const [openCheckAvailabilityDialog, setOpenCheckAvailabilityDialog] = useState(false);
 
   useEffect(() => {
-    const fetchExpertAvailability = async (selectedDate) => {
+    const fetchExpertAvailability = async () => {
       try {
-        const formattedDate = new Date(selectedDate).toISOString();
-        const response = await fetch(`/api/experts/availability/${expertname}?date=${formattedDate}`);
+        const response = await fetch(`/api/experts/availability/${expertname}`);
         const data = await response.json();
         setExpertAvailability(data.availability);
       } catch (error) {
         console.log('Error fetching expert availability:', error);
       }
     };
-    console.log(expertAvailability)
-    fetchExpertAvailability(selectedDate);
-  }, [selectedDate]);
+
+    fetchExpertAvailability();
+  }, [expertname]);
 
   const handleDateChange = (date) => {
     const startOfDayUTC = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
@@ -65,10 +62,17 @@ const AvailabilityForm = () => {
 
   const handleSubmit = () => {
     let updatedAvailability = [];
+    const formattedDate = selectedDate.toISOString();
+
+    const getDayOfWeek = (selectedDate) => {
+      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const dayIndex = selectedDate.getDay();
+      return daysOfWeek[dayIndex];
+    };
 
     if (Array.isArray(expertAvailability)) {
       updatedAvailability = expertAvailability.map((day) => {
-        if (day.date === selectedDate) {
+        if (day.date === formattedDate) {
           return {
             ...day,
             timeSlots: selectedSlots.map((slot) => ({
@@ -85,11 +89,11 @@ const AvailabilityForm = () => {
 
     if (
       Array.isArray(expertAvailability) &&
-      !expertAvailability.some((day) => day.date === selectedDate)
+      !expertAvailability.some((day) => day.date === formattedDate)
     ) {
       updatedAvailability.push({
-        day: getDayOfWeek(selectedDate), // Implement the function to get the day of the week
-        date: selectedDate,
+        day: getDayOfWeek(selectedDate),
+        date: formattedDate,
         timeSlots: selectedSlots.map((slot) => ({
           startTime: slot,
           endTime: slot.includes('AM') ? `${slot.slice(0, 5)} PM` : `${slot.slice(0, 5)} AM`,
@@ -102,11 +106,11 @@ const AvailabilityForm = () => {
     saveExpertAvailability(updatedAvailability);
   };
 
-  const saveExpertAvailability = async (availability) => {
+  const saveExpertAvailability = async (expertAvailability) => {
     try {
       await fetch(`/api/experts/availability/${expertname}`, {
         method: 'POST',
-        body: JSON.stringify({ availability }),
+        body: JSON.stringify({ expertAvailability }),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -138,7 +142,6 @@ const AvailabilityForm = () => {
     return timeSlots;
   };
 
-
   const handleOpenSetAvailabilityDialog = () => {
     setOpenSetAvailabilityDialog(true);
   };
@@ -160,18 +163,21 @@ const AvailabilityForm = () => {
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Heading>Appointment Slots</Heading>
         <Calendar selectedDate={selectedDate} handleDateChange={handleDateChange} />
-        <ButtonWrapper color="tertiary" sx={{ marginTop: theme.spacing(0), }}>
-          <Button variant="contained" onClick={handleOpenCheckAvailabilityDialog}>
+
+        {/* Availability slots setter and checker */}
+        <ButtonWrapper color="tertiary" sx={{ marginTop: theme.spacing(0) }}>
+          <Button variant="contained" onClick={handleOpenCheckAvailabilityDialog} disabled={expertAvailability === null || expertAvailability?.length === 0}>
             Check Current Availability
           </Button>
         </ButtonWrapper>
 
-        <ButtonWrapper color="quinary" sx={{ marginTop: theme.spacing(2), }}>
+        <ButtonWrapper color="quinary" sx={{ marginTop: theme.spacing(2) }}>
           <Button variant="contained" onClick={handleOpenSetAvailabilityDialog}>
             Set Availability
           </Button>
         </ButtonWrapper>
 
+        {/* Availability slots setter */}
         <DialogBox open={openSetAvailabilityDialog} onClose={handleCloseSetAvailabilityDialog}
           PaperProps={{
             style: {
@@ -188,61 +194,58 @@ const AvailabilityForm = () => {
           </DialogActions>
         </DialogBox>
 
+        {/* Availability slots checker */}
         <DialogBox open={openCheckAvailabilityDialog} onClose={handleCloseCheckAvailabilityDialog}
           PaperProps={{
             style: {
               backgroundColor: theme.palette.tertiary.main,
             },
-          }}
-        >
+          }}>
           <DialogTitle>Check Current Availability</DialogTitle>
-          <DialogContent sx={{ textAlign: 'center' }}>
-            {expertAvailability.some((day) => {
-              const dayDate = new Date(day.date);
-              const selected = dayDate.toISOString().slice(0, 10) === selectedDate.toISOString().slice(0, 10);
-              return selected;
-            }) ? (
-              <ul style={{ listStyle: 'none', padding: 0 }}>
-                {expertAvailability.map((day) => {
-                  const dayDate = new Date(day.date);
-                  const selected = dayDate.toISOString().slice(0, 10) === selectedDate.toISOString().slice(0, 10);
-                  const formattedDate = dayDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+          // Availability slots checker
+          <DialogBox open={openCheckAvailabilityDialog} onClose={handleCloseCheckAvailabilityDialog} PaperProps={{ style: { backgroundColor: theme.palette.tertiary.main } }}>
+            <DialogTitle>Check Current Availability</DialogTitle>
+            <DialogContent sx={{ textAlign: 'center' }}>
+              {(expertAvailability === null || expertAvailability === undefined || expertAvailability.length === 0 ||
+                !expertAvailability.some((day) => day.date === selectedDate.toISOString().slice(0, 10))) ? (
+                <p>No availability information set for the selected date</p>
+              ) : (
+                <ul style={{ listStyle: 'none', padding: 0 }}>
+                  {expertAvailability.map((day) => {
+                    const dayDate = new Date(day.date);
+                    const selected = dayDate.toISOString().slice(0, 10) === selectedDate.toISOString().slice(0, 10);
+                    const formattedDate = dayDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
-                  if (selected && day.timeSlots.length > 0) {
-                    return (
-                      <li key={day.date}>
-                        {`${formattedDate}: ${day.timeSlots.length} slots available`}
-                        <ul style={{ listStyle: 'none', padding: 0 }}>
-                          {day.timeSlots.map((slot) => (
-                            <li key={`${day.date}-${slot.startTime}-${slot.endTime}`} style={{ textDecoration: 'none' }}>
-                              {`${slot.startTime} - ${slot.endTime}`}
-                            </li>
-                          ))}
-                        </ul>
-                      </li>
-                    );
-                  }
+                    if (selected && day.timeSlots.length > 0) {
+                      return (
+                        <li key={day.date}>
+                          {`${formattedDate}: ${day.timeSlots.length} slots available`}
+                          <ul style={{ listStyle: 'none', padding: 0 }}>
+                            {day.timeSlots.map((slot) => (
+                              <li key={`${day.date}-${slot.startTime}-${slot.endTime}`} style={{ textDecoration: 'none' }}>
+                                {`${slot.startTime} - ${slot.endTime}`}
+                              </li>
+                            ))}
+                          </ul>
+                        </li>
+                      );
+                    }
+                    return null;
+                  })}
+                </ul>
+              )}
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseCheckAvailabilityDialog}>Close</Button>
+            </DialogActions>
+          </DialogBox>
 
-                  return null;
-                })}
-              </ul>
-            ) : (
-              <p>No availability information set currently</p>
-            )}
-          </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseCheckAvailabilityDialog}>Close</Button>
           </DialogActions>
         </DialogBox>
-
-
-
-
-
-
       </Box>
     </ThemeProvider>
-
   );
 };
 

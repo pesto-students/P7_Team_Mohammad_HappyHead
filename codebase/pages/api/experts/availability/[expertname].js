@@ -5,28 +5,19 @@ const expertAvailabilityHandler = async (req, res) => {
 
   if (req.method === 'GET') {
     try {
-      const { date } = req.query;
-      // console.log(`received date ${date}`)
       // Connect to the MongoDB Atlas cluster
       const { db } = await connectToDatabase();
 
       // Find the expert by expertname
       const expert = await db.collection('Experts').findOne({ expertname: expertname });
-
+      console.log(expert)
       if (!expert) {
         return res.status(404).json({ error: 'Expert not found' });
       }
 
-      // Find the availability object that matches the date
-      
-      // const availability = expert.availability.find((item) => {
-      //   const itemDate = new Date(item.date);
-      //   // console.log(itemDate)
-      //   return itemDate.getTime() === new Date(date).getTime();
-      // });
       const availability = expert.availability
       
-      // console.log(availability)
+      console.log(availability)
         
       if (!availability) {
         return res.status(404).json({ error: 'Expert availability not found for the specified date' });
