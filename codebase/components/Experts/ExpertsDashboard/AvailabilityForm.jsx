@@ -89,67 +89,104 @@ const AvailabilityForm = () => {
   const handleSubmit = () => {
     let updatedAvailability = [];
     const formattedDate = selectedDate.toISOString();
-
+  
     const getDayOfWeek = (selectedDate) => {
       const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
       const dayIndex = selectedDate.getDay();
       return daysOfWeek[dayIndex];
     };
-
+  
     if (expertAvailability === null || expertAvailability === undefined || expertAvailability.length === 0) {
       updatedAvailability.push({
         day: getDayOfWeek(selectedDate),
         date: formattedDate,
-        timeSlots: selectedSlots.map((slot) => ({
-          startTime: slot,
-          endTime: slot.includes('AM') ? `${slot.slice(0, 5)} PM` : `${slot.slice(0, 5)} AM`,
-          booked: false,
-          user: null,
-        })),
+        timeSlots: selectedSlots.map((slot) => {
+          const startHour = parseInt(slot.slice(0, 2));
+          const startHour12 = startHour === 0 ? 12 : startHour > 12 ? startHour - 12 : startHour;
+          const endHour = (startHour + 1) % 24;
+          const endHour12 = endHour === 0 ? 12 : endHour > 12 ? endHour - 12 : endHour;
+          const startTimeAMPM = startHour < 12 ? 'AM' : 'PM';
+          const endTimeAMPM = endHour < 12 ? 'AM' : 'PM';
+          const startTime = `${startHour12.toString().padStart(2, '0')}:00 ${startTimeAMPM}`;
+          const endTime = `${endHour12.toString().padStart(2, '0')}:00 ${endTimeAMPM}`;
+  
+          return {
+            startTime: startTime,
+            endTime: endTime,
+            booked: false,
+            user: null,
+          };
+        })
       });
     } else if (Array.isArray(expertAvailability)) {
       updatedAvailability = expertAvailability.map((day) => {
         if (day.date === formattedDate) {
           return {
             ...day,
-            timeSlots: selectedSlots.map((slot) => ({
-              startTime: slot,
-              endTime: slot.includes('AM') ? `${slot.slice(0, 5)} PM` : `${slot.slice(0, 5)} AM`,
-              booked: false,
-              user: null,
-            })),
+            timeSlots: selectedSlots.map((slot) => {
+              const startHour = parseInt(slot.slice(0, 2));
+              const startHour12 = startHour === 0 ? 12 : startHour > 12 ? startHour - 12 : startHour;
+              const endHour = (startHour + 1) % 24;
+              const endHour12 = endHour === 0 ? 12 : endHour > 12 ? endHour - 12 : endHour;
+              const startTimeAMPM = startHour < 12 ? 'AM' : 'PM';
+              const endTimeAMPM = endHour < 12 ? 'AM' : 'PM';
+              const startTime = `${startHour12.toString().padStart(2, '0')}:00 ${startTimeAMPM}`;
+              const endTime = `${endHour12.toString().padStart(2, '0')}:00 ${endTimeAMPM}`;
+  
+              return {
+                startTime: startTime,
+                endTime: endTime,
+                booked: false,
+                user: null,
+              };
+            })
           };
         }
         return day;
       });
-
+  
       if (!expertAvailability.some((day) => day.date === formattedDate)) {
         updatedAvailability.push({
           day: getDayOfWeek(selectedDate),
           date: formattedDate,
-          timeSlots: selectedSlots.map((slot) => ({
-            startTime: slot,
-            endTime: slot.includes('AM') ? `${slot.slice(0, 5)} PM` : `${slot.slice(0, 5)} AM`,
-            booked: false,
-            user: null,
-          })),
+          timeSlots: selectedSlots.map((slot) => {
+            const startHour = parseInt(slot.slice(0, 2));
+            const startHour12 = startHour === 0 ? 12 : startHour > 12 ? startHour - 12 : startHour;
+            const endHour = (startHour + 1) % 24;
+            const endHour12 = endHour === 0 ? 12 : endHour > 12 ? endHour - 12 : endHour;
+            const startTimeAMPM = startHour < 12 ? 'AM' : 'PM';
+            const endTimeAMPM = endHour < 12 ? 'AM' : 'PM';
+            const startTime = `${startHour12.toString().padStart(2, '0')}:00 ${startTimeAMPM}`;
+            const endTime = `${endHour12.toString().padStart(2, '0')}:00 ${endTimeAMPM}`;
+  
+            return {
+              startTime: startTime,
+              endTime: endTime,
+              booked: false,
+              user: null,
+            };
+          }),
         });
       }
     }
-
+  
     saveExpertAvailability(updatedAvailability);
-
   };
+  
 
  
   const renderTimeSlots = () => {
     const timeSlots = [];
-
+  
     for (let hour = 0; hour < 24; hour++) {
-      const startTime = `${(hour % 12 || 12).toString().padStart(2, '0')}:00 ${hour < 12 ? 'AM' : 'PM'}`;
-      const endTime = `${((hour + 1) % 12 || 12).toString().padStart(2, '0')}:00 ${(hour + 1) < 12 ? 'AM' : 'PM'}`;
+      const startHour = (hour % 12 || 12).toString().padStart(2, '0');
+      const endHour = ((hour + 1) % 12 || 12).toString().padStart(2, '0');
+      const startTimeAMPM = hour < 12 ? 'AM' : 'PM';
+      const endTimeAMPM = (hour + 1) < 12 ? 'AM' : 'PM';
+      const startTime = `${startHour}:00 ${startTimeAMPM}`;
+      const endTime = `${endHour}:00 ${endTimeAMPM}`;
       const selected = selectedSlots.includes(startTime);
-
+  
       timeSlots.push(
         <FormControlLabel
           key={startTime}
@@ -158,9 +195,10 @@ const AvailabilityForm = () => {
         />
       );
     }
-
+  
     return timeSlots;
   };
+  
 
   const handleOpenSetAvailabilityDialog = () => {
     setOpenSetAvailabilityDialog(true);
