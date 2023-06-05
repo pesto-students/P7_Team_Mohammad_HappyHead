@@ -26,7 +26,7 @@ const expertAvailabilityHandler = async (req, res) => {
       // });
       const availability = expert.availability
       
-      console.log(availability)
+      // console.log(availability)
         
       if (!availability) {
         return res.status(404).json({ error: 'Expert availability not found for the specified date' });

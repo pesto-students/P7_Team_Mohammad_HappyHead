@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Button, Box } from '@mui/material';
+import { Button, Box, Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, Checkbox } from '@mui/material';
 import Calendar from './Calendar';
 import TimeSlot from './TimeSlot';
 
@@ -10,36 +10,28 @@ const AvailabilityForm = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedSlots, setSelectedSlots] = useState([]);
   const [expertAvailability, setExpertAvailability] = useState([]);
+  const [openSetAvailabilityDialog, setOpenSetAvailabilityDialog] = useState(false);
+  const [openCheckAvailabilityDialog, setOpenCheckAvailabilityDialog] = useState(false);
 
   useEffect(() => {
     const fetchExpertAvailability = async (selectedDate) => {
-      try {      
-        const formattedDate= new Date(selectedDate).toISOString();
-        // console.log(`sent date ${formattedDate}`)
-        
-        // Make an API call to fetch expert's availability for the selected date
-        // Replace this with your own API endpoint
+      try {
+        const formattedDate = new Date(selectedDate).toISOString();
         const response = await fetch(`/api/experts/availability/${expertname}?date=${formattedDate}`);
         const data = await response.json();
-             // console.log(`recceived data ${data}`)
         setExpertAvailability(data.availability);
       } catch (error) {
         console.log('Error fetching expert availability:', error);
       }
     };
-
-    // Fetch expert's availability from the API based on selectedDate
+    console.log(expertAvailability)
     fetchExpertAvailability(selectedDate);
   }, [selectedDate]);
 
   const handleDateChange = (date) => {
-    // Create a new Date object with the same year, month, and day, but with the time set to 00:00:00 in UTC
     const startOfDayUTC = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-  
     setSelectedDate(startOfDayUTC);
   };
-  
-  
 
   const handleSlotChange = (time, selected) => {
     if (selected) {
@@ -50,13 +42,11 @@ const AvailabilityForm = () => {
   };
 
   const handleSubmit = () => {
-    // Save the selected date and slots to the expert's availability
     let updatedAvailability = [];
-  
+
     if (Array.isArray(expertAvailability)) {
       updatedAvailability = expertAvailability.map((day) => {
         if (day.date === selectedDate) {
-          // If the day already exists, overwrite the timeSlots
           return {
             ...day,
             timeSlots: selectedSlots.map((slot) => ({
@@ -70,8 +60,7 @@ const AvailabilityForm = () => {
         return day;
       });
     }
-  
-    // If the day doesn't exist in the expert's availability, add it as a new object
+
     if (
       Array.isArray(expertAvailability) &&
       !expertAvailability.some((day) => day.date === selectedDate)
@@ -87,18 +76,12 @@ const AvailabilityForm = () => {
         })),
       });
     }
-    console.log(`sent updatedAvailability ${updatedAvailability}`)
-    // Submit the updated availability to MongoDB
+
     saveExpertAvailability(updatedAvailability);
   };
-  
-  
 
   const saveExpertAvailability = async (availability) => {
     try {
-      // Make an API call to save the updated availability to MongoDB
-      // Replace this with your own API endpoint
-      console.log(`sent availability ${availability}`)
       await fetch(`/api/experts/availability/${expertname}`, {
         method: 'POST',
         body: JSON.stringify({ availability }),
@@ -113,7 +96,6 @@ const AvailabilityForm = () => {
     }
   };
 
-  // Generate TimeSlot components for all 24 hours
   const renderTimeSlots = () => {
     const timeSlots = [];
 
@@ -123,12 +105,10 @@ const AvailabilityForm = () => {
       const selected = selectedSlots.includes(startTime);
 
       timeSlots.push(
-        <TimeSlot
+        <FormControlLabel
           key={startTime}
-          startTime={startTime}
-          endTime={endTime}
-          selected={selected}
-          handleSlotChange={handleSlotChange}
+          control={<Checkbox checked={selected} onChange={(e) => handleSlotChange(startTime, e.target.checked)} />}
+          label={`${startTime} - ${endTime}`}
         />
       );
     }
@@ -136,16 +116,92 @@ const AvailabilityForm = () => {
     return timeSlots;
   };
 
+
+  const handleOpenSetAvailabilityDialog = () => {
+    setOpenSetAvailabilityDialog(true);
+  };
+
+  const handleCloseSetAvailabilityDialog = () => {
+    setOpenSetAvailabilityDialog(false);
+  };
+
+  const handleOpenCheckAvailabilityDialog = () => {
+    setOpenCheckAvailabilityDialog(true);
+  };
+
+  const handleCloseCheckAvailabilityDialog = () => {
+    setOpenCheckAvailabilityDialog(false);
+  };
+
   return (
     <Box>
       <Calendar selectedDate={selectedDate} handleDateChange={handleDateChange} />
-      <Box>
-        <h3>Select Time Slots:</h3>
-        {renderTimeSlots()}
-      </Box>
-      <Button variant="contained" color="primary" onClick={handleSubmit}>
-        Save Availability
+
+      <Button variant="contained" color="primary" onClick={handleOpenCheckAvailabilityDialog}>
+        Check Current Availability
       </Button>
+
+      <Button variant="contained" color="primary" onClick={handleOpenSetAvailabilityDialog}>
+        Set Availability
+      </Button>
+
+      <Dialog open={openSetAvailabilityDialog} onClose={handleCloseSetAvailabilityDialog}>
+        <DialogTitle>Set Availability</DialogTitle>
+        <DialogContent>{renderTimeSlots()}</DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseSetAvailabilityDialog}>Close</Button>
+          <Button variant="contained" color="primary" onClick={handleSubmit}>
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={openCheckAvailabilityDialog} onClose={handleCloseCheckAvailabilityDialog}>
+  <DialogTitle>Check Current Availability</DialogTitle>
+  <DialogContent>
+  {expertAvailability.some((day) => {
+  const dayDate = new Date(day.date);
+  const selected = dayDate.toISOString().slice(0, 10) === selectedDate.toISOString().slice(0, 10);
+  return selected;
+}) ? (
+  <ul>
+    {expertAvailability.map((day) => {
+      const dayDate = new Date(day.date);
+      const selected = dayDate.toISOString().slice(0, 10) === selectedDate.toISOString().slice(0, 10);
+      const formattedDate = dayDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+      if (selected && day.timeSlots.length > 0) {
+        return (
+          <li key={day.date}>
+            {`${formattedDate}: ${day.timeSlots.length} slots available`}
+            <ul>
+              {day.timeSlots.map((slot) => (
+                <li key={`${day.date}-${slot.startTime}-${slot.endTime}`}>
+                  {`${slot.startTime} - ${slot.endTime}`}
+                </li>
+              ))}
+            </ul>
+          </li>
+        );
+      }
+      
+      return null;
+    })}
+  </ul>
+) : (
+  <p>No availability information set currently</p>
+)}
+
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={handleCloseCheckAvailabilityDialog}>Close</Button>
+  </DialogActions>
+</Dialog>
+
+
+
+
+
     </Box>
   );
 };

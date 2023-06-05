@@ -3,6 +3,7 @@ import Header from '../../Layout/Header/Index'
 import Footer from '../../Layout/Footer/Index'
 import ExpertsDashboard from '../../Experts/ExpertsDashboard/ExpertDashboard'
 import CurrentAvail from '../../Experts/ExpertsDashboard/CurrentAvailability'
+import UpcomingAppointments from '../../Experts/ExpertsDashboard/UpcomingAppointments'
 
 const ExpertsDataPage = () => {
   return (
@@ -10,6 +11,7 @@ const ExpertsDataPage = () => {
       <Header position="fixed" />
       <ExpertsDashboard/>
       <CurrentAvail />
+      <UpcomingAppointments />
       <Footer />
     </>
   );
