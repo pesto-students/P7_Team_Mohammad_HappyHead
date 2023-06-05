@@ -5,7 +5,15 @@ import Calendar from './Calendar';
 import TimeSlot from './TimeSlot';
 import { styled, ThemeProvider } from '@mui/system';
 import theme from '../../styles/theme';
-// import ButtonWrapper from '../../styles/ButtonWrapperStyles';
+import DialogBox from '../../styles/DialogBox';
+
+const Heading = styled('h2')(({ theme }) => ({
+  textAlign: 'center',
+  
+  [theme.breakpoints.down('sm')]: {
+    paddingBottom: '1rem',
+  },
+}));
 
 const ButtonWrapper = styled('div')(({ theme, color }) => ({
   '& button': {
@@ -114,8 +122,8 @@ const AvailabilityForm = () => {
     const timeSlots = [];
 
     for (let hour = 0; hour < 24; hour++) {
-      const startTime = `${hour.toString().padStart(2, '0')}:00 AM`;
-      const endTime = `${hour.toString().padStart(2, '0')}:00 PM`;
+      const startTime = `${(hour % 12 || 12).toString().padStart(2, '0')}:00 ${hour < 12 ? 'AM' : 'PM'}`;
+      const endTime = `${((hour + 1) % 12 || 12).toString().padStart(2, '0')}:00 ${(hour + 1) < 12 ? 'AM' : 'PM'}`;
       const selected = selectedSlots.includes(startTime);
 
       timeSlots.push(
@@ -150,6 +158,7 @@ const AvailabilityForm = () => {
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Heading>Appointment Slots</Heading>
         <Calendar selectedDate={selectedDate} handleDateChange={handleDateChange} />
         <ButtonWrapper color="tertiary" sx={{ marginTop: theme.spacing(0), }}>
           <Button variant="contained" onClick={handleOpenCheckAvailabilityDialog}>
@@ -163,7 +172,7 @@ const AvailabilityForm = () => {
           </Button>
         </ButtonWrapper>
 
-        <Dialog open={openSetAvailabilityDialog} onClose={handleCloseSetAvailabilityDialog}
+        <DialogBox open={openSetAvailabilityDialog} onClose={handleCloseSetAvailabilityDialog}
           PaperProps={{
             style: {
               backgroundColor: theme.palette.quinary.main,
@@ -177,9 +186,9 @@ const AvailabilityForm = () => {
               Save
             </Button>
           </DialogActions>
-        </Dialog>
+        </DialogBox>
 
-        <Dialog open={openCheckAvailabilityDialog} onClose={handleCloseCheckAvailabilityDialog}
+        <DialogBox open={openCheckAvailabilityDialog} onClose={handleCloseCheckAvailabilityDialog}
           PaperProps={{
             style: {
               backgroundColor: theme.palette.tertiary.main,
@@ -224,7 +233,7 @@ const AvailabilityForm = () => {
           <DialogActions>
             <Button onClick={handleCloseCheckAvailabilityDialog}>Close</Button>
           </DialogActions>
-        </Dialog>
+        </DialogBox>
 
 
 

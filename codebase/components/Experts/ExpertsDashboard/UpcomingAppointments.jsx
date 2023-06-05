@@ -31,7 +31,7 @@ const CustomListItem = styled('li')({
     width: '30%',
     paddingLeft: '1rem',
   },
-  width: '95%',
+  width: '100%',
 });
 
 const Heading = styled('h2')(({ theme }) => ({
@@ -125,8 +125,8 @@ const UpcomingAppointments = () => {
                     <TextStyle>
                       <strong>Time:</strong> {slot.startTime} - {slot.endTime}
                     </TextStyle>
-                    <TextStyle>
-                      <strong>Patient's Details:</strong>
+                    <TextStyle color="tertiary" sx={{  color: theme.palette.primary.main}}>
+                      <strong>{`Patient's Details:`}</strong>
                     </TextStyle>
                     <TextStyle>
                       <strong>Name:</strong> {slot.user.name}

@@ -147,7 +147,7 @@ const ExpertsDashboard = ({ isLoggedIn }) => {
             <CustomRootContainer>
                 <Grid container spacing={2}>
                     {/* Expert profile component */}
-                    <Grid item xs={12} lg={6} sx={{  marginBottom: { xs: '2rem', lg: '0' }}}>
+                    <Grid item xs={12} lg={6} sx={{ marginTop: { xs: '1rem', lg: '2rem' }, marginBottom: { xs: '2rem', lg: '0' } }}>
                         <ExpertProfile expertProfile={expertProfile} handleOpenDialog={handleOpenDialog} />
                     </Grid>
 

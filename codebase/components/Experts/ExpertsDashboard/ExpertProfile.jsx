@@ -14,7 +14,7 @@ const ExpertProfile = ({ expertProfile, handleOpenDialog }) => {
 
   return (
     <Grid item xs={12} lg={11}>
-      <Card style={{ height: '80%', width: '100%',}}>
+      <Card>
         <CardContentStyle>
           <Avatar sx={{ marginTop: '1.2rem' }}>{expertProfile.name[0]}</Avatar>
           <Typography variant="h6">{expertProfile.name}</Typography>
