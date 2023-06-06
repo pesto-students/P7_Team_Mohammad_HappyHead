@@ -1,27 +1,24 @@
-import { useState } from 'react'
-import { TextField, Button, Container } from '@mui/material'
-import { ThemeProvider, styled } from '@mui/system'
-import RootContainer from '../../styles/RootContainerStyles'
-import ContentContainer from '../../styles/ContentContainerStyles'
-import ButtonWrapper from '../../styles/ButtonWrapperStyles'
-import SubText from '../../styles/SubTextStyles'
-import theme from '../../styles/theme'
+import { useState } from 'react';
+import { TextField, Button, Container, useMediaQuery, ThemeProvider } from '@mui/material';
+import { styled } from '@mui/system';
+import RootContainer from '../../styles/RootContainerStyles';
+import ContentContainer from '../../styles/ContentContainerStyles';
+import ButtonWrapper from '../../styles/ButtonWrapperStyles';
+import SubText from '../../styles/SubTextStyles';
+import SectionContainer from '../../styles/SectionsContainer';
+import theme from '../../styles/theme';
 
-// Styled component for the root container
+// Custom styled components for the root container, content container, and dialog
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.main,
-}))
+  padding: '0.5rem 2rem 2rem 2rem',
+}));
 
-// Styled component for the custom content container
-const CustomContentContainer = styled(ContentContainer)({
-  backgroundColor: theme.palette.secondary.main,
-  padding: '2rem 0',
-});
-
-// Styled component for the centered subtext
-const CenteredSubText = styled(SubText)({
-  textAlign: 'center',
-});
+// Styled component for the main content container
+const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    paddingBottom: '3rem',
+},
+}));
 
 // Styled component for the custom text field
 const CustomTextField = styled(TextField)({
@@ -31,13 +28,13 @@ const CustomTextField = styled(TextField)({
 });
 
 export default function Contact() {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [query, setQuery] = useState('')
-  const [errors, setErrors] = useState({})
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [query, setQuery] = useState('');
+  const [errors, setErrors] = useState({});
 
   const validateForm = () => {
-    const newErrors = {}
+    const newErrors = {};
 
     if (name.trim() === '') {
       newErrors.name = 'Name is required';
@@ -50,16 +47,16 @@ export default function Contact() {
     }
 
     if (query.trim() === '') {
-      newErrors.query = 'Query is required'
+      newErrors.query = 'Query is required';
     }
 
-    setErrors(newErrors)
+    setErrors(newErrors);
 
-    return Object.keys(newErrors).length === 0
-  }
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (validateForm()) {
       try {
@@ -79,28 +76,37 @@ export default function Contact() {
           console.log(data); // Handle the response as desired
 
           // Clear the form fields
-          setName('')
-          setEmail('')
-          setQuery('')
+          setName('');
+          setEmail('');
+          setQuery('');
         } else {
           throw new Error('Request failed');
         }
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     }
-  }
+  };
+
+  // Check if the screen width is below the specified breakpoint
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
-        <CustomContentContainer>
-          <h1>Contact Us</h1>
-          {/* Centered Sub text */}
-          <CenteredSubText variant="h6">
-            You can send us an email at team@happyhead.com or fill the form below
-          </CenteredSubText>
-          <Container maxWidth="sm">
+        <CustomSectionContainer>
+          <Container maxWidth="80%">
+            <ContentContainer>
+              <h1>Contact Us</h1>
+            </ContentContainer>
+            <ContentContainer>
+              <SubText variant="h5">
+                You can send us an email at team@happyhead.com or fill the form below
+              </SubText>
+            </ContentContainer>
+          </Container>
+
+          <div style={{ maxWidth: isSmallScreen ? '80%' : '40%', margin: '0 auto' }}>
             <form onSubmit={handleSubmit}>
               <CustomTextField
                 label="Name"
@@ -152,9 +158,9 @@ export default function Contact() {
                 </Button>
               </ButtonWrapper>
             </form>
-          </Container>
-        </CustomContentContainer>
+          </div>
+        </CustomSectionContainer>
       </CustomRootContainer>
     </ThemeProvider>
-  )
+  );
 }

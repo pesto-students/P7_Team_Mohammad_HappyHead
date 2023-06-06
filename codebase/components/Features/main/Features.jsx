@@ -9,6 +9,11 @@ import theme from '../../styles/theme';
 import MuiLink from '../../MuiLink';
 import { toolsData } from '../toolsData';
 
+// Custom styled components for the root container, content container, and dialog
+const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
+  padding: '0.5rem 2rem',
+}));
+
 // Styled component for the main content container
 const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
   padding: '2rem',
@@ -16,6 +21,7 @@ const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
   // Add the desired background colors for each section
   '&:nth-child(1)': {
     backgroundColor: theme.palette.quinary.main,
+    margin: '0 2rem 1rem 2rem',
   },
   '&:nth-child(2)': {
     backgroundColor: theme.palette.secondary.main,
@@ -58,9 +64,10 @@ const Features = ({ isLoggedIn }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <RootContainer>
+      <CustomRootContainer>
 
-        {/* // Section 1 */}
+        {/* Section 1 */}
+
         {section1.map((tool, index) => (
           <CustomSectionContainer key={index} onClick={() => handleCardClick(tool)}>
             <CardContent>
@@ -78,6 +85,7 @@ const Features = ({ isLoggedIn }) => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  fontSize: { xs: '2rem', sm: '3rem', md: '3.5rem', lg: '4rem' }, 
                 }}
               >
                 {tool.name}
@@ -118,6 +126,7 @@ const Features = ({ isLoggedIn }) => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  fontSize: { xs: '2rem', sm: '3rem', md: '3.5rem', lg: '4rem' },
                 }}
               >
                 {tool.name}
@@ -158,6 +167,7 @@ const Features = ({ isLoggedIn }) => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  fontSize: { xs: '2rem', sm: '3rem', md: '3.5rem', lg: '4rem' },
                 }}
               >
                 {tool.name}
@@ -180,7 +190,7 @@ const Features = ({ isLoggedIn }) => {
           </CustomSectionContainer>
         ))}
 
-      </RootContainer>
+      </CustomRootContainer>
     </ThemeProvider>
   );
 };
