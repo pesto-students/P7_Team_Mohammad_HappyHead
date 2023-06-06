@@ -6,21 +6,18 @@ import theme from '../styles/theme';
 import Title from '../styles/TitleStyles';
 import SubText from '../styles/SubTextStyles';
 import RootContainer from '../styles/RootContainerStyles';
-import ContentContainer from '../styles/ContentContainerStyles';
 import PhotoContainer from '../styles/PhotoContainerStyle';
 import ColumnContainer from '../styles/ColumnContainerStyle';
+import SectionContainer from '../styles/SectionsContainer'
 
-// Styled component for the root container
-const CustomRoot = styled(RootContainer)(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.main,
+// Custom styled components for the root container, content container, and dialog
+const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
+  padding: '1rem 2rem 3rem 2rem',
 }));
 
 // Styled component for the main content container
-const CustomAboutContainer = styled(ContentContainer)(({ theme }) => ({
-  maxWidth: 'none', 
+const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
-  margin: theme.spacing(2),
-  marginTop: '3rem',
 }));
 
 // Styled component for the circular ImageContainer
@@ -30,13 +27,14 @@ const ImageContainer = styled(PhotoContainer)(({ theme }) => ({
     height: '10rem',
     borderRadius: '50%',
     objectFit: 'cover',
-    border: `2px solid ${theme.palette.primary.main}`, 
+    border: `10px solid ${theme.palette.quinary.main}`,
   },
 }));
 
 const CustomTitle = styled(Title)(({ theme }) => ({
   marginBottom: theme.spacing(2),
   paddingTop: theme.spacing(4),
+  paddingBottom: theme.spacing(4),
 }));
 
 const CustomSubTitle = styled(Title)(({ theme }) => ({
@@ -48,11 +46,10 @@ const Team = () => {
   return (
     <ThemeProvider theme={theme}>
       {/* Root container */}
-      <CustomRoot>
-        {/* Main content container */}
-        <CustomTitle variant="h3">The Team</CustomTitle>
-        <CustomAboutContainer>
-        
+      <CustomRootContainer>
+        <CustomSectionContainer>
+          <CustomTitle variant="h3">The Team</CustomTitle>
+          {/* Main content container */}
           <Grid container spacing={2}>
             {/* First column */}
             <Grid item xs={12} sm={4} sx={{ textAlign: 'center' }}>
@@ -96,8 +93,8 @@ const Team = () => {
               </ColumnContainer>
             </Grid>
           </Grid>
-        </CustomAboutContainer>
-      </CustomRoot>
+        </CustomSectionContainer>
+      </CustomRootContainer>
     </ThemeProvider>
   );
 }

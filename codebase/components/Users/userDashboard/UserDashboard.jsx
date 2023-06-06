@@ -11,10 +11,11 @@ import Loader from '../../styles/Loader';
 
 import UserProfile from './UserProfile';
 import ToolCard from './ToolCard';
+import UpcomingAppointments from './Upcoming Appointments'
 
 // Custom styled components for the root container, content container, and dialog
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
 }));
 
 const CustomContentContainer = styled(ContentContainer)(({ theme }) => ({
@@ -101,17 +102,17 @@ const UserDashboard = ({ isLoggedIn }) => {
     };
 
     useEffect(() => {
-         // Fetch user profile data when the component mounts and username changes
-    const getUserProfile = async () => {
-        try {
-            const response = await fetch(`/api/users/dashboard/${username}`)
-            const userProfile = await response.json();
-            setUserProfile(userProfile);
-            setEditedProfile(userProfile);
-        } catch (error) {
-            console.error('Failed to fetch user profile', error);
+        // Fetch user profile data when the component mounts and username changes
+        const getUserProfile = async () => {
+            try {
+                const response = await fetch(`/api/users/dashboard/${username}`)
+                const userProfile = await response.json();
+                setUserProfile(userProfile);
+                setEditedProfile(userProfile);
+            } catch (error) {
+                console.error('Failed to fetch user profile', error);
+            }
         }
-    }
         getUserProfile();
     }, [username]);
 
@@ -161,8 +162,8 @@ const UserDashboard = ({ isLoggedIn }) => {
 
     // Handle click on a tool card
     const handleCardClick = (tool) => {
-            console.log(`Redirecting to ${tool.path}`);
-            redirectToPage(tool.path);
+        console.log(`Redirecting to ${tool.path}`);
+        redirectToPage(tool.path);
     };
     if (!userProfile) {
         return <Loader />;
@@ -190,80 +191,82 @@ const UserDashboard = ({ isLoggedIn }) => {
                         </Grid>
                     </Grid>
                 </CustomContentContainer>
-            </CustomRootContainer>
 
-            {/* Custom styled dialog */}
-            <CustomDialog open={openDialog} onClose={handleCloseDialog}>
-                <DialogTitle>Edit Profile</DialogTitle>
-                <DialogContent>
-                    {/* Profile edit form */}
-                    <TextField
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        label="Name"
-                        name="name"
-                        value={editedProfile.name}
-                        onChange={handleInputChange}
-                    />
-                    <TextField
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        label="Username"
-                        name="username"
-                        value={editedProfile.username}
-                        onChange={handleInputChange}
-                    />
-                    <TextField
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        label="Email"
-                        name="email"
-                        value={editedProfile.email}
-                        onChange={handleInputChange}
-                    />
-                    <TextField
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        label="Date of Birth"
-                        name="dob"
-                        type="date"
-                        InputLabelProps={{ shrink: true }}
-                        value={editedProfile.dob}
-                        onChange={handleInputChange}
-                    />
-                    <TextField
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        label="Password"
-                        name="password"
-                        type={showPassword ? 'text' : 'password'}
-                        value={editedProfile.password}
-                        onChange={handleInputChange}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton onClick={handleTogglePassword}>
-                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button style={buttonStyles.cancelButton} onClick={handleCloseDialog}>
-                        Cancel
-                    </Button>
-                    <Button style={buttonStyles.saveButton} onClick={handleSaveProfile}>
-                        Save
-                    </Button>
-                </DialogActions>
-            </CustomDialog>
+
+                {/* Custom styled dialog */}
+                <CustomDialog open={openDialog} onClose={handleCloseDialog}>
+                    <DialogTitle>Edit Profile</DialogTitle>
+                    <DialogContent>
+                        {/* Profile edit form */}
+                        <TextField
+                            fullWidth
+                            margin="normal"
+                            variant="outlined"
+                            label="Name"
+                            name="name"
+                            value={editedProfile.name}
+                            onChange={handleInputChange}
+                        />
+                        <TextField
+                            fullWidth
+                            margin="normal"
+                            variant="outlined"
+                            label="Username"
+                            name="username"
+                            value={editedProfile.username}
+                            onChange={handleInputChange}
+                        />
+                        <TextField
+                            fullWidth
+                            margin="normal"
+                            variant="outlined"
+                            label="Email"
+                            name="email"
+                            value={editedProfile.email}
+                            onChange={handleInputChange}
+                        />
+                        <TextField
+                            fullWidth
+                            margin="normal"
+                            variant="outlined"
+                            label="Date of Birth"
+                            name="dob"
+                            type="date"
+                            InputLabelProps={{ shrink: true }}
+                            value={editedProfile.dob}
+                            onChange={handleInputChange}
+                        />
+                        <TextField
+                            fullWidth
+                            margin="normal"
+                            variant="outlined"
+                            label="Password"
+                            name="password"
+                            type={showPassword ? 'text' : 'password'}
+                            value={editedProfile.password}
+                            onChange={handleInputChange}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton onClick={handleTogglePassword}>
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button style={buttonStyles.cancelButton} onClick={handleCloseDialog}>
+                            Cancel
+                        </Button>
+                        <Button style={buttonStyles.saveButton} onClick={handleSaveProfile}>
+                            Save
+                        </Button>
+                    </DialogActions>
+                </CustomDialog>
+                <UpcomingAppointments />
+            </CustomRootContainer>
         </ThemeProvider>
     );
 };

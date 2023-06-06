@@ -16,6 +16,11 @@ import Subtitle from '../styles/SubtitleStyles';
 import ButtonWrapper from '../styles/ButtonWrapperStyles';
 import Loader from '../styles/Loader';
 
+// Styled component for the root container
+const CustomRoot = styled(RootContainer)(({ theme }) => ({
+  backgroundColor: theme.palette.secondary.main,
+}));
+
 const LoginLinkTypography = styled(Typography)`
   padding-top: 16px;
   color: ${({ theme }) => theme.palette.text.primary};
@@ -42,7 +47,7 @@ const HeroComponent = () => {
   return (
     <ThemeProvider theme={theme}>
       {/* Custom root container */}
-      <RootContainer>
+      <CustomRoot>
         {/* Custom content container */}
         <ContentContainer>
           {/* Title */}
@@ -83,7 +88,7 @@ const HeroComponent = () => {
             Already a user? <a href="/login">Login</a>
           </LoginLinkTypography>
         </ContentContainer>
-      </RootContainer>
+      </CustomRoot>
     </ThemeProvider>
   );
 };

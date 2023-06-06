@@ -7,23 +7,12 @@ import Title from '../styles/TitleStyles'
 import SubText from '../styles/SubTextStyles'
 import ImageList from './ImagesSection'
 import RootContainer from '../styles/RootContainerStyles'
-import ContentContainer from '../styles/ContentContainerStyles'
+import SectionContainer from '../styles/SectionsContainer'
 
-// Styled component for the root container
-const CustomeRoot = styled(RootContainer)(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.main,
-}))
-
-// Styled component for the main content container
-const CustomAboutContainer = styled(ContentContainer)(({ theme }) => ({
-  maxWidth: 'none', // Exclude the maxWidth property
-  flexDirection: 'row',
-  backgroundColor: theme.palette.secondary.main,
-  margin: theme.spacing(2),
-  display: 'flex',
-  flexWrap: 'wrap',
-  justifyContent: 'center',
-}))
+// Custom styled components for the root container, content container, and dialog
+const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
+  padding: '1rem 2rem',
+}));
 
 // Styled component for each section in the AboutHero component
 const AboutSection = styled('div')(({ theme }) => ({
@@ -31,6 +20,7 @@ const AboutSection = styled('div')(({ theme }) => ({
   padding: theme.spacing(2),
   display: 'flex',
   flexDirection: 'column',
+  justifyContent: 'center',
   alignItems: 'center',
   minWidth: '300px', // Set a minimum width for each section
 }))
@@ -45,9 +35,9 @@ const AboutHero = () => {
   return (
     <ThemeProvider theme={theme}>
       {/* Root container */}
-      <CustomeRoot>
+      <CustomRootContainer>
         {/* Main content container */}
-        <CustomAboutContainer>
+        <SectionContainer>
           {/* First section */}
           <AboutSection>
             <Title variant="h2">About HappyHead</Title>
@@ -59,8 +49,8 @@ const AboutHero = () => {
           <AboutSection>
             <ImageList />
           </AboutSection>
-        </CustomAboutContainer>
-      </CustomeRoot>
+        </SectionContainer>
+      </CustomRootContainer>
     </ThemeProvider>
   )
 }

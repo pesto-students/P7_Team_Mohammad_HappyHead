@@ -5,8 +5,10 @@ const RootContainer = styled('div')(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  padding: theme.spacing(2, 0),
-  backgroundColor: theme.palette.secondary.main,
+  padding: '2rem',
+  // padding: theme.spacing(2, 0),
+  backgroundColor: theme.palette.primary.main,
+  // backgroundColor: theme.palette.secondary.main,
   color: theme.palette.text.primary,
   textAlign: 'center',
 }))
