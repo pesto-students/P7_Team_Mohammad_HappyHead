@@ -62,7 +62,7 @@ const UpcomingAppointments = () => {
           const currentDate = new Date();
           return appointmentDate > currentDate;
         });
-        console.log(filteredAppointments);
+      
         setUpcomingAppointments(filteredAppointments);
         setIsLoading(false);
       } catch (error) {
@@ -88,14 +88,14 @@ const UpcomingAppointments = () => {
           noAppointmentsMessage
         ) : (
           <CustomList>
-            {upcomingAppointments.map(appointment => (
-              <CustomListItem key={appointment.date}>
+            {upcomingAppointments.map((appointment, index) => (
+              <CustomListItem key={`${appointment.date}-${index}`}>
                 <TextStyle>
-                  <strong>Date:</strong>{' '}
-                  {new Date(appointment.date).toLocaleDateString('en-US', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
+                  <strong>Date:</strong>{" "}
+                  {new Date(appointment.date).toLocaleDateString("en-US", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
                   })}
                 </TextStyle>
                 <TextStyle>

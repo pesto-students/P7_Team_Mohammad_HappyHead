@@ -138,6 +138,7 @@ const expertProfileHandler = async (req, res) => {
           qualifications: req.body.qualifications,
           yearsOfExperience: req.body.phoneNumber,
           speciality: req.body.qualifications,
+          consultationFee: req.body.consultationFee,
           password: req.body.password,
         }
       });

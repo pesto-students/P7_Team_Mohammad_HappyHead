@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Grid, Button, Dialog, DialogTitle, DialogContent, TextField, InputAdornment, IconButton, DialogActions } from '@mui/material';
+import { Grid, Button, Dialog, DialogTitle, DialogContent, TextField, InputAdornment, IconButton, DialogActions, Paper } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/system';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import RootContainer from '../../styles/RootContainerStyles';
 import ContentContainer from '../../styles/ContentContainerStyles';
 import theme from '../../styles/theme';
-import { redirectToPage } from '../../../utils/redirect';
-// import { toolsData } from '../../Users/userDashboard/toolsData';
+import ExpertProfile from './ExpertProfile';
+import AvailabilityForm from './AvailabilityForm';
 
-import UserProfile from './UserProfile';
-import ToolCard from './ToolCard';
 
 // Custom styled components for the root container, content container, and dialog
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
     backgroundColor: theme.palette.secondary.main,
+    padding: '2rem',
+    [theme.breakpoints.up('lg')]: {
+        padding: '4rem',
+    },
 }));
 
 const CustomContentContainer = styled(ContentContainer)(({ theme }) => ({
@@ -26,9 +28,11 @@ const CustomContentContainer = styled(ContentContainer)(({ theme }) => ({
 }));
 
 const CustomDialog = styled(Dialog)(({ theme }) => ({
-    '& .MuiDialog-paper': {
+   '& .MuiDialog-paper': {
         backgroundColor: theme.palette.secondary.main,
-    },
+        border: `3px solid ${theme.palette.text.primary}`, 
+        borderRadius: '8px', 
+      },
     '& .MuiInputLabel-outlined': {
         color: theme.palette.text.primary,
     },
@@ -50,49 +54,26 @@ const buttonStyles = {
     cancelButton: {
         color: theme.palette.text.secondary,
         backgroundColor: theme.palette.tertiary.main,
-        // Add more styling properties as needed
     },
     saveButton: {
         color: theme.palette.common.white,
         backgroundColor: theme.palette.quinary.main,
-        // Add more styling properties as needed
     },
 };
 
-const UserDashboard = ({ isLoggedIn }) => {
+const ExpertsDashboard = ({ isLoggedIn }) => {
     const router = useRouter();
-    const { username } = router.query;
-    // State variables
-    const [userProfile, setUserProfile] = useState();
+    const { expertname } = router.query;
+    const [expertProfile, setExpertProfile] = useState();
 
     const [openDialog, setOpenDialog] = useState(false);
-    const [editedProfile, setEditedProfile] = useState({ ...userProfile, password: '' }); // Initialize with empty password
+    const [editedProfile, setEditedProfile] = useState({ ...expertProfile });
     const [showPassword, setShowPassword] = useState(false);
-
-    const toolsData = [
-        {
-            name: 'Your Mental Health Report',
-            subtext:
-                'Answer a few questions related to your stressors & lifestyle and get personalized insights and recommendations',
-            path: `/users/qna/${username}`,
-        },
-        {
-            name: 'Connect with Experts',
-            subtext:
-                'Get personalized guidance and support from certified professionals to address your mental health concerns effectively.',
-            path: `/users/expertConnect/${username}`,
-        },
-        {
-            name: 'Guided Practice Tools',
-            subtext: `Discover effective relaxation techniques and practices to enhance your well-being and find inner calm amidst life's challenges.`,
-            path: `/users/practicetools/${username}`,
-        },
-    ];
 
     // Open the profile edit dialog
     const handleOpenDialog = () => {
         setOpenDialog(true);
-        setEditedProfile({ ...userProfile });
+        setEditedProfile({ ...expertProfile });
     };
 
     // Close the profile edit dialog
@@ -101,24 +82,24 @@ const UserDashboard = ({ isLoggedIn }) => {
     };
 
     useEffect(() => {
-         // Fetch user profile data when the component mounts and username changes
-    const getUserProfile = async () => {
-        try {
-            const response = await fetch(`/api/users/dashboard/${username}`)
-            const userProfile = await response.json();
-            setUserProfile(userProfile);
-            setEditedProfile(userProfile);
-        } catch (error) {
-            console.error('Failed to fetch user profile', error);
+        // Fetch expert profile data when the component mounts and expertname changes
+        const getExpertProfile = async () => {
+            try {
+                const response = await fetch(`/api/experts/dashboard/${expertname}`)
+                const expertProfile = await response.json();
+                setExpertProfile(expertProfile);
+                setEditedProfile(expertProfile);
+            } catch (error) {
+                console.error('Failed to fetch expert profile', error);
+            }
         }
-    }
-        getUserProfile();
-    }, [username]);
+        getExpertProfile();
+    }, [expertname]);
 
     // Save the edited profile
     const handleSaveProfile = async () => {
         try {
-            const response = await fetch(`/api/users/dashboard/${username}`, {
+            const response = await fetch(`/api/experts/dashboard/${expertname}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -126,13 +107,13 @@ const UserDashboard = ({ isLoggedIn }) => {
                 body: JSON.stringify(editedProfile),
             });
             if (response.ok) {
-                setUserProfile(editedProfile);
+                setExpertProfile(editedProfile);
                 setOpenDialog(false);
             } else {
-                console.error('Failed to update user profile');
+                console.error('Failed to update expert profile');
             }
         } catch (error) {
-            console.error('Failed to update user profile', error);
+            console.error('Failed to update expert profile', error);
         }
     };
 
@@ -159,38 +140,26 @@ const UserDashboard = ({ isLoggedIn }) => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
     };
 
-    // Handle click on a tool card
-    const handleCardClick = (tool) => {
-            console.log(`Redirecting to ${tool.path}`);
-            redirectToPage(tool.path);
-    };
-    if (!userProfile) {
+    if (!expertProfile) {
         return <div>Loading...</div>;
     }
     return (
-        <ThemeProvider theme={theme}>
-            {/* Custom styled root container */}
-            <CustomRootContainer>
-                {/* Custom styled content container */}
-                <CustomContentContainer>
-                    <Grid container spacing={2}>
-                        {/* User profile component */}
-                        <UserProfile userProfile={userProfile} handleOpenDialog={handleOpenDialog} />
 
-                        {/* Tool cards */}
-                        <Grid item xs={12} lg={8} container spacing={2}>
-                            {toolsData.map((tool, index) => (
-                                <ToolCard
-                                    key={index}
-                                    tool={tool}
-                                    handleCardClick={handleCardClick}
-                                    isLoggedIn={isLoggedIn}
-                                />
-                            ))}
-                        </Grid>
+        <ThemeProvider theme={theme}>
+            <CustomRootContainer>
+                <Grid container spacing={2}>
+                    {/* Expert profile component */}
+                    <Grid item xs={12} lg={6} sx={{ marginTop: { xs: '1rem', lg: '2rem' }, marginBottom: { xs: '2rem', lg: '0' } }}>
+                        <ExpertProfile expertProfile={expertProfile} handleOpenDialog={handleOpenDialog} />
                     </Grid>
-                </CustomContentContainer>
+
+                    {/*  Availability form component */}
+                    <Grid item xs={12} lg={6} sx={{ marginBottom: { xs: '2rem', lg: '0' } }}>
+                        <AvailabilityForm />
+                    </Grid>
+                </Grid>
             </CustomRootContainer>
+
 
             {/* Custom styled dialog */}
             <CustomDialog open={openDialog} onClose={handleCloseDialog}>
@@ -198,55 +167,90 @@ const UserDashboard = ({ isLoggedIn }) => {
                 <DialogContent>
                     {/* Profile edit form */}
                     <TextField
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
+                        autoFocus
+                        margin="dense"
                         label="Name"
+                        type="text"
                         name="name"
                         value={editedProfile.name}
                         onChange={handleInputChange}
+                        fullWidth
                     />
                     <TextField
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
+                        margin="dense"
                         label="Username"
+                        type="text"
                         name="username"
-                        value={editedProfile.username}
+                        value={editedProfile.expertname}
                         onChange={handleInputChange}
+                        fullWidth
                     />
                     <TextField
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
+                        margin="dense"
                         label="Email"
+                        type="email"
                         name="email"
                         value={editedProfile.email}
                         onChange={handleInputChange}
+                        fullWidth
                     />
                     <TextField
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        label="Date of Birth"
-                        name="dob"
-                        type="date"
-                        InputLabelProps={{ shrink: true }}
-                        value={editedProfile.dob}
+                        margin="dense"
+                        label="Phone Number"
+                        type="tel"
+                        name="phoneNumber"
+                        value={editedProfile.phoneNumber}
                         onChange={handleInputChange}
+                        fullWidth
                     />
                     <TextField
+                        margin="dense"
+                        label="Qualifications"
+                        type="text"
+                        name="qualifications"
+                        value={editedProfile.qualifications}
+                        onChange={handleInputChange}
                         fullWidth
-                        margin="normal"
-                        variant="outlined"
+                    />
+                    <TextField
+                        margin="dense"
+                        label="Years of Experience"
+                        type="number"
+                        name="yearsOfExperience"
+                        value={editedProfile.yearsOfExperience}
+                        onChange={handleInputChange}
+                        fullWidth
+                    />
+                    <TextField
+                        margin="dense"
+                        label="Speciality"
+                        type="text"
+                        name="speciality"
+                        value={editedProfile.speciality}
+                        onChange={handleInputChange}
+                        fullWidth
+                    />
+                    <TextField
+                        margin="dense"
+                        label="Consultation Fee"
+                        type="number"
+                        name="consultationFee"
+                        value={editedProfile.consultationFee}
+                        onChange={handleInputChange}
+                        fullWidth
+                    />
+                    <TextField
+                        margin="dense"
                         label="Password"
-                        name="password"
                         type={showPassword ? 'text' : 'password'}
+                        name="password"
                         value={editedProfile.password}
                         onChange={handleInputChange}
+                        fullWidth
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
+                                    {/* Toggle password visibility */}
                                     <IconButton onClick={handleTogglePassword}>
                                         {showPassword ? <VisibilityOff /> : <Visibility />}
                                     </IconButton>
@@ -254,12 +258,15 @@ const UserDashboard = ({ isLoggedIn }) => {
                             ),
                         }}
                     />
+
                 </DialogContent>
                 <DialogActions>
-                    <Button style={buttonStyles.cancelButton} onClick={handleCloseDialog}>
+                    {/* Cancel button */}
+                    <Button onClick={handleCloseDialog} style={buttonStyles.cancelButton}>
                         Cancel
                     </Button>
-                    <Button style={buttonStyles.saveButton} onClick={handleSaveProfile}>
+                    {/* Save button */}
+                    <Button onClick={handleSaveProfile} style={buttonStyles.saveButton}>
                         Save
                     </Button>
                 </DialogActions>
@@ -268,5 +275,4 @@ const UserDashboard = ({ isLoggedIn }) => {
     );
 };
 
-
-export default UserDashboard;
+export default ExpertsDashboard;
