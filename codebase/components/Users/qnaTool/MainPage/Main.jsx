@@ -8,7 +8,7 @@ import ButtonWrapper from '../../../styles/ButtonWrapperStyles';
 import theme from '../../../styles/theme';
 import { useRouter } from 'next/router';
 import { redirectToPage } from '../../../../utils/redirect';
-import Loader from '../../styles/Loader';
+import Loader from '../../../styles/Loader';
 
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
