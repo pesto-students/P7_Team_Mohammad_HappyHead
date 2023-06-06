@@ -2,19 +2,20 @@ import { Button, Container } from '@mui/material'
 import { ThemeProvider, styled } from '@mui/system'
 import RootContainer from '../../styles/RootContainerStyles'
 import ContentContainer from '../../styles/ContentContainerStyles'
-import ButtonWrapper from '../../styles/ButtonWrapperStyles'
 import SubText from '../../styles/SubTextStyles'
+import IconContainer from '../../styles/IconContainerStyles'
 import theme from '../../styles/theme'
 
-// Styled component for the root container
+// Custom styled components for the root container, content container, and dialog
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
-    backgroundColor: theme.palette.secondary.main,
-}))
+    padding: '0.5rem 2rem 2rem 2rem',
+}));
 
 // Styled component for the custom content container
 const CustomContentContainer = styled(ContentContainer)({
     backgroundColor: theme.palette.secondary.main,
     padding: '2rem 0',
+    borderRadius: '8px',
 });
 
 // Styled component for the centered subtext
@@ -22,6 +23,13 @@ const CenteredSubText = styled(SubText)({
     textAlign: 'center',
 });
 
+// Styled component for the IconContainer with styled icons
+const StyledIconContainer = styled(IconContainer)(() => ({
+    '& img': {
+        width: '8rem',
+        height: '8rem',
+    },
+}));
 
 export default function Resources() {
 
@@ -29,6 +37,9 @@ export default function Resources() {
         <ThemeProvider theme={theme}>
             <CustomRootContainer>
                 <CustomContentContainer>
+                    <StyledIconContainer>
+                        <img src="/images/contact/resources.png" alt="Who" />
+                    </StyledIconContainer>
                     <h1>Mental health resources</h1>
                     {/* Centered Sub text */}
                     <CenteredSubText variant="h6">
