@@ -6,25 +6,29 @@ import { styled, ThemeProvider } from '@mui/system';
 import theme from '../../../styles/theme';
 import RootContainer from '../../../styles/RootContainerStyles';
 import ButtonWrapper from '../../../styles/ButtonWrapperStyles';
-import Title from '../../../styles/TitleStyles';
 import { redirectToPage } from '../../../../utils/redirect';
 import meditationTools from '../toolsData';
 import Loader from '../../../styles/Loader';
 
+// Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
-  padding: '2rem 0',
+  padding: '1rem 2rem 2rem 2rem',
 }));
 
-const CustomCard = styled(Card)(({ theme }) => ({
-  backgroundImage: `linear-gradient(to bottom, ${theme.palette.tertiary.main}, ${theme.palette.quinary.main})`,
-  width: '90%',
+const CustomCard = styled(Card)(({ theme, cardColor }) => ({
+  backgroundColor: cardColor,
+  width: '100%',
   [theme.breakpoints.up('md')]: {
     width: '80vw',
   },
   margin: '0.5rem',
   padding: '0 2rem',
-  border: `3px solid ${theme.palette.primary.main}`,
   borderRadius: '8px',
+  '&:hover': {
+    cursor: 'pointer',
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', // Update with desired box shadow style
+    transform: 'scale(1.02)', // Update with desired transformation
+  },
 }));
 
 const CustomButtonWrapper = styled(ButtonWrapper)(({ theme }) => ({
@@ -32,13 +36,29 @@ const CustomButtonWrapper = styled(ButtonWrapper)(({ theme }) => ({
 }));
 
 const CustomTitle = styled(Typography)(({ theme }) => ({
-  fontWeight: 'bold',
-  paddingTop: '0.5rem',
-  paddingBottom: '0.5rem',
+  ...theme.typography.h2, 
+  [theme.breakpoints.down('sm')]: {
+    fontSize: theme.typography.h4.fontSize, 
+  },
 }));
 
 const CustomDesc = styled(Typography)(({ theme }) => ({
   marginTop: '0.5rem',
+}));
+
+const CustomImage = styled('img')(({ theme }) => ({
+  maxWidth: '100%', 
+  height: 'auto', 
+  marginBottom: '1rem',
+  paddingTop: '2rem',
+}));
+
+const Heading = styled(Typography)(({ theme }) => ({
+  ...theme.typography.h2,
+  fontWeight: 'bold',
+  [theme.breakpoints.down('sm')]: {
+    fontSize: theme.typography.h4.fontSize, 
+  },
 }));
 
 const MeditationTools = () => {
@@ -46,6 +66,13 @@ const MeditationTools = () => {
   const { username } = router.query;
   const [completedStages, setCompletedStages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Define an array of colors
+  const cardColors = [
+    theme.palette.tertiary.main,
+    theme.palette.secondary.main,
+    theme.palette.quinary.main,
+  ];
 
   useEffect(() => {
     // Fetch the user's data, including the toolsCompleted array, based on the username
@@ -84,19 +111,28 @@ const MeditationTools = () => {
   return (
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
-        <Title variant="h4" component="h1" gutterBottom>
+        <Heading variant="h3" component="h2" gutterBottom>
           Guided Meditation Tools
-        </Title>
-        {meditationTools.map((tool) => (
-          <CustomCard key={tool.toolId} variant="outlined">
+        </Heading>
+        {meditationTools.map((tool, index) => (
+          <CustomCard 
+          key={tool.toolId} 
+          variant="outlined"
+          cardColor={cardColors[index % cardColors.length]}
+          >
             <CardContent>
-              <CustomTitle variant="h5" component="h2">
+            <CustomImage
+                src={tool.image}
+                alt={tool.title}
+                style={{ maxWidth: '200px', height: 'auto' }} 
+              />
+              <CustomTitle component="h2">
                 {tool.title}
               </CustomTitle>
               <CustomDesc variant="h6" component="h2">
                 {tool.description}
               </CustomDesc>
-              <CustomButtonWrapper color="secondary">
+              <CustomButtonWrapper color="primary">
                 <Button
                   variant="contained"
                   color="quinary"

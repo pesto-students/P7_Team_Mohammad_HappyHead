@@ -3,7 +3,28 @@ import { useRouter } from 'next/router';
 import { Box, Button, Card, CardContent, Dialog, DialogContent, DialogTitle, Grid, Typography, useMediaQuery } from '@mui/material';
 import { ThemeProvider, createTheme, styled } from '@mui/system';
 import theme from '../../../styles/theme'
+import RootContainer from '../../../styles/RootContainerStyles';
+import SectionContainer from '../../../styles/SectionsContainer';
+import Title from '../../../styles/TitleStyles';
 import Loader from '../../../styles/Loader';
+
+// Custom styled components for the root container, content container, and dialog
+const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
+  padding: '1rem 2rem 2rem 2rem',
+}));
+
+// Styled component for the main content container
+const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    paddingBottom: '3rem',
+  },
+}));
+
+const CustomTitle = styled(Title)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+  padding: '1rem',
+},
+}));
 
 // Styled component for the custom content container
 const CustomContentContainer = styled(Box)(({ theme }) => ({
@@ -14,12 +35,17 @@ const CustomContentContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
+
 const StyledCard = styled(Card)(({ theme }) => ({
   marginBottom: '1.5rem',
-  backgroundColor: theme.palette.quaternary.main,
-  border: `2px solid ${theme.palette.primary.main}`,
+  backgroundColor: theme.palette.quinary.main,
   borderRadius: '8px',
   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+  '&:hover': {
+    cursor: 'pointer',
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', // Update with desired box shadow style
+    transform: 'scale(1.02)', // Update with desired transformation
+  },
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -61,7 +87,7 @@ const ExpertsPage = () => {
   const [selectedExpert, setSelectedExpert] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
-const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchExperts();
@@ -105,85 +131,89 @@ const [isLoading, setIsLoading] = useState(true);
   }
   return (
     <ThemeProvider theme={theme}>
-      <CustomContentContainer>
-        <h1 style={{ textAlign: 'center' }}>Mental Health Experts</h1>
-        <div style={{ padding: '0.2rem 1rem' }}>
-          {experts.map((expert) => (
-            <StyledCard key={expert._id}>
-              <CardContent>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} md={8} style={isSmallScreen ? { textAlign: 'center' } : {}}>
-                    <Typography variant="h5" style={{ fontWeight: 'bold', marginBottom: '0.8rem' }}>{expert.name}</Typography>
-                    <Typography variant="subtitle1"><strong>Experience:</strong> {expert.yearsOfExperience} years</Typography>
-                    <Typography variant="subtitle1"><strong>Qualifications:</strong> {expert.qualifications}</Typography>
-                    <Typography variant="subtitle1"><strong>Speciality:</strong> {expert.speciality}</Typography>
-                    <Typography variant="subtitle1"><strong>Consultation Fee:</strong> ₹{Math.floor(expert.consultationFee)}</Typography>
+      <CustomRootContainer>
+        <CustomSectionContainer>
+        <CustomTitle variant="h2">Mental Health Experts</CustomTitle>
+          <div style={{ padding: '0.2rem 1rem' }}>
+            {experts.map((expert) => (
+              <StyledCard key={expert._id}>
+                <CardContent>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} md={8} style={isSmallScreen ? { textAlign: 'center' } : {}}>
+                      <Typography variant="h5" style={{ fontWeight: 'bold', marginBottom: '0.8rem' }}>{expert.name}</Typography>
+                      <Typography variant="subtitle1"><strong>Experience:</strong> {expert.yearsOfExperience} years</Typography>
+                      <Typography variant="subtitle1"><strong>Qualifications:</strong> {expert.qualifications}</Typography>
+                      <Typography variant="subtitle1"><strong>Speciality:</strong> {expert.speciality}</Typography>
+                      <Typography variant="subtitle1"><strong>Consultation Fee:</strong> ₹{Math.floor(expert.consultationFee)}</Typography>
+                    </Grid>
+                    <Grid item xs={12} md={4} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                      <StyledButton variant="contained" onClick={() => handleExpertClick(expert)}>
+                        Book Appointment
+                      </StyledButton>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12} md={4} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <StyledButton variant="contained" onClick={() => handleExpertClick(expert)}>
-                      Book Appointment
-                    </StyledButton>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </StyledCard>
-          ))}
+                </CardContent>
+              </StyledCard>
+            ))}
 
-          <CustomDialog open={dialogOpen} onClose={handleCloseDialog}>
-            <DialogTitle style={{ fontWeight: 'bold' }}>Book Appointment</DialogTitle>
-            <CustomDialogContainer>
-              {selectedExpert && (
-                <div>
-                  <Typography variant="h6" style={{ paddingTop: '1rem' }}>{selectedExpert.name}</Typography>
-                  
-                  {selectedExpert.availability.length === 0 || selectedExpert.availability.every((availability) => {
-                    const availabilityDate = new Date(availability.date);
-                    const currentDate = new Date();
-                    return availabilityDate <= currentDate;
-                  }) ? (
-                    <Typography variant="subtitle1">No appointments available currently</Typography>
-                  ) : (
-                    selectedExpert.availability.map((availability) => {
+            <CustomDialog open={dialogOpen} onClose={handleCloseDialog}>
+              <DialogTitle style={{ fontWeight: 'bold' }}>Book Appointment</DialogTitle>
+              <CustomDialogContainer>
+                {selectedExpert && (
+                  <div>
+                    <Typography variant="h6" style={{ paddingTop: '1rem' }}>{selectedExpert.name}</Typography>
+
+                    {selectedExpert.availability.length === 0 || selectedExpert.availability.every((availability) => {
                       const availabilityDate = new Date(availability.date);
                       const currentDate = new Date();
-                      const futureTimeSlots = availability.timeSlots.filter((slot) => {
-                        const slotTime = new Date(`${availabilityDate.toDateString()} ${slot.startTime}`);
-                        return slotTime > currentDate;
-                      });
+                      return availabilityDate <= currentDate;
+                    }) ? (
+                      <Typography variant="subtitle1">No appointments available currently</Typography>
+                    ) : (
+                      selectedExpert.availability.map((availability) => {
+                        const availabilityDate = new Date(availability.date);
+                        const currentDate = new Date();
+                        const futureTimeSlots = availability.timeSlots.filter((slot) => {
+                          const slotTime = new Date(`${availabilityDate.toDateString()} ${slot.startTime}`);
+                          return slotTime > currentDate;
+                        });
 
-                      if (futureTimeSlots.length === 0) {
-                        return null; // Skip rendering availability with no future time slots
-                      }
+                        if (futureTimeSlots.length === 0) {
+                          return null; // Skip rendering availability with no future time slots
+                        }
 
-                      return (
-                        <div style={{ paddingTop: '0.4rem' }} key={availability._id}>
-                          <Typography variant="subtitle2">{availability.day}</Typography>
-                          <Typography variant="subtitle2" style={{ fontWeight: 'bold' }}>{new Date(availability.date).toLocaleDateString('en-US', {
-                            day: 'numeric',
-                            month: 'long',
-                            year: 'numeric',
-                          })}</Typography>
-                          {futureTimeSlots.map((slot) => (
-                            <Button key={slot._id}>
-                              <StyledSlotButton
-                                variant="outlined"
-                                onClick={() => handleSlotSelection(availability, slot)}
-                                isSelected={slot.isSelected}
-                              >
-                                {slot.startTime} - {slot.endTime}
-                              </StyledSlotButton>
-                            </Button>
-                          ))}
-                        </div>
-                      );
-                    })
-                  )}
-                </div>
-              )}
-            </CustomDialogContainer>
-          </CustomDialog>
-        </div>
-      </CustomContentContainer>
+                        return (
+                          <div style={{ paddingTop: '0.4rem' }} key={availability._id}>
+                            <Typography variant="subtitle2">{availability.day}</Typography>
+                            <Typography variant="subtitle2" style={{ fontWeight: 'bold' }}>{new Date(availability.date).toLocaleDateString('en-US', {
+                              day: 'numeric',
+                              month: 'long',
+                              year: 'numeric',
+                            })}</Typography>
+                            {futureTimeSlots.map((slot) => (
+                              <Button key={slot._id}>
+                                <StyledSlotButton
+                                  variant="outlined"
+                                  onClick={() => handleSlotSelection(availability, slot)}
+                                  isSelected={slot.isSelected}
+                                >
+                                  {slot.startTime} - {slot.endTime}
+                                </StyledSlotButton>
+                              </Button>
+                            ))}
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+                )}
+              </CustomDialogContainer>
+            </CustomDialog>
+          </div>
+        </CustomSectionContainer>
+      </CustomRootContainer>
+
+
     </ThemeProvider>
   );
 };

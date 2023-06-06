@@ -18,7 +18,7 @@ const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
 const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     paddingBottom: '3rem',
-},
+  },
 }));
 
 // Styled component for the custom text field
@@ -31,9 +31,9 @@ const CustomTextField = styled(TextField)({
 // Styled component for the IconContainer with styled icons
 const StyledIconContainer = styled(IconContainer)(() => ({
   '& img': {
-      width: '8rem',
-      height: '8rem',
-      marging: '0',
+    width: '8rem',
+    height: '8rem',
+    marging: '0',
   },
 }));
 
@@ -105,9 +105,9 @@ export default function Contact() {
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
         <CustomSectionContainer>
-        <StyledIconContainer>
-                        <img src="/images/contact/contact.png" alt="Who" />
-                    </StyledIconContainer>
+          <StyledIconContainer>
+            <img src="/images/contact/contact.png" alt="Who" />
+          </StyledIconContainer>
           <Container maxWidth="80%">
             <ContentContainer>
               <h1>Contact Us</h1>

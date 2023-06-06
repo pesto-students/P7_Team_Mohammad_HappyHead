@@ -5,7 +5,6 @@ import { styled, ThemeProvider } from '@mui/system';
 import theme from '../../../components/styles/theme';
 import RootContainer from '../../../components/styles/RootContainerStyles';
 import ButtonWrapper from '../../../components/styles/ButtonWrapperStyles';
-import Title from '../../../components/styles/TitleStyles';
 import meditationTools from '../../Users/practiceTools/toolsData';
 
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -29,9 +28,9 @@ const CustomButtonWrapper = styled(ButtonWrapper)(({ theme }) => ({
 }));
 
 const CustomTitle = styled(Typography)(({ theme }) => ({
-  ...theme.typography.h2, // Use h2 variant from the theme
+  ...theme.typography.h2, 
   [theme.breakpoints.down('sm')]: {
-    fontSize: theme.typography.h4.fontSize, // Adjust the font size for smaller screen devices
+    fontSize: theme.typography.h4.fontSize, 
   },
 }));
 
@@ -40,8 +39,8 @@ const CustomDesc = styled(Typography)(({ theme }) => ({
 }));
 
 const CustomImage = styled('img')(({ theme }) => ({
-  maxWidth: '100%', // Adjust the maximum width of the image
-  height: 'auto', // Let the height adjust automatically based on the width
+  maxWidth: '100%', 
+  height: 'auto', 
   marginBottom: '1rem',
   paddingTop: '2rem',
 }));
@@ -50,7 +49,7 @@ const Heading = styled(Typography)(({ theme }) => ({
   ...theme.typography.h2,
   fontWeight: 'bold',
   [theme.breakpoints.down('sm')]: {
-    fontSize: theme.typography.h4.fontSize, // Adjust the font size for smaller screen devices
+    fontSize: theme.typography.h4.fontSize, 
   },
 }));
 
@@ -72,15 +71,15 @@ const Tools = () => {
           <CustomCard
             key={tool.toolId}
             variant="outlined"
-            cardColor={cardColors[index % cardColors.length]} // Assign a color from the array
+            cardColor={cardColors[index % cardColors.length]} 
           >
             <CardContent>
               <CustomImage
                 src={tool.image}
                 alt={tool.title}
-                style={{ maxWidth: '200px', height: 'auto' }} // Adjust the size of the image
+                style={{ maxWidth: '200px', height: 'auto' }} 
               />
-              <CustomTitle component="h2"> {/* Remove the variant attribute */}
+              <CustomTitle component="h2"> 
                 {tool.title}
               </CustomTitle>
               <CustomDesc variant="h6" component="h2">
