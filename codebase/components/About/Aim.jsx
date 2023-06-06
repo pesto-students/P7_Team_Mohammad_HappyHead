@@ -12,7 +12,7 @@ import SectionContainer from '../styles/SectionsContainer'
 
 // Custom styled components for the root container, content container, and dialog
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
-  padding: '2rem 2rem',
+  padding: '2rem',
 }));
 
 // Styled component for the main content container
