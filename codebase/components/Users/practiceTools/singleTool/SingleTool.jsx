@@ -9,7 +9,7 @@ import meditationTools from '../toolsData';
 import theme from '../../../styles/theme';
 import RootContainer from '../../../styles/RootContainerStyles';
 import ButtonWrapper from '../../../styles/ButtonWrapperStyles';
-
+import Loader from '../../../styles/Loader';
 
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
   padding: '2rem 0',
@@ -90,7 +90,7 @@ const ToolPage = () => {
 
   // Render loading state or placeholder component while fetching data
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   const handleCompleteClick = async (toolId) => {

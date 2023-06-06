@@ -7,7 +7,7 @@ import RootContainer from '../../styles/RootContainerStyles';
 import ContentContainer from '../../styles/ContentContainerStyles';
 import theme from '../../styles/theme';
 import { redirectToPage } from '../../../utils/redirect';
-// import { toolsData } from '../../Users/userDashboard/toolsData';
+import Loader from '../../styles/Loader';
 
 import UserProfile from './UserProfile';
 import ToolCard from './ToolCard';
@@ -165,7 +165,7 @@ const UserDashboard = ({ isLoggedIn }) => {
             redirectToPage(tool.path);
     };
     if (!userProfile) {
-        return <div>Loading...</div>;
+        return <Loader />;
     }
     return (
         <ThemeProvider theme={theme}>

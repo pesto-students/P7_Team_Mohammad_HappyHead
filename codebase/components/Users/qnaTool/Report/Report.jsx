@@ -8,6 +8,7 @@ import { ThemeProvider, styled } from '@mui/system';
 import theme from '../../../styles/theme';
 import Title from '../../../styles/TitleStyles';
 import ButtonWrapper from '../../../styles/ButtonWrapperStyles';
+import Loader from '../../../styles/Loader';
 
 // Styled component for customizing the root container
 const CustRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -36,6 +37,7 @@ const ReportGenerator = () => {
     const { username } = router.query;
     const [userAnswers, setUserAnswers] = useState([])
     const [userRecommendations, setUserRecommendations] = useState([])
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -46,11 +48,13 @@ const ReportGenerator = () => {
                     const userData = await response.json();
                     setUserAnswers(userData.answers.answers)
                     setUserRecommendations(userData.answers.recommendations);
+                    setIsLoading(false);
                 } else {
                     console.error('Failed to fetch user data');
                 }
             } catch (error) {
                 console.error('Error fetching user data:', error);
+                setIsLoading(false);
             }
         };
 
@@ -76,6 +80,10 @@ const ReportGenerator = () => {
 
     const handleGoBack = () => {
         redirectToPage(`/users/dashboard/${username}`);
+    }
+
+    if (isLoading) {
+        return <Loader />;
     }
     return (
         <ThemeProvider theme={theme}>

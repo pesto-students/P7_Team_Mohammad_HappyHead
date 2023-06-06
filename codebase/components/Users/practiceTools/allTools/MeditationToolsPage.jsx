@@ -9,6 +9,7 @@ import ButtonWrapper from '../../../styles/ButtonWrapperStyles';
 import Title from '../../../styles/TitleStyles';
 import { redirectToPage } from '../../../../utils/redirect';
 import meditationTools from '../toolsData';
+import Loader from '../../../styles/Loader';
 
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
   padding: '2rem 0',
@@ -44,6 +45,7 @@ const MeditationTools = () => {
   const router = useRouter();
   const { username } = router.query;
   const [completedStages, setCompletedStages] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Fetch the user's data, including the toolsCompleted array, based on the username
@@ -52,16 +54,18 @@ const MeditationTools = () => {
         // Make an API request to fetch the user's profile
         const response = await fetch(`/api/users/practicetools/${username}`);
         const data = await response.json();
-        
         const stagesCompleted = data.toolsCompleted
         if (response.ok) {
           // Set the completed stages based on the user's toolsCompleted array
           setCompletedStages(stagesCompleted);
+          setIsLoading(false);
         } else {
           console.error('Failed to fetch user profile:', data.error);
+          setIsLoading(false);
         }
       } catch (error) {
         console.error('Failed to fetch user profile:', error);
+        setIsLoading(false);
       }
     };
 
@@ -74,8 +78,10 @@ const MeditationTools = () => {
       redirectToPage(`/users/practicetools/${username}/${toolId}`);
     }
   };
-
-return (
+  if (isLoading) {
+    return <Loader />;
+  }
+  return (
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
         <Title variant="h4" component="h1" gutterBottom>

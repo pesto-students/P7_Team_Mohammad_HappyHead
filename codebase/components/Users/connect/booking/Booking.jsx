@@ -4,7 +4,8 @@ import { Box, Dialog, DialogTitle, DialogContent, DialogActions, Button, Typogra
 import ButtonWrapper from '../../../styles/ButtonWrapperStyles'
 import theme from '../../../styles/theme'
 import { ThemeProvider, styled } from '@mui/system';
-import {redirectToPage} from '../../../../utils/redirect'
+import { redirectToPage } from '../../../../utils/redirect'
+import Loader from '../../../styles/Loader';
 
 // Styled component for the custom content container
 const CustomContentContainer = styled(Box)(({ theme }) => ({
@@ -45,8 +46,8 @@ const StyledButton = styled(Button)(({ theme }) => ({
     '&:hover': {
         backgroundColor: theme.palette.tertiary.main, // Set the desired hover background color
         color: theme.palette.getContrastText(theme.palette.primary.contrastText), // Set the desired hover text color
-      },
-    }));
+    },
+}));
 
 const BookSlot = () => {
     const router = useRouter();
@@ -54,7 +55,7 @@ const BookSlot = () => {
     const [expertProfile, setExpertProfile] = useState(null);
     const [userDetails, setUserDetails] = useState(null);
     const [bookingConfirmed, setBookingConfirmed] = useState(false);
-
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchExpert = async () => {
@@ -62,8 +63,10 @@ const BookSlot = () => {
                 const response = await fetch(`/api/users/connect/${expertname}`);
                 const data = await response.json();
                 setExpertProfile(data);
+                setIsLoading(false);
             } catch (error) {
                 console.error('Error fetching experts:', error);
+                setIsLoading(false);
             }
         };
         const fetchUser = async () => {
@@ -198,7 +201,9 @@ const BookSlot = () => {
         setBookingConfirmed(false); // Reset booking confirmed state
         redirectToPage(`/users/dashboard/${username}`);  // Assuming you have a function to redirect to a success page
     };
-
+    if (isLoading) {
+        return <Loader />;
+    }
     return (
         <ThemeProvider theme={theme}>
             <CustomContentContainer>

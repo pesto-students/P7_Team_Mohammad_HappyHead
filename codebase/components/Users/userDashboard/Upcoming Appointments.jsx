@@ -39,16 +39,10 @@ const Heading = styled('h2')(({ theme }) => ({
   },
 }));
 
-const LoadingState = styled('p')({
-  textAlign: 'center',
-  fontSize: '1.2rem',
-});
-
 const UpcomingAppointments = () => {
   const router = useRouter();
   const { username } = router.query;
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -57,17 +51,15 @@ const UpcomingAppointments = () => {
         const data = await response.json();
 
         const bookedSlots = data.bookedSlots || [];
-        const filteredAppointments = bookedSlots.filter(slot => {
+        const filteredAppointments = bookedSlots.filter((slot) => {
           const appointmentDate = new Date(slot.date);
           const currentDate = new Date();
           return appointmentDate > currentDate;
         });
-      
+
         setUpcomingAppointments(filteredAppointments);
-        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching appointments:', error);
-        setIsLoading(false);
       }
     };
 
@@ -82,20 +74,18 @@ const UpcomingAppointments = () => {
     <ThemeProvider theme={theme}>
       <CustomContainer>
         <Heading>Upcoming Appointments</Heading>
-        {isLoading ? (
-          <LoadingState>Loading appointments...</LoadingState>
-        ) : upcomingAppointments.length === 0 ? (
+        {upcomingAppointments.length === 0 ? (
           noAppointmentsMessage
         ) : (
           <CustomList>
             {upcomingAppointments.map((appointment, index) => (
               <CustomListItem key={`${appointment.date}-${index}`}>
                 <TextStyle>
-                  <strong>Date:</strong>{" "}
-                  {new Date(appointment.date).toLocaleDateString("en-US", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
+                  <strong>Date:</strong>{' '}
+                  {new Date(appointment.date).toLocaleDateString('en-US', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
                   })}
                 </TextStyle>
                 <TextStyle>

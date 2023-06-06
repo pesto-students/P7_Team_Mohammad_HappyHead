@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { Box, Button, Card, CardContent, Dialog, DialogContent, DialogTitle, Grid, Typography, useMediaQuery } from '@mui/material';
 import { ThemeProvider, createTheme, styled } from '@mui/system';
 import theme from '../../../styles/theme'
+import Loader from '../../../styles/Loader';
 
 // Styled component for the custom content container
 const CustomContentContainer = styled(Box)(({ theme }) => ({
@@ -60,6 +61,7 @@ const ExpertsPage = () => {
   const [selectedExpert, setSelectedExpert] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchExperts();
@@ -70,8 +72,10 @@ const ExpertsPage = () => {
       const response = await fetch('/api/users/connect/experts');
       const data = await response.json();
       setExperts(data);
+      setIsLoading(false);
     } catch (error) {
       console.error('Error fetching experts:', error);
+      setIsLoading(false);
     }
   };
 
@@ -96,6 +100,9 @@ const ExpertsPage = () => {
 
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <ThemeProvider theme={theme}>
       <CustomContentContainer>

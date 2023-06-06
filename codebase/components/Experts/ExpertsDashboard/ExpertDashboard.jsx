@@ -8,6 +8,8 @@ import ContentContainer from '../../styles/ContentContainerStyles';
 import theme from '../../styles/theme';
 import ExpertProfile from './ExpertProfile';
 import AvailabilityForm from './AvailabilityForm';
+import Loader from '../../styles/Loader';
+import UpcomingAppointments from '../../Experts/ExpertsDashboard/UpcomingAppointments'
 
 
 // Custom styled components for the root container, content container, and dialog
@@ -141,7 +143,7 @@ const ExpertsDashboard = ({ isLoggedIn }) => {
     };
 
     if (!expertProfile) {
-        return <div>Loading...</div>;
+        return <Loader />;
     }
     return (
 
@@ -271,6 +273,7 @@ const ExpertsDashboard = ({ isLoggedIn }) => {
                     </Button>
                 </DialogActions>
             </CustomDialog>
+            <UpcomingAppointments />
         </ThemeProvider>
     );
 };

@@ -8,6 +8,7 @@ import ButtonWrapper from '../../../styles/ButtonWrapperStyles';
 import theme from '../../../styles/theme';
 import { useRouter } from 'next/router';
 import { redirectToPage } from '../../../../utils/redirect';
+import Loader from '../../styles/Loader';
 
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -46,8 +47,8 @@ const info = {
 const QnAMain = () => {
   const router = useRouter();
   const { username } = router.query;
-
   const [answersExist, setAnswersExist] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,11 +58,14 @@ const QnAMain = () => {
           const userData = await response.json();
           const answers = userData.answers;
           setAnswersExist(answers && answers.recommendations.length == 25);
+          setIsLoading(false);
         } else {
           console.error('Failed to fetch user data');
+          setIsLoading(false);
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
+        setIsLoading(false);
       }
     };
 
@@ -75,7 +79,9 @@ const QnAMain = () => {
   const handleViewReport = () => {
     redirectToPage(`/users/qna/report/${username}`);
   };
-
+  if (isLoading) {
+    return <Loader />;
+}
   return (
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
