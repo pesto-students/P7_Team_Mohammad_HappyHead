@@ -14,7 +14,7 @@ export default function LoadingButtons() {
                 alignItems="center"
                 justifyContent="center"
                 sx={{
-                    minHeight: '95vh', // Set the minimum height to 100vh
+                    minHeight: '95vh',
                     backgroundColor: theme.palette.secondary.main,
                 }}
             >
@@ -26,8 +26,7 @@ export default function LoadingButtons() {
                     role="progressbar"
                     sx={{
                         color: theme.palette.text.primary, 
-                        borderRadius: '8px', // Change the border radius
-                        
+                        borderRadius: '8px',                         
                     }}
                 >
                 </LoadingButton>
