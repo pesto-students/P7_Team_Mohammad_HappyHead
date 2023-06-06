@@ -1,10 +1,8 @@
 import { styled } from '@mui/system'
 import { ThemeProvider } from '@mui/system'
-import { Grid } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 
 import theme from '../styles/theme'
-import Title from '../styles/TitleStyles'
-import SubText from '../styles/SubTextStyles'
 import RootContainer from '../styles/RootContainerStyles'
 import ContentContainer from '../styles/ContentContainerStyles'
 import IconContainer from '../styles/IconContainerStyles'
@@ -32,6 +30,11 @@ const StyledIconContainer = styled(IconContainer)(() => ({
   },
 }));
 
+const CustomDesc = styled(Typography)(({ theme }) => ({
+  marginTop: '0.5rem',
+  padding: '1rem 3rem',
+}));
+
 const Tile1 = () => {
   return (
     <ThemeProvider theme={theme}>
@@ -47,9 +50,9 @@ const Tile1 = () => {
                 <StyledIconContainer>
                   <img src="/images/homepage/calm.png" alt="Joy" />
                 </StyledIconContainer>
-                <SubText variant="body1">
+                <CustomDesc variant="h6" component="h2">
                   Catch your breath, relax your mind, and feel 14% less stressed in just 10 days.
-                </SubText>
+                </CustomDesc>
               </ColumnContainer>
             </Grid>
 
@@ -60,9 +63,9 @@ const Tile1 = () => {
                 <StyledIconContainer>
                   <img src="/images/homepage/sleep.png" alt="Sleep" />
                 </StyledIconContainer>
-                <SubText variant="body1">
+                <CustomDesc variant="h6" component="h2">
                   Put your mind to bed, wake up refreshed, and make good days your new normal.
-                </SubText>
+                </CustomDesc>
               </ColumnContainer>
             </Grid>
 
@@ -73,9 +76,9 @@ const Tile1 = () => {
                 <StyledIconContainer>
                   <img src="/images/homepage/happiness.png" alt="Happiness" />
                 </StyledIconContainer>
-                <SubText variant="body1">
+                <CustomDesc variant="h6" component="h2">
                   Do it for yourself, and everyone you love. It only takes a few minutes to find some headspace.
-                </SubText>
+                </CustomDesc>
               </ColumnContainer>
             </Grid>
           </Grid>

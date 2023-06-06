@@ -11,7 +11,7 @@ import theme from '../../styles/theme';
 
 // Custom styled components for the root container, content container, and dialog
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
-  padding: '0.5rem 2rem 2rem 2rem',
+  padding: '1rem 2rem 2rem 2rem',
 }));
 
 // Styled component for the main content container
