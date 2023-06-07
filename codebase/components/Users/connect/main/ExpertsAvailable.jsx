@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Button, Card, CardContent, Dialog, DialogContent, DialogTitle, Grid, Typography, useMediaQuery } from '@mui/material';
+import { Button, Card, CardContent, Dialog, DialogContent, DialogTitle, Grid, Typography, useMediaQuery } from '@mui/material';
 import { ThemeProvider, createTheme, styled } from '@mui/system';
 import theme from '../../../styles/theme'
 import RootContainer from '../../../styles/RootContainerStyles';
-import SectionContainer from '../../../styles/SectionsContainer';
-import Title from '../../../styles/TitleStyles';
 import Loader from '../../../styles/Loader';
 
 // Custom styled components for the root container, content container, and dialog
@@ -13,39 +11,32 @@ const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
   padding: '1rem 2rem 2rem 2rem',
 }));
 
-// Styled component for the main content container
-const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
-  [theme.breakpoints.down('sm')]: {
-    paddingBottom: '3rem',
+const CustomCard = styled(Card)(({ theme, cardColor }) => ({
+  backgroundColor: cardColor,
+  width: '100%',
+  [theme.breakpoints.up('md')]: {
+    width: '80vw',
   },
-}));
-
-const CustomTitle = styled(Title)(({ theme }) => ({
-  [theme.breakpoints.down('sm')]: {
-  padding: '1rem',
-},
-}));
-
-// Styled component for the custom content container
-const CustomContentContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.main,
-  padding: '1rem 8rem',
-  [theme.breakpoints.down('sm')]: {
-    padding: '0.5rem 1.5rem',
-  },
-}));
-
-
-const StyledCard = styled(Card)(({ theme }) => ({
-  marginBottom: '1.5rem',
-  backgroundColor: theme.palette.quinary.main,
+  margin: '0.5rem',
   borderRadius: '8px',
-  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
   '&:hover': {
     cursor: 'pointer',
-    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', // Update with desired box shadow style
-    transform: 'scale(1.02)', // Update with desired transformation
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', 
   },
+}));
+
+const Heading = styled(Typography)(({ theme }) => ({
+  ...theme.typography.h2,
+  fontWeight: 'bold',
+  paddingBottom: '1rem',
+  [theme.breakpoints.down('sm')]: {
+    fontSize: theme.typography.h4.fontSize,
+  },
+}));
+
+const CustomDesc = styled(Typography)(({ theme }) => ({
+  marginTop: '0.5rem',
+  fontSize: theme.typography.body1.fontSize, 
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -70,12 +61,12 @@ const CustomDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-const StyledSlotButton = styled(Button)(({ theme, isSelected }) => ({
-  backgroundColor: isSelected ? theme.palette.primary.main : 'transparent',
-  color: isSelected ? theme.palette.primary.contrastText : theme.palette.text.primary,
-  border: `2px solid ${theme.palette.tertiary.main}`,
+const StyledSlotButton = styled(Button)(({ theme }) => ({
+  backgroundColor:  theme.palette.primary.main,
+  color: theme.palette.text.primary,
+  border: `2px solid ${theme.palette.primary.main}`,
   '&:hover': {
-    backgroundColor: isSelected ? theme.palette.primary.main : theme.palette.primary.light,
+    backgroundColor: theme.palette.primary.light,
   },
 }));
 
@@ -85,9 +76,15 @@ const ExpertsPage = () => {
   const { username } = router.query;
   const [experts, setExperts] = useState([]);
   const [selectedExpert, setSelectedExpert] = useState(null);
-  const [selectedSlot, setSelectedSlot] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+   // Define an array of colors
+   const cardColors = [
+    theme.palette.tertiary.main,
+    theme.palette.secondary.main,
+    theme.palette.quinary.main,
+  ];
 
   useEffect(() => {
     fetchExperts();
@@ -132,90 +129,82 @@ const ExpertsPage = () => {
   return (
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
-        <CustomSectionContainer>
-        <CustomTitle variant="h2">Mental Health Experts</CustomTitle>
-          <div style={{ padding: '0.2rem 1rem' }}>
-            {experts.map((expert) => (
-              <StyledCard key={expert._id}>
-                <CardContent>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12} md={8} style={isSmallScreen ? { textAlign: 'center' } : {}}>
-                      <Typography variant="h5" style={{ fontWeight: 'bold', marginBottom: '0.8rem' }}>{expert.name}</Typography>
-                      <Typography variant="subtitle1"><strong>Experience:</strong> {expert.yearsOfExperience} years</Typography>
-                      <Typography variant="subtitle1"><strong>Qualifications:</strong> {expert.qualifications}</Typography>
-                      <Typography variant="subtitle1"><strong>Speciality:</strong> {expert.speciality}</Typography>
-                      <Typography variant="subtitle1"><strong>Consultation Fee:</strong> ₹{Math.floor(expert.consultationFee)}</Typography>
-                    </Grid>
-                    <Grid item xs={12} md={4} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                      <StyledButton variant="contained" onClick={() => handleExpertClick(expert)}>
-                        Book Appointment
-                      </StyledButton>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </StyledCard>
-            ))}
-
-            <CustomDialog open={dialogOpen} onClose={handleCloseDialog}>
-              <DialogTitle style={{ fontWeight: 'bold' }}>Book Appointment</DialogTitle>
-              <CustomDialogContainer>
-                {selectedExpert && (
-                  <div>
-                    <Typography variant="h6" style={{ paddingTop: '1rem' }}>{selectedExpert.name}</Typography>
-
-                    {selectedExpert.availability.length === 0 || selectedExpert.availability.every((availability) => {
-                      const availabilityDate = new Date(availability.date);
-                      const currentDate = new Date();
-                      return availabilityDate <= currentDate;
-                    }) ? (
-                      <Typography variant="subtitle1">No appointments available currently</Typography>
-                    ) : (
-                      selectedExpert.availability.map((availability) => {
-                        const availabilityDate = new Date(availability.date);
-                        const currentDate = new Date();
-                        const futureTimeSlots = availability.timeSlots.filter((slot) => {
-                          const slotTime = new Date(`${availabilityDate.toDateString()} ${slot.startTime}`);
-                          return slotTime > currentDate;
-                        });
-
-                        if (futureTimeSlots.length === 0) {
-                          return null; // Skip rendering availability with no future time slots
-                        }
-
-                        return (
-                          <div style={{ paddingTop: '0.4rem' }} key={availability._id}>
-                            <Typography variant="subtitle2">{availability.day}</Typography>
-                            <Typography variant="subtitle2" style={{ fontWeight: 'bold' }}>{new Date(availability.date).toLocaleDateString('en-US', {
-                              day: 'numeric',
-                              month: 'long',
-                              year: 'numeric',
-                            })}</Typography>
-                            {futureTimeSlots.map((slot) => (
-                              <Button key={slot._id}>
-                                <StyledSlotButton
-                                  variant="outlined"
-                                  onClick={() => handleSlotSelection(availability, slot)}
-                                  isSelected={slot.isSelected}
-                                >
-                                  {slot.startTime} - {slot.endTime}
-                                </StyledSlotButton>
-                              </Button>
-                            ))}
-                          </div>
-                        );
-                      })
-                    )}
-                  </div>
+        <Heading variant="h3" component="h2">Mental Health Experts</Heading>
+        {experts.map((expert, index) => (
+          <CustomCard
+            key={expert._id}
+            variant="outlined"
+            cardColor={cardColors[index % cardColors.length]}
+          >
+            <CardContent>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={8} style={isSmallScreen ? { textAlign: 'center' } : {}}>
+                  <h2 sx={{ width: '100%' }}>{expert.name}</h2>
+                  <CustomDesc><strong>Experience:</strong> {expert.yearsOfExperience} years</CustomDesc>
+                  <CustomDesc><strong>Qualifications:</strong> {expert.qualifications}</CustomDesc>
+                  <CustomDesc><strong>Speciality:</strong> {expert.speciality}</CustomDesc>
+                  <CustomDesc><strong>Consultation Fee:</strong> ₹{Math.floor(expert.consultationFee)}</CustomDesc>
+                </Grid>
+                <Grid item xs={12} md={4} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <StyledButton variant="contained" onClick={() => handleExpertClick(expert)}>
+                    Book Appointment
+                  </StyledButton>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </CustomCard>
+        ))}
+  
+        <CustomDialog open={dialogOpen} onClose={handleCloseDialog}>
+          <DialogTitle style={{ fontWeight: 'bold' }}>Book Appointment</DialogTitle>
+          <CustomDialogContainer>
+            {selectedExpert && (
+              <div>
+                <Typography variant="h6" style={{ paddingTop: '1rem' }}>{selectedExpert.name}</Typography>
+  
+                {selectedExpert.availability.length === 0 ||
+                selectedExpert.availability.every((availability) =>
+                  availability.timeSlots.every((slot) => slot.booked)
+                ) ? (
+                  <Typography variant="subtitle1">No appointments available currently</Typography>
+                ) : (
+                  selectedExpert.availability.map((availability) => {
+                    const availableSlots = availability.timeSlots.filter((slot) => !slot.booked);
+  
+                    if (availableSlots.length === 0) {
+                      return null;
+                    }
+  
+                    return (
+                      <div style={{ paddingTop: '0.4rem' }} key={availability._id}>
+                        <Typography variant="subtitle2">{availability.day}</Typography>
+                        <Typography variant="subtitle2" style={{ fontWeight: 'bold' }}>{new Date(availability.date).toLocaleDateString('en-US', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric',
+                        })}</Typography>
+                        {availableSlots.map((slot) => (
+                          <Button key={slot._id}>
+                            <StyledSlotButton
+                              variant="outlined"
+                              onClick={() => handleSlotSelection(availability, slot)}
+                            >
+                              {slot.startTime} - {slot.endTime}
+                            </StyledSlotButton>
+                          </Button>
+                        ))}
+                      </div>
+                    );
+                  })
                 )}
-              </CustomDialogContainer>
-            </CustomDialog>
-          </div>
-        </CustomSectionContainer>
+              </div>
+            )}
+          </CustomDialogContainer>
+        </CustomDialog>
       </CustomRootContainer>
-
-
     </ThemeProvider>
   );
+  
 };
 
 export default ExpertsPage;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { CardContent } from '@mui/material';
 import { ThemeProvider, styled } from '@mui/system';
 import { redirectToPage } from '../../../utils/redirect';
@@ -7,6 +7,7 @@ import SectionContainer from '../../styles/SectionsContainer';
 import IconContainer from '../../styles/IconContainerStyles'
 import theme from '../../styles/theme';
 import MuiLink from '../../MuiLink';
+import Loader from '../../styles/Loader'
 import { toolsData } from '../toolsData';
 
 // Custom styled components for the root container, content container, and dialog
@@ -45,6 +46,17 @@ const StyledIconContainer = styled(IconContainer)(() => ({
 }));
 
 const Features = ({ isLoggedIn }) => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulating a delay of 2 seconds for loading
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   // Function to handle card click
   const handleCardClick = (tool) => {
     if (tool.path) {
@@ -64,133 +76,137 @@ const Features = ({ isLoggedIn }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <CustomRootContainer>
+      {loading ? (
+        <Loader />
+      ) : (
+        <CustomRootContainer>
 
-        {/* Section 1 */}
+          {/* Section 1 */}
 
-        {section1.map((tool, index) => (
-          <CustomSectionContainer key={index} onClick={() => handleCardClick(tool)}>
-            <CardContent>
-              <StyledIconContainer>
-                <img src={tool.image} alt={tool.name} />
-              </StyledIconContainer>
-              <MuiLink
-                href={tool.path ? tool.path : '/loginUser'}
-                underline="none"
-                color="inherit"
-                variant="h3" // Update the variant to match the desired typography style
-                component="h2"
-                gutterBottom
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: { xs: '2rem', sm: '3rem', md: '3.5rem', lg: '4rem' }, 
-                }}
-              >
-                {tool.name}
-              </MuiLink>
-              <MuiLink
-                href={isLoggedIn ? tool.path : '/loginUser'}
-                underline="none"
-                color="inherit"
-                variant="h6" // Update the variant to match the desired typography style
-                component="p"
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                {tool.subtext}
-              </MuiLink>
-            </CardContent>
-          </CustomSectionContainer>
-        ))}
+          {section1.map((tool, index) => (
+            <CustomSectionContainer key={index} onClick={() => handleCardClick(tool)}>
+              <CardContent>
+                <StyledIconContainer>
+                  <img src={tool.image} alt={tool.name} />
+                </StyledIconContainer>
+                <MuiLink
+                  href={tool.path ? tool.path : '/loginUser'}
+                  underline="none"
+                  color="inherit"
+                  variant="h3" // Update the variant to match the desired typography style
+                  component="h2"
+                  gutterBottom
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: { xs: '2rem', sm: '3rem', md: '3.5rem', lg: '4rem' },
+                  }}
+                >
+                  {tool.name}
+                </MuiLink>
+                <MuiLink
+                  href={isLoggedIn ? tool.path : '/loginUser'}
+                  underline="none"
+                  color="inherit"
+                  variant="h6" // Update the variant to match the desired typography style
+                  component="p"
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {tool.subtext}
+                </MuiLink>
+              </CardContent>
+            </CustomSectionContainer>
+          ))}
 
-        {/* // Section 2 */}
-        {section2.map((tool, index) => (
-          <CustomSectionContainer key={index} onClick={() => handleCardClick(tool)}>
-            <CardContent>
-              <StyledIconContainer>
-                <img src={tool.image} alt={tool.name} />
-              </StyledIconContainer>
-              <MuiLink
-                href={tool.path ? tool.path : '/loginUser'}
-                underline="none"
-                color="inherit"
-                variant="h3" // Update the variant to match the desired typography style
-                component="h2"
-                gutterBottom
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: { xs: '2rem', sm: '3rem', md: '3.5rem', lg: '4rem' },
-                }}
-              >
-                {tool.name}
-              </MuiLink>
-              <MuiLink
-                href={isLoggedIn ? tool.path : '/loginUser'}
-                underline="none"
-                color="inherit"
-                variant="h6" // Update the variant to match the desired typography style
-                component="p"
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                {tool.subtext}
-              </MuiLink>
-            </CardContent>
-          </CustomSectionContainer>
-        ))}
+          {/* // Section 2 */}
+          {section2.map((tool, index) => (
+            <CustomSectionContainer key={index} onClick={() => handleCardClick(tool)}>
+              <CardContent>
+                <StyledIconContainer>
+                  <img src={tool.image} alt={tool.name} />
+                </StyledIconContainer>
+                <MuiLink
+                  href={tool.path ? tool.path : '/loginUser'}
+                  underline="none"
+                  color="inherit"
+                  variant="h3" // Update the variant to match the desired typography style
+                  component="h2"
+                  gutterBottom
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: { xs: '2rem', sm: '3rem', md: '3.5rem', lg: '4rem' },
+                  }}
+                >
+                  {tool.name}
+                </MuiLink>
+                <MuiLink
+                  href={isLoggedIn ? tool.path : '/loginUser'}
+                  underline="none"
+                  color="inherit"
+                  variant="h6" // Update the variant to match the desired typography style
+                  component="p"
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {tool.subtext}
+                </MuiLink>
+              </CardContent>
+            </CustomSectionContainer>
+          ))}
 
-        {/* // Section 3 */}
-        {section3.map((tool, index) => (
-          <CustomSectionContainer key={index} onClick={() => handleCardClick(tool)}>
-            <CardContent>
-              <StyledIconContainer>
-                <img src={tool.image} alt={tool.name} />
-              </StyledIconContainer>
-              <MuiLink
-                href={tool.path ? tool.path : '/loginUser'}
-                underline="none"
-                color="inherit"
-                variant="h3" // Update the variant to match the desired typography style
-                component="h2"
-                gutterBottom
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: { xs: '2rem', sm: '3rem', md: '3.5rem', lg: '4rem' },
-                }}
-              >
-                {tool.name}
-              </MuiLink>
-              <MuiLink
-                href={isLoggedIn ? tool.path : '/loginUser'}
-                underline="none"
-                color="inherit"
-                variant="h6" // Update the variant to match the desired typography style
-                component="p"
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                {tool.subtext}
-              </MuiLink>
-            </CardContent>
-          </CustomSectionContainer>
-        ))}
+          {/* // Section 3 */}
+          {section3.map((tool, index) => (
+            <CustomSectionContainer key={index} onClick={() => handleCardClick(tool)}>
+              <CardContent>
+                <StyledIconContainer>
+                  <img src={tool.image} alt={tool.name} />
+                </StyledIconContainer>
+                <MuiLink
+                  href={tool.path ? tool.path : '/loginUser'}
+                  underline="none"
+                  color="inherit"
+                  variant="h3" // Update the variant to match the desired typography style
+                  component="h2"
+                  gutterBottom
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: { xs: '2rem', sm: '3rem', md: '3.5rem', lg: '4rem' },
+                  }}
+                >
+                  {tool.name}
+                </MuiLink>
+                <MuiLink
+                  href={isLoggedIn ? tool.path : '/loginUser'}
+                  underline="none"
+                  color="inherit"
+                  variant="h6" // Update the variant to match the desired typography style
+                  component="p"
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {tool.subtext}
+                </MuiLink>
+              </CardContent>
+            </CustomSectionContainer>
+          ))}
 
-      </CustomRootContainer>
+        </CustomRootContainer>
+      )}
     </ThemeProvider>
   );
 };

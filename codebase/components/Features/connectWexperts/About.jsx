@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { ThemeProvider, styled } from '@mui/system';
 import ContentContainer from '../../styles/ContentContainerStyles';
 import SubText from '../../styles/SubTextStyles';
@@ -5,6 +6,7 @@ import RootContainer from '../../styles/RootContainerStyles';
 import Title from '../../styles/TitleStyles'
 import IconContainer from '../../styles/IconContainerStyles'
 import theme from '../../styles/theme';
+import Loader from '../../styles/Loader'
 import Section1 from './Experts'
 import Section2 from './Booking'
 
@@ -36,14 +38,28 @@ const StyledIconContainer = styled(IconContainer)(() => ({
     '& img': {
         width: '10rem',
         height: '10rem',
-        marging: '0',
+        margin: '0',
     },
 }));
 
 export default function Connect() {
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        // Simulating a delay of 2 seconds for loading
+        const timer = setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+    
+        return () => clearTimeout(timer);
+      }, []);
+
     return (
         <ThemeProvider theme={theme}>
-            <CustomRootContainer>
+        {loading ? (
+        <Loader />
+      ) : (
+        <CustomRootContainer>
                 {/* Page heading */}
                 <CustomHeaderContainer>
                     <StyledIconContainer>
@@ -56,6 +72,7 @@ export default function Connect() {
                     </CenteredSubText>
                 </CustomHeaderContainer>
             </CustomRootContainer>
+            )}  
             {/* Page sections */}
             <Section1 />
             <Section2 />

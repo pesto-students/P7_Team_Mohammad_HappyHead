@@ -3,17 +3,29 @@ import { useRouter } from 'next/router';
 import { Box, Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, TextField } from '@mui/material';
 import ButtonWrapper from '../../../styles/ButtonWrapperStyles'
 import theme from '../../../styles/theme'
+import RootContainer from '../../../styles/RootContainerStyles';
 import { ThemeProvider, styled } from '@mui/system';
 import { redirectToPage } from '../../../../utils/redirect'
 import Loader from '../../../styles/Loader';
 
+// Custom styled components for the root container, content container, and dialog
+const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
+    padding: '1rem 2rem 2rem 2rem',
+}));
+
+const Heading = styled(Typography)(({ theme }) => ({
+    ...theme.typography.h3,
+    paddingBottom: '1rem',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: theme.typography.h4.fontSize,
+    },
+  }));
+
 // Styled component for the custom content container
 const CustomContentContainer = styled(Box)(({ theme }) => ({
-    backgroundColor: theme.palette.secondary.main,
     padding: '1rem 8rem',
-    minHeight: '60vh',
     [theme.breakpoints.down('sm')]: {
-        padding: '0.5rem 1.5rem 2rem',
+        padding: '0.5rem',
     },
 }));
 
@@ -21,33 +33,57 @@ const CustomContentContainer = styled(Box)(({ theme }) => ({
 const GridContainer = styled('div')(({ theme }) => ({
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    gap: '2rem',
+    gap: '5rem',
     [theme.breakpoints.down('sm')]: {
         gridTemplateColumns: '1fr',
+        gap: '2rem',
     },
 }));
 
 // Styled component for the left column
 const LeftColumn = styled('div')(({ theme }) => ({
-    alignSelf: 'start',
-}));
-
-// Styled component for the right column
-const RightColumn = styled('div')(({ theme }) => ({
-    alignSelf: 'start',
-}));
+    backgroundColor: theme.palette.tertiary.main,
+    borderRadius: '8px',
+    padding: '1rem 1rem 2rem',
+    flex: '1',
+    alignItems: 'center',
+    [theme.breakpoints.up('sm')]: {
+        padding: '1rem 2rem',
+    },
+  }));
+  
+  // Styled component for the right column
+  const RightColumn = styled('div')(({ theme }) => ({
+    backgroundColor: theme.palette.secondary.main,
+    borderRadius: '8px',
+    padding: '1rem 1rem 2rem',
+    flex: '1',
+    alignItems: 'center',
+    '&:hover': {
+      cursor: 'pointer',
+      boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
+      transform: 'scale(1.02)',
+    },
+  }));
 
 // Styled component for the button
 const StyledButton = styled(Button)(({ theme }) => ({
     color: theme.palette.primary.contrastText,
-    border: `2px solid ${theme.palette.primary.main}`,
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-    // color: theme.palette.text.primary,
     '&:hover': {
-        backgroundColor: theme.palette.tertiary.main, // Set the desired hover background color
-        color: theme.palette.getContrastText(theme.palette.primary.contrastText), // Set the desired hover text color
+        backgroundColor: theme.palette.tertiary.main, 
+        color: theme.palette.getContrastText(theme.palette.primary.contrastText), 
     },
 }));
+
+// Styled component for close button
+const StyledCloseButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.text.primary,
+    backgroundColor: theme.palette.quinary.main,
+    '&:hover': {
+      backgroundColor: theme.palette.tertiary.main,
+    },
+  }));
 
 const BookSlot = () => {
     const router = useRouter();
@@ -206,83 +242,83 @@ const BookSlot = () => {
     }
     return (
         <ThemeProvider theme={theme}>
-            <CustomContentContainer>
-                <h1>Appointment Booking</h1>
-                <GridContainer>
-                    <LeftColumn>
-                        {expertProfile ? (
-                            <>
-                                <h2>{expertProfile.name}</h2>
-                                <Typography variant="subtitle1"><strong>Experience:</strong> {expertProfile.yearsOfExperience} years</Typography>
-                                <Typography variant="subtitle1"><strong>Qualifications:</strong> {expertProfile.qualifications}</Typography>
-                                <Typography variant="subtitle1"><strong>Speciality:</strong> {expertProfile.speciality}</Typography>
-                                <Typography variant="subtitle1"><strong>Consultation Fee:</strong> ₹{Math.floor(expertProfile.consultationFee)}</Typography>
-                                {/* <p>Qualifications: {expertProfile.qualifications}</p>
-                <p>Experience: {expertProfile.yearsOfExperience}</p>
-                <p>Consultation Fee: {expertProfile.consultationFee}</p> */}
-                            </>
-                        ) : (
-                            <p>Loading expert profile...</p>
-                        )}
-                    </LeftColumn>
-                    <RightColumn>
-                        <h2>Selected Slot Details</h2>
-                        {parsedAvailability ? (
-                            <>
-                                <Typography variant="subtitle1">
-                                    <strong> Date:</strong>{' '}
-                                    {new Date(parsedAvailability.date).toLocaleDateString('en-US', {
-                                        day: 'numeric',
-                                        month: 'long',
-                                        year: 'numeric',
-                                    })}
-                                </Typography>
-                                <Typography variant="subtitle1">
-                                    <strong> Time: </strong>{parsedSlot.startTime} - {parsedSlot.endTime}
-                                </Typography>
-                            </>
-                        ) : (
-                            <p>Loading slot details...</p>
-                        )}
+            <CustomRootContainer>
+            <Heading variant="h3" component="h2">Appointment Booking</Heading>
+                <CustomContentContainer>
+                    
+                    <GridContainer>
+                        <LeftColumn>
+                            {expertProfile ? (
+                                <>
+                                    <h2>{expertProfile.name}</h2>
+                                    <Typography variant="subtitle1"><strong>Experience:</strong> {expertProfile.yearsOfExperience} years</Typography>
+                                    <Typography variant="subtitle1"><strong>Qualifications:</strong> {expertProfile.qualifications}</Typography>
+                                    <Typography variant="subtitle1"><strong>Speciality:</strong> {expertProfile.speciality}</Typography>
+                                    <Typography variant="subtitle1"><strong>Consultation Fee:</strong> ₹{Math.floor(expertProfile.consultationFee)}</Typography>
+                                </>
+                            ) : (
+                                <p>Loading expert profile...</p>
+                            )}
+                        </LeftColumn>
+                        <RightColumn>
+                            <h2>Selected Slot Details</h2>
+                            {parsedAvailability ? (
+                                <>
+                                    <Typography variant="subtitle1">
+                                        <strong> Date:</strong>{' '}
+                                        {new Date(parsedAvailability.date).toLocaleDateString('en-US', {
+                                            day: 'numeric',
+                                            month: 'long',
+                                            year: 'numeric',
+                                        })}
+                                    </Typography>
+                                    <Typography variant="subtitle1">
+                                        <strong> Time: </strong>{parsedSlot.startTime} - {parsedSlot.endTime}
+                                    </Typography>
+                                </>
+                            ) : (
+                                <p>Loading slot details...</p>
+                            )}
 
-                        <h2>Confirm Booking</h2>
-                        <form onSubmit={handleSubmit}>
-                            <TextField
-                                id="phoneNumber"
-                                name="phoneNumber"
-                                label="Phone Number"
-                                variant="outlined"
-                                required
-                                fullWidth
-                                inputProps={{
-                                    maxLength: 10,
-                                }}
-                                sx={{
-                                    width: { xs: '90%', sm: '90%', md: '70%', lg: '60%', xl: '50%' },
-                                    '& .MuiFormLabel-root': {
-                                        color: theme.palette.text.primary,
-                                    },
-                                }}
-                            />
-                            <ButtonWrapper color='primary'>
-                                <StyledButton type="submit">Confirm Booking</StyledButton>
-                            </ButtonWrapper>
-                        </form>
-                    </RightColumn>
-                </GridContainer>
+                            <h2>Confirm Booking</h2>
+                            <form onSubmit={handleSubmit}>
+                                <TextField
+                                    id="phoneNumber"
+                                    name="phoneNumber"
+                                    label="Phone Number"
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    inputProps={{
+                                        maxLength: 10,
+                                    }}
+                                    sx={{
+                                        width: { xs: '90%', sm: '90%', md: '70%', lg: '60%', xl: '50%' },
+                                        '& .MuiFormLabel-root': {
+                                            color: theme.palette.text.primary,
+                                        },
+                                    }}
+                                />
+                                <ButtonWrapper color='primary'>
+                                    <StyledButton type="submit">Confirm Booking</StyledButton>
+                                </ButtonWrapper>
+                            </form>
+                        </RightColumn>
+                    </GridContainer>
 
-                {/* Dialog to show booking confirmation */}
-                <Dialog open={bookingConfirmed} onClose={handleCloseDialog}>
-                    <DialogTitle>Booking Confirmed!</DialogTitle>
-                    <DialogContent>
-                        <p>Your booking has been confirmed.</p>
-                        {/* Additional confirmation details */}
-                    </DialogContent>
-                    <DialogActions>
-                        <StyledButton onClick={handleCloseDialog}>Close</StyledButton>
-                    </DialogActions>
-                </Dialog>
-            </CustomContentContainer>
+                    {/* Dialog to show booking confirmation */}
+                    <Dialog open={bookingConfirmed} onClose={handleCloseDialog}>
+                        <DialogTitle>Booking Confirmed!</DialogTitle>
+                        <DialogContent>
+                            <p>Your booking has been confirmed.</p>
+                            {/* Additional confirmation details */}
+                        </DialogContent>
+                        <DialogActions>
+                            <StyledCloseButton onClick={handleCloseDialog}>Close</StyledCloseButton>
+                        </DialogActions>
+                    </Dialog>
+                </CustomContentContainer>
+            </CustomRootContainer>
         </ThemeProvider>
 
     );
