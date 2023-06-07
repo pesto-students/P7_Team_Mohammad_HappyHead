@@ -13,7 +13,7 @@ const defaultQuestionnaire = [
         'Lifestyle issues (sleep, eating, etc)',
         'None',
       ],
-      recommendation: [`Since you are experiencing personal difficulties, our recommendation would be to connect with a therapist who specializes in family therapy or stress management.`]
+      recommendation: [`Given the personal hardships you are encountering, our recommendation would be to connect with a therapist who specializes in family therapy or stress management.`]
     },
     {
       question: 'Do you experience any problems at work that cause you stress? (tick all that apply)',
@@ -23,7 +23,7 @@ const defaultQuestionnaire = [
         'An extremely demanding or insecure job',
         'None',
       ],
-      recommendation: [`Since you are experiencing work-related stress, our recommendation would be to connect with a therapist who specializes in workplace stress management or career counseling.`]
+      recommendation: [`Considering the work-related stress you are dealing with, our recommendation would be to connect with a therapist who specializes in workplace stress management or career counseling.`]
     },
     {
       question: 'Do you experience any major threats in your community that cause you stress? (tick all that apply)',
@@ -54,7 +54,7 @@ const defaultQuestionnaire = [
         'Sudden weight gain/loss',
         'None',
       ],
-      recommendation: [`Since you are experiencing physical symptoms of stress, our recommendation would be to connect with a therapist who specializes in somatic therapy or stress reduction techniques.`]
+      recommendation: [`In light of the physical symptoms of stress you are experiencing, our recommendation would be to connect with a therapist who specializes in somatic therapy or stress reduction techniques.`]
     },
     {
       question: 'Do you experience any emotional symptoms of stress? (tick all that apply)',
@@ -71,7 +71,7 @@ const defaultQuestionnaire = [
         'Have changes in appetite',
         'None',
       ],
-      recommendation: [`Since you are experiencing emotional symptoms of stress, our recommendation would be to connect with a therapist who specializes in cognitive-behavioral therapy or emotion-focused therapy.`]
+      recommendation: [`Taking into account the emotional symptoms of stress you are experiencing, our recommendation would be to connect with a therapist who specializes in cognitive-behavioral therapy or emotion-focused therapy.`]
     },
     {
       question: 'Do you experience any behavioural symptoms of stress? (tick all that apply)',
@@ -99,7 +99,7 @@ const defaultQuestionnaire = [
         'Blaming or criticizing oneself',
         'None',
       ],
-      recommendation: [`Since you are behavioural physical symptoms of stress, our recommendation would be to connect with a therapist who specializes in addiction counseling or behavioral therapy.`]
+      recommendation: [`Since you have observed behavioural symptoms of stress, our recommendation would be to connect with a therapist who specializes in addiction counseling or behavioral therapy.`]
     },
     {
       question: 'Do you have any financial concerns or stressors?',
@@ -192,7 +192,7 @@ const defaultQuestionnaire = [
       recommendation: [
         `It's important to ensure that you're getting all the necessary nutrients your body needs throughout the day. Consider speaking with a registered dietitian to create a healthy meal plan.`,
         `While it's good to have some structure in your eating habits, it's important to ensure that you're getting enough nutrients throughout the day. Consider adding a third meal or healthy snack to your routine.`,
-        `This is a healthy number of meals to have per day. Be sure to focus on incorporating a variety of nutrient-dense foods into your diet to support overall health and wellness.`,
+        `3 meals is a healthy number of meals to have per day. Be sure to focus on incorporating a variety of nutrient-dense foods into your diet to support overall health and wellness.`,
         `While it's important to eat enough to fuel your body, it's also important to be mindful of portion sizes and the quality of the food you're consuming. Consider speaking with a registered dietitian to create a healthy meal plan that meets your needs.`,
       ]
     },
@@ -275,10 +275,10 @@ const defaultQuestionnaire = [
         'Rarely',
       ],
       recommendation: [
-        `Great job! Engaging in activities that you enjoy or find relaxing multiple times a day is an excellent way to manage stress and improve your overall well-being.`,
-        `That's a good start! Engaging in activities that you enjoy or find relaxing once a day can help you manage stress and improve your overall well-being. Consider adding a few more activities to your routine to reap even more benefits.`,
-        `That's a good effort! Engaging in activities that you enjoy or find relaxing several times a week can help you manage stress and improve your overall well-being. Consider increasing the frequency of these activities to achieve even greater benefits`,
-        `It's a good start, but you might want to consider engaging in activities that you enjoy or find relaxing more frequently. Doing so can help you manage stress and improve your overall well-being.`,
+        `Great job, on taking time to relax multiple times a day! Engaging in activities that you enjoy or find relaxing multiple times a day is an excellent way to manage stress and improve your overall well-being.`,
+        `Once a day, that's a good start! Engaging in activities that you enjoy or find relaxing once a day can help you manage stress and improve your overall well-being. Consider adding a few more activities to your routine to reap even more benefits.`,
+        `Several times a week, that's a good effort! Engaging in activities that you enjoy or find relaxing several times a week can help you manage stress and improve your overall well-being. Consider increasing the frequency of these activities to achieve even greater benefits`,
+        `Once a week is a good start, but you might want to consider engaging in activities that you enjoy or find relaxing more frequently. Doing so can help you manage stress and improve your overall well-being.`,
         `Engaging in activities that you enjoy or find relaxing can be an effective way to manage stress and improve your overall well-being. Consider trying to incorporate some of these activities into your routine more frequently to achieve the maximum benefits.`,
       ]
     },
@@ -308,8 +308,8 @@ const defaultQuestionnaire = [
         'No',
       ],
       recommendation: [
-        `That's great! Engaging in hobbies and interests can help improve your overall well-being and mental health. It's important to make time for activities that bring you joy and fulfillment.`,
-        `That's okay, but it's always good to try new things and explore your interests. Hobbies and interests can provide a sense of purpose and fulfillment in life. Maybe you can try something new that you've always been curious about or ask friends for recommendations.`,
+        `It's great that you have hobbies! Engaging in hobbies and interests can help improve your overall well-being and mental health. It's important to make time for activities that bring you joy and fulfillment.`,
+        `While it's okay that you currently don't have hobbies, it's always good to try new things and explore your interests. Hobbies and interests can provide a sense of purpose and fulfillment in life. Maybe you can try something new that you've always been curious about or ask friends for recommendations.`,
       ]
     },
     {
@@ -322,7 +322,7 @@ const defaultQuestionnaire = [
         'Rarely',
       ],
       recommendation: [
-        `Great job! Taking frequent breaks throughout the day can help you stay refreshed and energized.`,
+        `Taking breaks multiple times a day, great job! Taking frequent breaks throughout the day can help you stay refreshed and energized.`,
         `It's good to take a break once a day to rest and recharge. Consider taking more breaks if you find yourself feeling fatigued.`,
         `Taking breaks throughout the day can help improve productivity and reduce stress. Consider scheduling breaks into your daily routine.`,
         `It's important to take breaks throughout the day to rest and recharge. Consider scheduling breaks into your daily routine to improve productivity and reduce stress.`,
@@ -343,9 +343,9 @@ const defaultQuestionnaire = [
       ],
       recommendation: [
         `Great job! Exercise is a proven way to manage stress and improve your overall health.`,
-        `Excellent choice! Practicing mindfulness can help reduce stress and promote mental wellbeing.`,
+        `Meditation or mindfulness practices are an excellent choice! Practicing mindfulness can help reduce stress and promote mental wellbeing.`,
         `It's good to have a support system in place. Talking to loved ones can help you cope with stress and build resilience.`,
-        `That's wonderful! Hobbies and interests can provide a healthy outlet for stress and promote relaxation.`,
+        `Engaging in hobbies or interests is wonderful! Hobbies and interests can provide a healthy outlet for stress and promote relaxation.`,
         `Seeking professional help is a brave and important step in managing stress. There's no shame in seeking help when you need it.`,
         `It's important to find what works for you. If you have other ways of coping with stress, keep doing what works best for you.`,
         `It's important to have healthy ways to manage stress. If you're not currently doing anything to cope with stress, you may want to consider trying some of the options listed below.

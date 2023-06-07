@@ -9,19 +9,36 @@ import theme from '../../../styles/theme';
 import Title from '../../../styles/TitleStyles';
 import ButtonWrapper from '../../../styles/ButtonWrapperStyles';
 import Loader from '../../../styles/Loader';
+import { redirectToPage } from '../../../../utils/redirect';
 
 // Styled component for customizing the root container
 const CustRootContainer = styled(RootContainer)(({ theme }) => ({
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
     color: theme.palette.text.primary,
     textAlign: 'left',
+    padding: '1rem 2rem 2rem 2rem',
 }))
+
+// Styled component for the main content container
+const CustomSectionContainer = styled(Container)(({ theme }) => ({
+    backgroundColor: theme.palette.secondary.main,
+    borderRadius: '8px',
+    padding: '2rem 3rem',
+    [theme.breakpoints.down('sm')]: {
+        padding: '2rem 1.5rem',
+    },
+    [theme.breakpoints.up('sm')]: {
+        padding: '2rem 4rem',
+    },
+    textAlign: 'center', 
+}));
 
 // Styled component for customizing the title typography
 const CustTitle = styled(Typography)(({ theme }) => ({
     marginBottom: theme.spacing(2),
     fontWeight: theme.typography.fontWeightBold,
     fontSize: '1.4rem',
+    textAlign: 'center',
 }))
 
 // Styled component for centering the button
@@ -31,6 +48,16 @@ const CenteredButtonWrapper = styled(ButtonWrapper)({
     marginTop: '2rem',
 });
 
+const CustomDesc = styled(Typography)(() => ({
+    marginTop: '0.5rem',
+}));
+
+// Styled component for the IconContainer with styled icons
+const StyledImg = styled('img')(() => ({
+    width: '8rem',
+    height: '8rem',
+    margin: '0 auto',
+}));
 
 const ReportGenerator = () => {
     const router = useRouter();
@@ -88,23 +115,24 @@ const ReportGenerator = () => {
     return (
         <ThemeProvider theme={theme}>
             <CustRootContainer>
-                <Container maxWidth="md" sx={{ padding: '1rem' }}>
-                    <Title variant="h4" component="h1" align="center" sx={{ paddingBottom: '0.7rem' }} gutterBottom>
-                        Report
-                    </Title>
+                <Title variant="h4" component="h1" align="center" sx={{ paddingBottom: '0.7rem' }} gutterBottom>
+                    Your Personalised Report
+                </Title>
+                <CustomSectionContainer >
+
                     {/* Render the sentences */}
                     {sentences.map((sentence, index) => (
                         <React.Fragment key={index}>
                             {index === 0 && (
-                                <React.Fragment>
-                                    <Typography paragraph>{sentence}</Typography>
-                                </React.Fragment>
+                                <CustomDesc variant="h6" component="h2" paragraph>{sentence}</CustomDesc>
+
                             )}
                             {index === 1 && (
                                 <React.Fragment>
                                     <React.Fragment>
-                                        <Typography paragraph>{sentence}</Typography>
+                                        <CustomDesc variant="h6" component="h2" paragraph>{sentence}</CustomDesc>
                                     </React.Fragment>
+                                    <StyledImg src="/images/report/sleep.png" alt="sleep" />
                                     <CustTitle gutterBottom>
                                         Sleep:
                                     </CustTitle>
@@ -113,7 +141,7 @@ const ReportGenerator = () => {
                                         <React.Fragment key={index}>
                                             {index === 8 && recommendation && (
                                                 <React.Fragment>
-                                                    <Typography paragraph>{recommendation}</Typography>
+                                                    <CustomDesc variant="h6" component="h2" paragraph>{recommendation}</CustomDesc>
                                                 </React.Fragment>
                                             )}
                                         </React.Fragment>
@@ -122,6 +150,7 @@ const ReportGenerator = () => {
                             )}
                             {index === 1 && (
                                 <React.Fragment>
+                                <StyledImg src="/images/report/yoga.png" alt="physical-activity" />
                                     <CustTitle gutterBottom>
                                         Physical Activity:
                                     </CustTitle>
@@ -129,7 +158,7 @@ const ReportGenerator = () => {
                                         <React.Fragment key={index}>
                                             {index === 9 && recommendation && (
                                                 <React.Fragment>
-                                                    <Typography paragraph>{recommendation}</Typography>
+                                                    <CustomDesc variant="h6" component="h2" paragraph>{recommendation}</CustomDesc>
                                                 </React.Fragment>
                                             )}
                                         </React.Fragment>
@@ -138,6 +167,7 @@ const ReportGenerator = () => {
                             )}
                             {index === 1 && (
                                 <React.Fragment>
+                                <StyledImg src="/images/report/screen.png" alt="screen-time" />
                                     <CustTitle gutterBottom>
                                         Screen Time:
                                     </CustTitle>
@@ -145,7 +175,7 @@ const ReportGenerator = () => {
                                         <React.Fragment key={index}>
                                             {index === 10 && recommendation && (
                                                 <React.Fragment>
-                                                    <Typography paragraph>{recommendation}</Typography>
+                                                    <CustomDesc variant="h6" component="h2" paragraph>{recommendation}</CustomDesc>
                                                 </React.Fragment>
                                             )}
                                         </React.Fragment>
@@ -154,6 +184,7 @@ const ReportGenerator = () => {
                             )}
                             {index === 1 && (
                                 <React.Fragment>
+                                <StyledImg src="/images/report/food.png" alt="food-habits" />
                                     <CustTitle gutterBottom>
                                         Food Habits:
                                     </CustTitle>
@@ -161,17 +192,17 @@ const ReportGenerator = () => {
                                         <React.Fragment key={index}>
                                             {index === 11 && recommendation && (
                                                 <React.Fragment>
-                                                    <Typography paragraph>{recommendation}</Typography>
+                                                    <CustomDesc variant="h6" component="h2" paragraph>{recommendation}</CustomDesc>
                                                 </React.Fragment>
                                             )}
                                             {index === 12 && recommendation && (
                                                 <React.Fragment>
-                                                    <Typography paragraph>{recommendation}</Typography>
+                                                    <CustomDesc variant="h6" component="h2" paragraph>{recommendation}</CustomDesc>
                                                 </React.Fragment>
                                             )}
                                             {index === 13 && recommendation && (
                                                 <React.Fragment>
-                                                    <Typography paragraph>{recommendation}</Typography>
+                                                    <CustomDesc variant="h6" component="h2" paragraph>{recommendation}</CustomDesc>
                                                 </React.Fragment>
                                             )}
                                         </React.Fragment>
@@ -180,6 +211,7 @@ const ReportGenerator = () => {
                             )}
                             {index === 1 && (
                                 <React.Fragment>
+                                <StyledImg src="/images/report/tobacco.png" alt="tobacco" />
                                     <CustTitle gutterBottom>
                                         Tobacco:
                                     </CustTitle>
@@ -187,7 +219,7 @@ const ReportGenerator = () => {
                                         <React.Fragment key={index}>
                                             {index === 14 && recommendation && (
                                                 <React.Fragment>
-                                                    <Typography paragraph>{recommendation}</Typography>
+                                                    <CustomDesc variant="h6" component="h2" paragraph>{recommendation}</CustomDesc>
                                                 </React.Fragment>
                                             )}
                                         </React.Fragment>
@@ -196,6 +228,7 @@ const ReportGenerator = () => {
                             )}
                             {index === 1 && (
                                 <React.Fragment>
+                                <StyledImg src="/images/report/beer.png" alt="alcohol" />
                                     <CustTitle gutterBottom>
                                         Alcohol Consumption:
                                     </CustTitle>
@@ -203,7 +236,7 @@ const ReportGenerator = () => {
                                         <React.Fragment key={index}>
                                             {index === 15 && recommendation && (
                                                 <React.Fragment>
-                                                    <Typography paragraph>{recommendation}</Typography>
+                                                    <CustomDesc variant="h6" component="h2" paragraph>{recommendation}</CustomDesc>
                                                 </React.Fragment>
                                             )}
                                         </React.Fragment>
@@ -212,6 +245,7 @@ const ReportGenerator = () => {
                             )}
                             {index === 1 && (
                                 <React.Fragment>
+                                <StyledImg src="/images/report/friends.png" alt="friends" />
                                     <CustTitle gutterBottom>
                                         Social Life:
                                     </CustTitle>
@@ -219,7 +253,7 @@ const ReportGenerator = () => {
                                         <React.Fragment key={index}>
                                             {index === 17 && recommendation && (
                                                 <React.Fragment>
-                                                    <Typography paragraph>{recommendation}</Typography>
+                                                    <CustomDesc variant="h6" component="h2" paragraph>{recommendation}</CustomDesc>
                                                 </React.Fragment>
                                             )}
                                         </React.Fragment>
@@ -228,6 +262,7 @@ const ReportGenerator = () => {
                             )}
                             {index === 1 && (
                                 <React.Fragment>
+                                <StyledImg src="/images/report/leisure.png" alt="leisure" />
                                     <CustTitle gutterBottom>
                                         Leisure & Relaxation:
                                     </CustTitle>
@@ -235,12 +270,12 @@ const ReportGenerator = () => {
                                         <React.Fragment key={index}>
                                             {index === 16 && recommendation && (
                                                 <React.Fragment>
-                                                    <Typography paragraph>{recommendation}</Typography>
+                                                    <CustomDesc variant="h6" component="h2" paragraph>{recommendation}</CustomDesc>
                                                 </React.Fragment>
                                             )}
                                             {index === 18 && recommendation && (
                                                 <React.Fragment>
-                                                    <Typography paragraph>{recommendation}</Typography>
+                                                    <CustomDesc variant="h6" component="h2" paragraph>{recommendation}</CustomDesc>
                                                 </React.Fragment>
                                             )}
                                         </React.Fragment>
@@ -249,6 +284,7 @@ const ReportGenerator = () => {
                             )}
                             {index === 1 && (
                                 <React.Fragment>
+                                <StyledImg src="/images/report/destress.png" alt="destress" />
                                     <CustTitle gutterBottom>
                                         De-stressing:
                                     </CustTitle>
@@ -256,12 +292,12 @@ const ReportGenerator = () => {
                                         <React.Fragment key={index}>
                                             {index === 19 && recommendation && (
                                                 <React.Fragment>
-                                                    <Typography paragraph>{recommendation}</Typography>
+                                                    <CustomDesc variant="h6" component="h2" paragraph>{recommendation}</CustomDesc>
                                                 </React.Fragment>
                                             )}
                                             {index === 20 && recommendation && (
                                                 <React.Fragment>
-                                                    <Typography paragraph>{recommendation}</Typography>
+                                                    <CustomDesc variant="h6" component="h2" paragraph>{recommendation}</CustomDesc>
                                                 </React.Fragment>
                                             )}
                                         </React.Fragment>
@@ -273,6 +309,7 @@ const ReportGenerator = () => {
                                 <React.Fragment>
                                     {userRecommendations.slice(21, 24).some(recommendation => recommendation) && (
                                         <React.Fragment>
+                                        <StyledImg src="/images/report/medicine.png" alt="medical-condition" />
                                             <CustTitle gutterBottom>
                                                 Current Medical Condition:
                                             </CustTitle>
@@ -280,7 +317,7 @@ const ReportGenerator = () => {
                                                 <React.Fragment key={index}>
                                                     {recommendation && (
                                                         <React.Fragment>
-                                                            <Typography paragraph>{recommendation}</Typography>
+                                                            <CustomDesc variant="h6" component="h2" paragraph>{recommendation}</CustomDesc>
                                                         </React.Fragment>
                                                     )}
                                                 </React.Fragment>
@@ -293,6 +330,7 @@ const ReportGenerator = () => {
                                 <React.Fragment>
                                     {userRecommendations.slice(0, 5).some(recommendation => recommendation) && (
                                         <React.Fragment>
+                                        <StyledImg src="/images/report/therapist.png" alt="therapist" />
                                             <CustTitle gutterBottom>
                                                 Recommendation for Expert Connect:
                                             </CustTitle>
@@ -300,7 +338,7 @@ const ReportGenerator = () => {
                                                 <React.Fragment key={index}>
                                                     {recommendation && (
                                                         <React.Fragment>
-                                                            <Typography paragraph>{recommendation}</Typography>
+                                                            <CustomDesc variant="h6" component="h2" paragraph>{recommendation}</CustomDesc>
                                                         </React.Fragment>
                                                     )}
                                                 </React.Fragment>
@@ -311,16 +349,17 @@ const ReportGenerator = () => {
                             )}
                             {index === 2 && (
                                 <React.Fragment>
-                                    <Typography paragraph>{sentence}</Typography>
+                                    <CustomDesc variant="h6" component="h2" paragraph>{sentence}</CustomDesc>
                                 </React.Fragment>
 
                             )}
                             {index === 3 && (
                                 <React.Fragment>
+                                <StyledImg src="/images/report/audio.png" alt="audiotools" />
                                     <CustTitle gutterBottom>
                                         Practice tools:
                                     </CustTitle>
-                                    <Typography paragraph>{sentence}</Typography>
+                                    <CustomDesc variant="h6" component="h2" paragraph>{sentence}</CustomDesc>
                                 </React.Fragment>
 
                             )}
@@ -330,18 +369,18 @@ const ReportGenerator = () => {
                                     <CustTitle gutterBottom>
                                         Disclaimer:
                                     </CustTitle>
-                                    <Typography paragraph>{sentence}</Typography>
+                                    <CustomDesc variant="h6" component="h2" paragraph>{sentence}</CustomDesc>
                                 </React.Fragment>
 
                             )}
                         </React.Fragment>
                     ))}
-                    <CenteredButtonWrapper color="tertiary" >
+                    <CenteredButtonWrapper color="primary" >
                         <Button variant="contained" onClick={handleGoBack}>
                             Go Back
                         </Button>
                     </CenteredButtonWrapper>
-                </Container>
+                </CustomSectionContainer>
             </CustRootContainer>
         </ThemeProvider>
 

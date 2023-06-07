@@ -42,11 +42,11 @@ const CustomTitle = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const CustomDesc = styled(Typography)(({ theme }) => ({
+const CustomDesc = styled(Typography)(() => ({
   marginTop: '0.5rem',
 }));
 
-const CustomImage = styled('img')(({ theme }) => ({
+const CustomImage = styled('img')(() => ({
   maxWidth: '100%', 
   height: 'auto', 
   marginBottom: '1rem',

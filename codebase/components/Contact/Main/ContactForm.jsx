@@ -106,7 +106,7 @@ export default function Contact() {
       <CustomRootContainer>
         <CustomSectionContainer>
           <StyledIconContainer>
-            <img src="/images/contact/contact.png" alt="Who" />
+            <img src="/images/contact/contact.png" alt="contact" />
           </StyledIconContainer>
           <Container maxWidth="80%">
             <ContentContainer>

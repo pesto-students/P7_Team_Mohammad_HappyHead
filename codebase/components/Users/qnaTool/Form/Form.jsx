@@ -9,12 +9,19 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { redirectToPage } from '../../../../utils/redirect';
 
 // Import the default questionnaire data array
-import defaultQuestionnaireData from '../../../../models/api/questions';
+import defaultQuestionnaireData from '../questions';
+
+// Custom styled components for the root container, content container, and dialog
+const CustomRootContainer = styled(Box)(({ theme }) => ({
+  padding: '1rem 2rem 2rem 2rem',
+  backgroundColor: theme.palette.primary.main,
+}));
 
 // Styled component for the custom content container
 const CustomContentContainer = styled(Box)({
   backgroundColor: theme.palette.secondary.main,
   padding: '1rem 8rem',
+  borderRadius: '8px',
   [theme.breakpoints.down('sm')]: {
     padding: '0.5rem 1.5rem',
   },
@@ -113,8 +120,6 @@ const QnAPage = () => {
 
 
       const recommendations = answersWithRecommendations.map((answer, index) => {
-        console.log(answer)
-        console.log(index)
         if (defaultQuestionnaireData[index].recommendation.length === 1 && answer == defaultQuestionnaireData[index].options.length - 1) {
           return "";
         }
@@ -135,8 +140,6 @@ const QnAPage = () => {
         },
       };
 
-
-      console.log(data)
       // Send a POST request to save the data
       const response = await fetch(`/api/users/qna/${username}`, {
         method: 'POST',
@@ -165,7 +168,8 @@ const QnAPage = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <CustomContentContainer>
+    <CustomRootContainer>
+    <CustomContentContainer>
         <h1 style={{ textAlign: 'center' }}>Questionnaire</h1>
         <div style={{ padding: '0.2rem 1rem' }}>
           <h3>{currentQuestion.question}</h3>
@@ -233,6 +237,7 @@ const QnAPage = () => {
           )}
         </ButtonWrapperContainer>
       </CustomContentContainer>
+    </CustomRootContainer>
     </ThemeProvider>
   );
 };
