@@ -46,6 +46,8 @@ const StyledIconContainer = styled(IconContainer)(() => ({
 
 const CustomTitle = styled(Typography)(({ theme }) => ({
   ...theme.typography.h2,
+  fontWeight: '70pt',
+  fontSize: theme.typography.h3.fontSize,
   padding: '1rem 0',
   [theme.breakpoints.down('sm')]: {
     fontSize: theme.typography.h4.fontSize,
@@ -100,7 +102,7 @@ const UpcomingAppointments = () => {
   return (
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
-        <CustomTitle component="h2">Upcoming Appointments</CustomTitle>
+      <CustomTitle> Upcoming Appointments</CustomTitle>
         {upcomingAppointments.length === 0 ? (
           noAppointmentsMessage
         ) : (
