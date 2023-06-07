@@ -1,9 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { styled, ThemeProvider } from '@mui/system';
-import { Typography } from '@mui/material';
+import { Typography, Card, CardContent } from '@mui/material';
+import RootContainer from '../../styles/RootContainerStyles';
+import SectionContainer from '../../styles/SectionsContainer';
+import IconContainer from '../../styles/IconContainerStyles';
 import TextStyle from '../../styles/SubTextStyles';
 import theme from '../../styles/theme';
+
+// Custom styled components for the root container, content container, and dialog
+const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
+  padding: '0 2rem 0',
+}));
+
+// Styled component for the main content container
+const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
+  margin: '0 2rem',
+  backgroundColor: theme.palette.primary.main,
+  width: '100%',
+}));
+
+const CustomTitle = styled(Typography)(({ theme }) => ({
+  ...theme.typography.h2,
+  [theme.breakpoints.down('sm')]: {
+    fontSize: theme.typography.h4.fontSize,
+  },
+}));
+
+const CustomCard = styled(Card)(({ theme, cardColor }) => ({
+  backgroundColor: cardColor,
+  width: '100%',
+  [theme.breakpoints.up('md')]: {
+    width: '80vw',
+  },
+  margin: '0.5rem',
+  padding: '0 2rem',
+  borderRadius: '8px',
+  '&:hover': {
+    cursor: 'pointer',
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', // Update with desired box shadow style
+    transform: 'scale(1.02)', // Update with desired transformation
+  },
+}));
+
+// Styled component for the IconContainer with styled icons
+const StyledIconContainer = styled(IconContainer)(() => ({
+  '& img': {
+    width: '10rem',
+    height: '10rem',
+  },
+}));
 
 // Custom styled component for the container
 const CustomContainer = styled('div')(({ theme }) => ({
@@ -68,18 +114,31 @@ const UpcomingAppointments = () => {
     }
   }, [username]);
 
+  // Define an array of colors
+  const cardColors = [
+    theme.palette.tertiary.main,
+    theme.palette.secondary.main,
+    theme.palette.quinary.main,
+  ];
+
   const noAppointmentsMessage = <p>No upcoming appointments</p>;
 
   return (
     <ThemeProvider theme={theme}>
-      <CustomContainer>
-        <Heading>Upcoming Appointments</Heading>
+      <CustomRootContainer>
+        <CustomTitle component="h2">Upcoming Appointments</CustomTitle>
         {upcomingAppointments.length === 0 ? (
           noAppointmentsMessage
         ) : (
-          <CustomList>
+          <CustomSectionContainer>
             {upcomingAppointments.map((appointment, index) => (
-              <CustomListItem key={`${appointment.date}-${index}`}>
+              <CustomCard
+                key={`${appointment.date}-${index}`}
+                cardColor={cardColors[index % cardColors.length]}
+              >
+                <StyledIconContainer>
+                  <img src="/images/dashboard/appointment.png" alt="appointment" />
+                </StyledIconContainer>
                 <TextStyle>
                   <strong>Date:</strong>{' '}
                   {new Date(appointment.date).toLocaleDateString('en-US', {
@@ -97,11 +156,11 @@ const UpcomingAppointments = () => {
                 <TextStyle>
                   <strong>Expert Phone Number:</strong> {appointment.user.phoneNumber}
                 </TextStyle>
-              </CustomListItem>
+              </CustomCard>
             ))}
-          </CustomList>
+          </CustomSectionContainer>
         )}
-      </CustomContainer>
+      </CustomRootContainer>
     </ThemeProvider>
   );
 };

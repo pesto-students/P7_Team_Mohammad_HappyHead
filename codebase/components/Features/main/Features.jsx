@@ -45,6 +45,12 @@ const StyledIconContainer = styled(IconContainer)(() => ({
   },
 }));
 
+const muiLinkStyles = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+};
+
 const Features = ({ isLoggedIn }) => {
   const [loading, setLoading] = useState(true);
 
@@ -93,14 +99,11 @@ const Features = ({ isLoggedIn }) => {
                   href={tool.path ? tool.path : '/loginUser'}
                   underline="none"
                   color="inherit"
-                  variant="h3" // Update the variant to match the desired typography style
-                  component="h2"
+                  variant="h3" 
                   gutterBottom
                   sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: { xs: '2rem', sm: '3rem', md: '3.5rem', lg: '4rem' },
+                    ...muiLinkStyles,
+                    fontSize: { xs: '2rem', sm: '2rem', md: '2rem', lg: '3rem' },
                   }}
                 >
                   {tool.name}
@@ -109,13 +112,9 @@ const Features = ({ isLoggedIn }) => {
                   href={isLoggedIn ? tool.path : '/loginUser'}
                   underline="none"
                   color="inherit"
-                  variant="h6" // Update the variant to match the desired typography style
+                  variant="h6" 
                   component="p"
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
+                  sx={muiLinkStyles}
                 >
                   {tool.subtext}
                 </MuiLink>
