@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { Button, Typography } from '@mui/material';
+import { Button, Card, Typography } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/system';
 import { redirectToPage } from '../../../../utils/redirect';
 
@@ -9,21 +9,42 @@ import meditationTools from '../toolsData';
 import theme from '../../../styles/theme';
 import RootContainer from '../../../styles/RootContainerStyles';
 import ButtonWrapper from '../../../styles/ButtonWrapperStyles';
+import Loader from '../../../styles/Loader';
 
-
-const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
-  padding: '2rem 0',
+const CustomRootContainer = styled(RootContainer)(() => ({
+  padding: '1rem 2rem 2rem 2rem',
 }));
 
+const CustomCard = styled(Card)(({ theme, cardcolor }) => ({
+  backgroundColor: cardcolor,
+  flex: 1,
+  [theme.breakpoints.up('md')]: {
+    width: '80vw',
+  },
+  margin: '0.5rem',
+  padding: '0 2rem',
+  borderRadius: '8px',
+  '&:hover': {
+    cursor: 'pointer',
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', // Update with desired box shadow style
+    transform: 'scale(1.02)', // Update with desired transformation
+  },
+}));
 
-const CustomAudio = styled('audio')(({ theme }) => ({
-  // marginTop: '4rem',
-  marginBottom: '0.5rem',
+const Heading = styled(Typography)(({ theme }) => ({
+  ...theme.typography.h2,
+  fontWeight: 'bold',
+  [theme.breakpoints.down('sm')]: {
+    fontSize: theme.typography.h4.fontSize,
+  },
+}));
+
+const CustomAudio = styled('div')(({ theme }) => ({
+  marginBottom: '2rem',
 }));
 
 const ButtonContainer = styled('div')(({ theme }) => ({
   display: 'flex',
-  // flexDirection: 'column',
   alignItems: 'flex-start',
   marginTop: '1rem',
   marginBottom: '2rem',
@@ -42,10 +63,17 @@ const ButtonContainer = styled('div')(({ theme }) => ({
 
 const CustomDesc = styled(Typography)(({ theme }) => ({
   fontSize: '1.3rem',
-  margin: '1rem 4rem 3rem',
+  paddingBottom: '2rem',
   [theme.breakpoints.down('sm')]: {
     fontSize: '1.2rem',
   },
+}));
+
+const CustomImage = styled('img')(({ theme }) => ({
+  maxWidth: '100%',
+  height: 'auto',
+  marginBottom: '1rem',
+  paddingTop: '2rem',
 }));
 
 const ToolPage = () => {
@@ -53,6 +81,18 @@ const ToolPage = () => {
   const { toolId, username } = router.query;
   const [completedStages, setCompletedStages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Define an array of colors
+  const cardColors = [
+    theme.palette.tertiary.main,
+    theme.palette.secondary.main,
+    theme.palette.quinary.main,
+    theme.palette.tertiary.main,
+    theme.palette.secondary.main,
+    theme.palette.quinary.main,
+    theme.palette.tertiary.main,
+    theme.palette.secondary.main,
+  ];
 
   useEffect(() => {
     // Fetch the user's data, including the toolsCompleted array, based on the username
@@ -90,7 +130,7 @@ const ToolPage = () => {
 
   // Render loading state or placeholder component while fetching data
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   const handleCompleteClick = async (toolId) => {
@@ -131,9 +171,20 @@ const ToolPage = () => {
   return (
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
-        <h2>{meditationTools[toolId - 1]?.title}</h2>
-        <CustomDesc>{meditationTools[toolId - 1]?.description}</CustomDesc>
-        <CustomAudio controls src={meditationTools[toolId - 1]?.audio || ''} />
+        <Heading variant="h3" component="h2" gutterBottom>{meditationTools[toolId - 1]?.title}</Heading>
+        <CustomCard cardcolor={cardColors[toolId - 1]}>
+          <CustomImage
+            src={meditationTools[toolId - 1]?.image}
+            alt={meditationTools[toolId - 1]?.title}
+            style={{ maxWidth: '200px', height: 'auto' }}
+          />
+          <CustomDesc>{meditationTools[toolId - 1]?.description}</CustomDesc>
+          <CustomAudio>
+          <audio controls src={meditationTools[toolId - 1]?.audio || ''}></audio>
+          </CustomAudio>
+        
+        </CustomCard>
+
         {/* Render both buttons without any condition */}
         <ButtonContainer>
           <ButtonWrapper color="quaternary">

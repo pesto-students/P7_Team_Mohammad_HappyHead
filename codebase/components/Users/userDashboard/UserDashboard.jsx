@@ -1,29 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Grid, Button, Dialog, DialogTitle, DialogContent, TextField, InputAdornment, IconButton, DialogActions } from '@mui/material';
+import { Button, CardActions, Dialog, DialogTitle, DialogContent, TextField, InputAdornment, IconButton, DialogActions, Typography } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/system';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import RootContainer from '../../styles/RootContainerStyles';
-import ContentContainer from '../../styles/ContentContainerStyles';
+import IconContainer from '../../styles/IconContainerStyles'
+import SectionContainer from '../../styles/SectionsContainer';
+import SubText from '../../styles/SubTextStyles';
 import theme from '../../styles/theme';
-import { redirectToPage } from '../../../utils/redirect';
-// import { toolsData } from '../../Users/userDashboard/toolsData';
-
-import UserProfile from './UserProfile';
-import ToolCard from './ToolCard';
+import Loader from '../../styles/Loader';
+import messages from './messages'
 
 // Custom styled components for the root container, content container, and dialog
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
-    backgroundColor: theme.palette.secondary.main,
+    padding: '0 2rem 0',
 }));
 
-const CustomContentContainer = styled(ContentContainer)(({ theme }) => ({
-    backgroundColor: theme.palette.secondary.main,
-    padding: '2rem',
-    [theme.breakpoints.up('lg')]: {
-        padding: '4rem',
+// Styled component for the main content container
+const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
+    backgroundColor: theme.palette.quinary.main,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: '3rem',
+    margin: '0 2rem',
+    width: '100%',
+}));
+
+const CustomTitle = styled(Typography)(({ theme }) => ({
+    ...theme.typography.h2,
+    [theme.breakpoints.down('sm')]: {
+        fontSize: theme.typography.h4.fontSize,
     },
 }));
+
+const cardActionsStyles = {
+    justifyContent: 'center',
+    marginBottom: '1rem',
+}
 
 const CustomDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialog-paper': {
@@ -45,21 +60,35 @@ const CustomDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
+// Styled component for the IconContainer with styled icons
+const StyledImg = styled(IconContainer)(() => ({
+    '& img': {
+        width: '8rem',
+        height: '8rem',
+        marging: '0',
+    },
+}));
+
+// Styled component for the centered subtext
+const CenteredSubText = styled(SubText)({
+    textAlign: 'center',
+    padding: '0 1rem',
+    width: '100%'
+  });
+
 // Button styles for cancel and save buttons
 const buttonStyles = {
     cancelButton: {
         color: theme.palette.text.secondary,
         backgroundColor: theme.palette.tertiary.main,
-        // Add more styling properties as needed
     },
     saveButton: {
         color: theme.palette.common.white,
         backgroundColor: theme.palette.quinary.main,
-        // Add more styling properties as needed
     },
 };
 
-const UserDashboard = ({ isLoggedIn }) => {
+const UserDashboard = () => {
     const router = useRouter();
     const { username } = router.query;
     // State variables
@@ -68,26 +97,6 @@ const UserDashboard = ({ isLoggedIn }) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [editedProfile, setEditedProfile] = useState({ ...userProfile, password: '' }); // Initialize with empty password
     const [showPassword, setShowPassword] = useState(false);
-
-    const toolsData = [
-        {
-            name: 'Your Mental Health Report',
-            subtext:
-                'Answer a few questions related to your stressors & lifestyle and get personalized insights and recommendations',
-            path: `/users/qna/${username}`,
-        },
-        {
-            name: 'Connect with Experts',
-            subtext:
-                'Get personalized guidance and support from certified professionals to address your mental health concerns effectively.',
-            path: `/users/expertConnect/${username}`,
-        },
-        {
-            name: 'Guided Practice Tools',
-            subtext: `Discover effective relaxation techniques and practices to enhance your well-being and find inner calm amidst life's challenges.`,
-            path: `/users/practicetools/${username}`,
-        },
-    ];
 
     // Open the profile edit dialog
     const handleOpenDialog = () => {
@@ -101,17 +110,17 @@ const UserDashboard = ({ isLoggedIn }) => {
     };
 
     useEffect(() => {
-         // Fetch user profile data when the component mounts and username changes
-    const getUserProfile = async () => {
-        try {
-            const response = await fetch(`/api/users/dashboard/${username}`)
-            const userProfile = await response.json();
-            setUserProfile(userProfile);
-            setEditedProfile(userProfile);
-        } catch (error) {
-            console.error('Failed to fetch user profile', error);
+        // Fetch user profile data when the component mounts and username changes
+        const getUserProfile = async () => {
+            try {
+                const response = await fetch(`/api/users/dashboard/${username}`)
+                const userProfile = await response.json();
+                setUserProfile(userProfile);
+                setEditedProfile(userProfile);
+            } catch (error) {
+                console.error('Failed to fetch user profile', error);
+            }
         }
-    }
         getUserProfile();
     }, [username]);
 
@@ -159,111 +168,105 @@ const UserDashboard = ({ isLoggedIn }) => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
     };
 
-    // Handle click on a tool card
-    const handleCardClick = (tool) => {
-            console.log(`Redirecting to ${tool.path}`);
-            redirectToPage(tool.path);
-    };
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+    
     if (!userProfile) {
-        return <div>Loading...</div>;
+        return <Loader />;
     }
     return (
         <ThemeProvider theme={theme}>
-            {/* Custom styled root container */}
             <CustomRootContainer>
-                {/* Custom styled content container */}
-                <CustomContentContainer>
-                    <Grid container spacing={2}>
-                        {/* User profile component */}
-                        <UserProfile userProfile={userProfile} handleOpenDialog={handleOpenDialog} />
+                {/* User profile component */}
+                <CustomSectionContainer>
+                    <StyledImg>
+                        <img src="/images/dashboard/bee.png" alt="happy-bee" />
+                    </StyledImg>
+                    {userProfile && (
+                        <CustomTitle component="h2">Hey there, {userProfile.name}!</CustomTitle>
+                    )}
+                    <CenteredSubText>{randomMessage}</CenteredSubText>
+                    <CardActions style={cardActionsStyles}>
+                        <Button variant="contained" color="primary" onClick={handleOpenDialog}>
+                            Edit Profile
+                        </Button>
+                    </CardActions>
+                </CustomSectionContainer>
 
-                        {/* Tool cards */}
-                        <Grid item xs={12} lg={8} container spacing={2}>
-                            {toolsData.map((tool, index) => (
-                                <ToolCard
-                                    key={index}
-                                    tool={tool}
-                                    handleCardClick={handleCardClick}
-                                    isLoggedIn={isLoggedIn}
-                                />
-                            ))}
-                        </Grid>
-                    </Grid>
-                </CustomContentContainer>
+
+                {/* Custom styled dialog */}
+                <CustomDialog open={openDialog} onClose={handleCloseDialog}>
+                    <DialogTitle>Edit Profile</DialogTitle>
+                    <DialogContent>
+                        {/* Profile edit form */}
+                        <TextField
+                            fullWidth
+                            margin="normal"
+                            variant="outlined"
+                            label="Name"
+                            name="name"
+                            value={editedProfile.name}
+                            onChange={handleInputChange}
+                        />
+                        <TextField
+                            fullWidth
+                            margin="normal"
+                            variant="outlined"
+                            label="Username"
+                            name="username"
+                            value={editedProfile.username}
+                            onChange={handleInputChange}
+                        />
+                        <TextField
+                            fullWidth
+                            margin="normal"
+                            variant="outlined"
+                            label="Email"
+                            name="email"
+                            value={editedProfile.email}
+                            onChange={handleInputChange}
+                        />
+                        <TextField
+                            fullWidth
+                            margin="normal"
+                            variant="outlined"
+                            label="Date of Birth"
+                            name="dob"
+                            type="date"
+                            InputLabelProps={{ shrink: true }}
+                            value={editedProfile.dob}
+                            onChange={handleInputChange}
+                        />
+                        <TextField
+                            fullWidth
+                            margin="normal"
+                            variant="outlined"
+                            label="Password"
+                            name="password"
+                            type={showPassword ? 'text' : 'password'}
+                            value={editedProfile.password}
+                            onChange={handleInputChange}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton onClick={handleTogglePassword}>
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button style={buttonStyles.cancelButton} onClick={handleCloseDialog}>
+                            Cancel
+                        </Button>
+                        <Button style={buttonStyles.saveButton} onClick={handleSaveProfile}>
+                            Save
+                        </Button>
+                    </DialogActions>
+                </CustomDialog>
+
             </CustomRootContainer>
-
-            {/* Custom styled dialog */}
-            <CustomDialog open={openDialog} onClose={handleCloseDialog}>
-                <DialogTitle>Edit Profile</DialogTitle>
-                <DialogContent>
-                    {/* Profile edit form */}
-                    <TextField
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        label="Name"
-                        name="name"
-                        value={editedProfile.name}
-                        onChange={handleInputChange}
-                    />
-                    <TextField
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        label="Username"
-                        name="username"
-                        value={editedProfile.username}
-                        onChange={handleInputChange}
-                    />
-                    <TextField
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        label="Email"
-                        name="email"
-                        value={editedProfile.email}
-                        onChange={handleInputChange}
-                    />
-                    <TextField
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        label="Date of Birth"
-                        name="dob"
-                        type="date"
-                        InputLabelProps={{ shrink: true }}
-                        value={editedProfile.dob}
-                        onChange={handleInputChange}
-                    />
-                    <TextField
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        label="Password"
-                        name="password"
-                        type={showPassword ? 'text' : 'password'}
-                        value={editedProfile.password}
-                        onChange={handleInputChange}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton onClick={handleTogglePassword}>
-                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button style={buttonStyles.cancelButton} onClick={handleCloseDialog}>
-                        Cancel
-                    </Button>
-                    <Button style={buttonStyles.saveButton} onClick={handleSaveProfile}>
-                        Save
-                    </Button>
-                </DialogActions>
-            </CustomDialog>
         </ThemeProvider>
     );
 };

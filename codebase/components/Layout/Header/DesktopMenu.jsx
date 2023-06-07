@@ -18,7 +18,7 @@ const DesktopMenu = ({ pages, handleCloseNavMenu, theme }) => {
         </MuiLink>
       ))}
     </Box>
-  )
-}
+  );
+};
 
 export default DesktopMenu

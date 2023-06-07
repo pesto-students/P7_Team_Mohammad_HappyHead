@@ -13,14 +13,6 @@ import DesktopMenu from './DesktopMenu'
 import MobileMenu from './MobileMenu'
 import UserMenu from './UserMenu'
 
-// Array of pages for navigation
-const pages = [
-  { name: 'About', path: '/about' },
-  { name: 'Features', path: '/features' },
-  { name: 'Contact', path: '/contact' },
-]
-
-
 // ResponsiveAppBar component
 function ResponsiveAppBar({ isLoggedIn }) {
   const router = useRouter();
@@ -29,14 +21,21 @@ function ResponsiveAppBar({ isLoggedIn }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
 
+  // Array of pages for navigation
+  const pages = [
+    { name: 'About', path: '/about' },
+    { name: isLoggedIn ? 'Dashboard' : 'Features', path: isLoggedIn ? `/users/dashboard/${username}` : '/features' },
+    { name: 'Contact', path: '/contact' },
+  ];
 
   // Array of login options
-const login = [
-  { name: 'Sign In', path: '/signin' },
-  { name: 'Sign Up', path: '/signup' },
-  { name: 'Dashboard', path: `/user/dashboard/${username}` },
-  { name: 'Logout', path: '/logout' },
-]
+  const login = [
+    { name: 'Sign In', path: '/signin' },
+    { name: 'Sign Up', path: '/signup' },
+    { name: 'Dashboard', path: `/users/dashboard/${username}` },
+    { name: 'Logout', path: '/logout' },
+  ];
+
   // Event handlers for opening and closing navigation menu
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget)
@@ -54,8 +53,16 @@ const login = [
     setAnchorElUser(null)
   };
 
+  const filteredPages = pages.filter((page) => {
+    if (page.name === 'Dashboard') {
+      return isLoggedIn;
+    }
+    return true;
+  });
+
   // Filtering login options based on user's login status
-  const filteredLoginOptions = username ? login.slice(2, 4)  : login.slice(0, 2);
+  const filteredLoginOptions = username ? login.slice(2, 4) : login.slice(0, 2);
+
   return (
     <ThemeProvider theme={theme}>
       <AppBar position="static">
@@ -90,12 +97,12 @@ const login = [
                 anchorElNav={anchorElNav}
                 handleOpenNavMenu={handleOpenNavMenu}
                 handleCloseNavMenu={handleCloseNavMenu}
-                pages={pages}
+                pages={filteredPages}
                 theme={theme}
               />
             </Box>
 
-            <Logo sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}  />
+            <Logo sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
 
             <Typography
               variant="h5"
@@ -119,7 +126,7 @@ const login = [
             </Typography>
 
             {/* Desktop Styling */}
-            <DesktopMenu pages={pages} handleCloseNavMenu={handleCloseNavMenu} theme={theme} />
+            <DesktopMenu pages={filteredPages} handleCloseNavMenu={handleCloseNavMenu} theme={theme} />
 
             {/* User Menu */}
             <UserMenu
@@ -141,4 +148,4 @@ ResponsiveAppBar.defaultProps = {
   isLoggedIn: false,
 }
 
-export default ResponsiveAppBar
+export default ResponsiveAppBar;

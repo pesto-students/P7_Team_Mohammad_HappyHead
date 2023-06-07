@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Button, Typography } from '@mui/material';
 import { ThemeProvider } from '@mui/system';
 import Face2OutlinedIcon from '@mui/icons-material/Face2Outlined';
@@ -14,6 +14,12 @@ import IconContainer from '../styles/IconContainerStyles';
 import Title from '../styles/TitleStyles';
 import Subtitle from '../styles/SubtitleStyles';
 import ButtonWrapper from '../styles/ButtonWrapperStyles';
+import Loader from '../styles/Loader';
+
+// Styled component for the root container
+const CustomRoot = styled(RootContainer)(({ theme }) => ({
+  backgroundColor: theme.palette.secondary.main,
+}));
 
 const LoginLinkTypography = styled(Typography)`
   padding-top: 16px;
@@ -25,10 +31,23 @@ const LoginLinkTypography = styled(Typography)`
 `;
 
 const HeroComponent = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading data
+    setTimeout(() => {
+      setIsLoading(false);
+    });
+  }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
     <ThemeProvider theme={theme}>
       {/* Custom root container */}
-      <RootContainer>
+      <CustomRoot>
         {/* Custom content container */}
         <ContentContainer>
           {/* Title */}
@@ -69,7 +88,7 @@ const HeroComponent = () => {
             Already a user? <a href="/login">Login</a>
           </LoginLinkTypography>
         </ContentContainer>
-      </RootContainer>
+      </CustomRoot>
     </ThemeProvider>
   );
 };

@@ -1,54 +1,70 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { styled, ThemeProvider } from '@mui/system';
-import { Typography } from '@mui/material';
+import { Typography, Card, CardContent, Grid } from '@mui/material';
+import RootContainer from '../../styles/RootContainerStyles';
+import SectionContainer from '../../styles/SectionsContainer';
+import IconContainer from '../../styles/IconContainerStyles';
 import TextStyle from '../../styles/SubTextStyles';
 import theme from '../../styles/theme';
 
-// Custom styled component for the container
-const CustomContainer = styled('div')(({ theme }) => ({
-  backgroundColor: theme.palette.tertiary.main,
-  padding: '2rem',
-  [theme.breakpoints.up('lg')]: {
-    paddingLeft: '7rem',
-  },
+// Custom styled components for the root container, content container, and dialog
+const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
+  padding: '1rem 2rem 2rem 2rem',
 }));
 
-const CustomList = styled('ul')({
-  listStyleType: 'none',
-  padding: 0,
-});
-
-const CustomListItem = styled('li')({
-  display: 'inline-block',
-  border: '0.2rem solid white',
+const CustomCard = styled(Card)(({ theme, cardColor }) => ({
+  backgroundColor: cardColor,
+  width: '100%',
+  [theme.breakpoints.up('md')]: {
+    width: '60vw',
+    padding: '0 2rem',
+  },
+  margin: '0.5rem',
   borderRadius: '8px',
-  background: 'transparent',
-  padding: '1rem',
-  marginBottom: '1rem',
-  [theme.breakpoints.up('lg')]: {
-    marginRight: '2rem',
-  },
-});
-
-const Heading = styled('h2')(({ theme }) => ({
-  textAlign: 'center',
-  paddingBottom: '1rem',
-  [theme.breakpoints.up('lg')]: {
-    textAlign: 'left',
+  '&:hover': {
+    cursor: 'pointer',
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', // Update with desired box shadow style
+    transform: 'scale(1.02)', // Update with desired transformation
   },
 }));
 
-const LoadingState = styled('p')({
-  textAlign: 'center',
+const CustomCardContent = styled(CardContent)(({ theme, cardColor }) => ({
+  [theme.breakpoints.up('md')]: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 2fr',
+  },
+}));
+
+// Styled component for the IconContainer with styled icons
+const StyledIconContainer = styled(IconContainer)(() => ({
+  '& img': {
+    width: '10rem',
+    height: '10rem',
+  },
+}));
+
+const CustomTitle = styled(Typography)(({ theme }) => ({
+  ...theme.typography.h2,
+  fontWeight: '70pt',
+  fontSize: theme.typography.h3.fontSize,
+  padding: '1rem 0',
+  [theme.breakpoints.down('sm')]: {
+    fontSize: theme.typography.h4.fontSize,
+  },
+}));
+
+const SubText = styled(Typography)(({ theme }) => ({
+  fontFamily: theme.typography.h2.fontFamily,
+  marginBottom: theme.spacing(2),
+  marginTop: theme.spacing(2),
   fontSize: '1.2rem',
-});
+}))
 
 const UpcomingAppointments = () => {
   const router = useRouter();
   const { username } = router.query;
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -57,17 +73,15 @@ const UpcomingAppointments = () => {
         const data = await response.json();
 
         const bookedSlots = data.bookedSlots || [];
-        const filteredAppointments = bookedSlots.filter(slot => {
+        const filteredAppointments = bookedSlots.filter((slot) => {
           const appointmentDate = new Date(slot.date);
           const currentDate = new Date();
           return appointmentDate > currentDate;
         });
-      
+
         setUpcomingAppointments(filteredAppointments);
-        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching appointments:', error);
-        setIsLoading(false);
       }
     };
 
@@ -76,42 +90,58 @@ const UpcomingAppointments = () => {
     }
   }, [username]);
 
+  // Define an array of colors
+  const cardColors = [
+    theme.palette.tertiary.main,
+    theme.palette.secondary.main,
+    theme.palette.quinary.main,
+  ];
+
   const noAppointmentsMessage = <p>No upcoming appointments</p>;
 
   return (
     <ThemeProvider theme={theme}>
-      <CustomContainer>
-        <Heading>Upcoming Appointments</Heading>
-        {isLoading ? (
-          <LoadingState>Loading appointments...</LoadingState>
-        ) : upcomingAppointments.length === 0 ? (
+      <CustomRootContainer>
+      <CustomTitle> Upcoming Appointments</CustomTitle>
+        {upcomingAppointments.length === 0 ? (
           noAppointmentsMessage
         ) : (
-          <CustomList>
+          <>
             {upcomingAppointments.map((appointment, index) => (
-              <CustomListItem key={`${appointment.date}-${index}`}>
-                <TextStyle>
-                  <strong>Date:</strong>{" "}
-                  {new Date(appointment.date).toLocaleDateString("en-US", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </TextStyle>
-                <TextStyle>
-                  <strong>Time:</strong> {appointment.startTime} - {appointment.endTime}
-                </TextStyle>
-                <TextStyle>
-                  <strong>Expert Name:</strong> {appointment.user.name}
-                </TextStyle>
-                <TextStyle>
-                  <strong>Expert Phone Number:</strong> {appointment.user.phoneNumber}
-                </TextStyle>
-              </CustomListItem>
+              <CustomCard
+                cardColor={cardColors[index % cardColors.length]}
+                key={`${appointment.date}-${index}`}>
+                <CustomCardContent>
+                  <StyledIconContainer>
+                    <img src="/images/dashboard/appointment.png" alt="appointment" />
+                  </StyledIconContainer>
+
+                  <div>
+                    <SubText>
+                      <strong>Date:</strong>{' '}
+                      {new Date(appointment.date).toLocaleDateString('en-US', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                      })}
+                    </SubText>
+                    <SubText>
+                      <strong>Time:</strong> {appointment.startTime} - {appointment.endTime}
+                    </SubText>
+                    <SubText>
+                      <strong>Expert Name:</strong> {appointment.user.name}
+                    </SubText>
+                    <SubText>
+                      <strong>Expert Phone Number:</strong> {appointment.user.phoneNumber}
+                    </SubText>
+                  </div>
+                </CustomCardContent>
+              </CustomCard>
+
             ))}
-          </CustomList>
+          </>
         )}
-      </CustomContainer>
+      </CustomRootContainer>
     </ThemeProvider>
   );
 };

@@ -1,22 +1,16 @@
 import { styled } from '@mui/system'
 import { ThemeProvider } from '@mui/system'
-import { Grid } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 
 import theme from '../styles/theme'
-import Title from '../styles/TitleStyles'
-import SubText from '../styles/SubTextStyles'
 import RootContainer from '../styles/RootContainerStyles'
 import ContentContainer from '../styles/ContentContainerStyles'
 import IconContainer from '../styles/IconContainerStyles'
 import ColumnContainer from '../styles/ColumnContainerStyle'
 
-import Icon1 from '@mui/icons-material/SupervisedUserCircleOutlined'
-import Icon2 from '@mui/icons-material/LocalHotel'
-import Icon3 from '@mui/icons-material/SentimentVerySatisfiedOutlined'
-
 // Styled component for the root container
 const CustomRoot = styled(RootContainer)(({ theme }) => ({
-  backgroundColor: theme.palette.tertiary.main,
+  backgroundColor: theme.palette.primary.main,
 }));
 
 // Styled component for the main content container
@@ -24,14 +18,21 @@ const CustomAboutContainer = styled(ContentContainer)(({ theme }) => ({
   maxWidth: 'none', // Exclude the maxWidth property
   backgroundColor: theme.palette.tertiary.main,
   margin: theme.spacing(2),
+  borderRadius:'8px',
+  padding: '3rem 0',
 }));
 
 // Styled component for the IconContainer with styled icons
-const StyledIconContainer = styled(IconContainer)(({ theme }) => ({
-  '& svg': {
-    fontSize: '3rem',
-    color: theme.palette.primary.main,
+const StyledIconContainer = styled(IconContainer)(() => ({
+  '& img': {
+    width: '10rem',
+    height: '10rem',
   },
+}));
+
+const CustomDesc = styled(Typography)(({ theme }) => ({
+  marginTop: '0.5rem',
+  padding: '1rem 3rem',
 }));
 
 const Tile1 = () => {
@@ -47,12 +48,11 @@ const Tile1 = () => {
               <ColumnContainer>
                 {/* StyledIconContainer for Joy */}
                 <StyledIconContainer>
-                  <Icon1 />
+                  <img src="/images/homepage/calm.png" alt="Joy" />
                 </StyledIconContainer>
-                <Title variant="h5">Find more joy</Title>
-                <SubText variant="body1">
-                Catch your breath, relax your mind, and feel 14% less stressed in just 10 days.
-                </SubText>
+                <CustomDesc variant="h6" component="h2">
+                  Catch your breath, relax your mind, and feel 14% less stressed in just 10 days.
+                </CustomDesc>
               </ColumnContainer>
             </Grid>
 
@@ -61,12 +61,11 @@ const Tile1 = () => {
               <ColumnContainer>
                 {/* StyledIconContainer for Sleep */}
                 <StyledIconContainer>
-                  <Icon2 />
+                  <img src="/images/homepage/sleep.png" alt="Sleep" />
                 </StyledIconContainer>
-                <Title variant="h5">Get more goodnights</Title>
-                <SubText variant="body1">
-                Put your mind to bed, wake up refreshed, and make good days your new normal.
-                </SubText>
+                <CustomDesc variant="h6" component="h2">
+                  Put your mind to bed, wake up refreshed, and make good days your new normal.
+                </CustomDesc>
               </ColumnContainer>
             </Grid>
 
@@ -75,12 +74,11 @@ const Tile1 = () => {
               <ColumnContainer>
                 {/* StyledIconContainer for Happiness */}
                 <StyledIconContainer>
-                  <Icon3 />
+                  <img src="/images/homepage/happiness.png" alt="Happiness" />
                 </StyledIconContainer>
-                <Title variant="h5">Make every day happier</Title>
-                <SubText variant="body1">
-                Do it for yourself, and everyone you love. It only takes a few minutes to find some headspace.
-                </SubText>
+                <CustomDesc variant="h6" component="h2">
+                  Do it for yourself, and everyone you love. It only takes a few minutes to find some headspace.
+                </CustomDesc>
               </ColumnContainer>
             </Grid>
           </Grid>

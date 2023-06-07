@@ -8,22 +8,33 @@ import Face5OutlinedIcon from '@mui/icons-material/Face5Outlined';
 
 import theme from '../styles/theme';
 import RootContainer from '../styles/RootContainerStyles';
-import ContentContainer from '../styles/ContentContainerStyles';
 import IconContainer from '../styles/IconContainerStyles';
 import Title from '../styles/TitleStyles';
 import SubText from '../styles/SubTextStyles';
 import ButtonWrapper from '../styles/ButtonWrapperStyles';
+import SectionContainer from '../styles/SectionsContainer'
 
-// Styled component for the custom root container
-const CustomRootContainer = styled(RootContainer)({
-  backgroundColor: theme.palette.quinary.main,
-});
+// Custom styled components for the root container, content container, and dialog
+const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
+  padding: '2rem 2rem 1rem  2rem',
+}));
 
-// Styled component for the custom content container
-const CustomContentContainer = styled(ContentContainer)({
+// Styled component for the main content container
+const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
   backgroundColor: theme.palette.quinary.main,
-  padding: '2.5rem',
-});
+  flexDirection: 'column',
+  alignItems: 'center',
+  minWidth: '100%', 
+  [theme.breakpoints.down('sm')]: {
+    paddingBottom: '3rem',
+},
+}));
+
+const CustomTitle = styled(Title)(({ theme }) => ({
+    [theme.breakpoints.down('sm')]: {
+    padding: '1rem',
+},
+}));
 
 const LoginLinkTypography = styled(Typography)(({ theme }) => ({
   paddingTop: 16,
@@ -40,9 +51,9 @@ const AboutHero = () => {
       {/* Custom Root container */}
       <CustomRootContainer>
         {/* Custom Content container */}
-        <CustomContentContainer>
+        <CustomSectionContainer>
           {/* Title */}
-          <Title variant="h2">Try HappyHead for free today</Title>
+          <CustomTitle variant="h2">Try HappyHead for free today</CustomTitle>
 
           {/* Sub text */}
           <SubText variant="h5">
@@ -75,7 +86,7 @@ const AboutHero = () => {
           <LoginLinkTypography variant="body2" color="primary" align="center">
             Already a user? <a href="/login">Login</a>
           </LoginLinkTypography>
-        </CustomContentContainer>
+        </CustomSectionContainer>
       </CustomRootContainer>
     </ThemeProvider>
   );

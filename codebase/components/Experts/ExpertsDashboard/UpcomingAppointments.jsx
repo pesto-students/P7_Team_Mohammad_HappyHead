@@ -54,17 +54,10 @@ const SubText = styled(Typography)(({ theme }) => ({
   paddingLeft: '3rem',
 }));
 
-
-const LoadingState = styled('p')({
-  textAlign: 'center',
-  fontSize: '1.2rem',
-});
-
 const UpcomingAppointments = () => {
   const router = useRouter();
   const { expertname } = router.query;
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -93,10 +86,8 @@ const UpcomingAppointments = () => {
         }, []);
 
         setUpcomingAppointments(expertAvailability);
-        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching appointments:', error);
-        setIsLoading(false);
       }
     };
 
@@ -111,9 +102,7 @@ const UpcomingAppointments = () => {
     <ThemeProvider theme={theme}>
       <CustomContainer>
         <Heading>Upcoming Appointments</Heading>
-        {isLoading ? (
-          <LoadingState>Loading appointments...</LoadingState>
-        ) : upcomingAppointments.length === 0 ? (
+        {upcomingAppointments.length === 0 ? (
           noAppointmentsMessage
         ) : (
           <CustomList>

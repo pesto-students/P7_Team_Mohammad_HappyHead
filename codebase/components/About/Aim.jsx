@@ -6,31 +6,25 @@ import theme from '../styles/theme'
 import Title from '../styles/TitleStyles'
 import SubText from '../styles/SubTextStyles'
 import RootContainer from '../styles/RootContainerStyles'
-import ContentContainer from '../styles/ContentContainerStyles'
 import IconContainer from '../styles/IconContainerStyles'
 import ColumnContainer from '../styles/ColumnContainerStyle'
+import SectionContainer from '../styles/SectionsContainer'
 
-import Who from '@mui/icons-material/SupervisedUserCircleOutlined'
-import What from '@mui/icons-material/RecordVoiceOverOutlined'
-import Why from '@mui/icons-material/SentimentVerySatisfiedOutlined'
-
-// Styled component for the root container
-const CustomRoot = styled(RootContainer)(({ theme }) => ({
-  backgroundColor: theme.palette.tertiary.main,
+// Custom styled components for the root container, content container, and dialog
+const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
+  padding: '2rem',
 }));
 
 // Styled component for the main content container
-const CustomAboutContainer = styled(ContentContainer)(({ theme }) => ({
-  maxWidth: 'none', // Exclude the maxWidth property
+const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
   backgroundColor: theme.palette.tertiary.main,
-  margin: theme.spacing(2),
 }));
 
 // Styled component for the IconContainer with styled icons
-const StyledIconContainer = styled(IconContainer)(({ theme }) => ({
-  '& svg': {
-    fontSize: '3rem',
-    color: theme.palette.primary.main,
+const StyledIconContainer = styled(IconContainer)(() => ({
+  '& img': {
+    width: '10rem',
+    height: '10rem',
   },
 }));
 
@@ -43,9 +37,9 @@ const WhoWhatWe = () => {
   return (
     <ThemeProvider theme={theme}>
       {/* Root container */}
-      <CustomRoot>
+      <CustomRootContainer>
         {/* Main content container */}
-        <CustomAboutContainer>
+        <CustomSectionContainer>
         <CustomTitle variant="h3">The Aim</CustomTitle>
           <Grid container spacing={2}>
             {/* First column */}
@@ -53,7 +47,7 @@ const WhoWhatWe = () => {
               <ColumnContainer>
                 {/* StyledIconContainer for Who */}
                 <StyledIconContainer>
-                  <Who />
+                <img src="/images/aboutpage/fistbump.png" alt="Who" />
                 </StyledIconContainer>
                 <Title variant="h5">Who we are</Title>
                 <SubText variant="body1">
@@ -68,7 +62,7 @@ const WhoWhatWe = () => {
               <ColumnContainer>
                 {/* StyledIconContainer for What */}
                 <StyledIconContainer>
-                  <What />
+                <img src="/images/aboutpage/meditation.png" alt="What" />
                 </StyledIconContainer>
                 <Title variant="h5">What we do</Title>
                 <SubText variant="body1">
@@ -83,7 +77,7 @@ const WhoWhatWe = () => {
               <ColumnContainer>
                 {/* StyledIconContainer for Why */}
                 <StyledIconContainer>
-                  <Why />
+                <img src="/images/aboutpage/relax.png" alt="Why" />
                 </StyledIconContainer>
                 <Title variant="h5">Why we do it</Title>
                 <SubText variant="body1">
@@ -93,8 +87,8 @@ const WhoWhatWe = () => {
               </ColumnContainer>
             </Grid>
           </Grid>
-        </CustomAboutContainer>
-      </CustomRoot>
+        </CustomSectionContainer>
+      </CustomRootContainer>
     </ThemeProvider>
   )
 }
