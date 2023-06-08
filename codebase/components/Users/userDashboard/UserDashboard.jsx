@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
 import { Button, CardActions, Dialog, DialogTitle, DialogContent, TextField, InputAdornment, IconButton, DialogActions, Typography } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/system';
@@ -96,11 +97,25 @@ const UserDashboard = () => {
     const router = useRouter();
     const { username } = router.query;
     // State variables
-    const [userProfile, setUserProfile] = useState();
+    const [userProfile, setUserProfile] = useState(null);
     const [openDialog, setOpenDialog] = useState(false);
-    const [editedProfile, setEditedProfile] = useState({ ...userProfile, password: '' }); // Initialize with empty password
+    const [editedProfile, setEditedProfile] = useState({ ...userProfile, password: '' } || {}); // Initialize with an empty object
     const [showPassword, setShowPassword] = useState(false);
     const [originalUsername, setOriginalUsername] = useState(''); // New state variable for storing the original username
+    const [usernameAvailability, setUsernameAvailability] = useState(null); // New state variable for username availability
+    const [usernameAvailable, setUsernameAvailable] = useState(false);
+
+
+    // Debounced username availability check function
+    const checkUsernameAvailabilityDebounced = debounce(async () => {
+        try {
+            const response = await fetch(`/api/users/dashboard/availability/${editedProfile.username}`);
+            const { available } = await response.json();
+            setUsernameAvailable(available);
+        } catch (error) {
+            console.error('Failed to check username availability', error);
+        }
+    }, 1000);
 
     // Open the profile edit dialog
     const handleOpenDialog = () => {
@@ -113,32 +128,25 @@ const UserDashboard = () => {
         setOpenDialog(false);
     };
 
-    useEffect(() => {
-        // Fetch user profile data when the component mounts and username changes
-        const getUserProfile = async () => {
-            try {
-                const response = await fetch(`/api/users/dashboard/${username}`)
-                const userProfile = await response.json();
-                setUserProfile(userProfile);
-                setEditedProfile(userProfile);
-                setOriginalUsername(username);
-            } catch (error) {
-                console.error('Failed to fetch user profile', error);
-            }
-        }
-        getUserProfile();
-    }, [username]);
-
-    
-
     const handleSaveProfile = async () => {
         try {
+
+            // Fetch the user profile with the new username
+            const res = await fetch(`/api/users/dashboard/${editedProfile.username}`);
+            const existingUser = await res.json();
+
+            // Check if the username already exists and it belongs to a different user
+            if (existingUser && existingUser.username !== originalUsername) {
+                console.error('Username already exists');
+                alert('Username already exists, try something else.');
+                return; // Stop execution and display an error message
+            }
             const response = await fetch(`/api/users/dashboard/${originalUsername}`, { // Use the original username to make the request
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ oldUsername: originalUsername, editedProfile}), // Include oldUsername field in the request body
+                body: JSON.stringify({ oldUsername: originalUsername, editedProfile }), // Include oldUsername field in the request body
             });
 
             if (response.ok) {
@@ -155,27 +163,55 @@ const UserDashboard = () => {
 
 
     // Handle input change in the profile edit form
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        if (name === 'dob') {
-            // Convert the date value to the required format "yyyy-MM-dd"
-            const formattedDate = new Date(value).toISOString().split('T')[0];
-            setEditedProfile((prevState) => ({
-                ...prevState,
-                [name]: formattedDate,
-            }));
-        } else {
-            setEditedProfile((prevState) => ({
-                ...prevState,
-                [name]: value,
-            }));
-        }
-    };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'dob') {
+      // Convert the date value to the required format "yyyy-MM-dd"
+      const formattedDate = new Date(value).toISOString().split('T')[0];
+      setEditedProfile((prevState) => ({
+        ...prevState,
+        [name]: formattedDate,
+      }));
+    } else {
+      setEditedProfile((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+
+      setUsernameAvailable(false);
+      checkUsernameAvailabilityDebounced(); // Debounced function call
+    }
+  };
 
     // Toggle password visibility
     const handleTogglePassword = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
     };
+
+    useEffect(() => {
+        const getUserProfile = async () => {
+            try {
+                const response = await fetch(`/api/users/dashboard/${username}`);
+                const userProfile = await response.json();
+                setUserProfile(userProfile);
+                setEditedProfile(userProfile);
+                setOriginalUsername(username);
+            } catch (error) {
+                console.error('Failed to fetch user profile', error);
+            }
+        };
+
+        if (username) {
+            getUserProfile();
+        }
+    }, [username]);
+
+    useEffect(() => {
+        if (editedProfile.username && editedProfile.username.trim() !== '') {
+            checkUsernameAvailabilityDebounced();
+        }
+    }, [editedProfile.username]);
+    
 
     // To generate random welcome messages for the user
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
@@ -183,6 +219,7 @@ const UserDashboard = () => {
     if (!userProfile) {
         return <Loader />;
     }
+
     return (
         <ThemeProvider theme={theme}>
             <CustomRootContainer>
@@ -226,6 +263,21 @@ const UserDashboard = () => {
                             name="username"
                             value={editedProfile.username || ''}
                             onChange={handleInputChange}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        {usernameAvailable === null ? (
+                                            <Button onClick={checkUsernameAvailability} color="primary">
+                                                Check Availability
+                                            </Button>
+                                        ) : (
+                                            <Typography variant="body2" style={{ color: usernameAvailable ? 'green' : 'red' }}>
+                                                {usernameAvailable ? 'Available' : 'Not Available'}
+                                            </Typography>
+                                        )}
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
 
                         <TextField
@@ -279,7 +331,6 @@ const UserDashboard = () => {
                         </Button>
                     </DialogActions>
                 </CustomDialog>
-
             </CustomRootContainer>
         </ThemeProvider>
     );
