@@ -51,15 +51,6 @@ const CustomDialog = styled(Dialog)(({ theme }) => ({
     color: theme.palette.text.primary, // Apply theme.palette.text.primary color to label text
   },
   '& .MuiOutlinedInput-root': {
-    '& fieldset': {
-      borderColor: theme.palette.text.primary, // Apply theme.palette.text.primary color to outline border
-    },
-    '& .MuiInputLabel-outlined': {
-      color: theme.palette.text.primary, // Apply theme.palette.text.primary color to label text
-    },
-    '& .MuiInputBase-input': {
-      color: theme.palette.text.primary, // Apply theme.palette.text.primary color to input text
-    },
     '&:hover fieldset': {
       borderColor: theme.palette.text.primary, // Apply theme.palette.text.primary color to outline border on hover
     },
@@ -67,10 +58,7 @@ const CustomDialog = styled(Dialog)(({ theme }) => ({
       borderColor: theme.palette.text.primary, // Apply theme.palette.text.primary color to outline border when focused
     },
     '&.Mui-focused .MuiInputLabel-outlined': {
-      color: theme.palette.text.primary, // Apply theme.palette.text.primary color to label text when focused
-    },
-    '&.Mui-focused .MuiInputBase-input': {
-      color: theme.palette.text.primary, // Apply theme.palette.text.primary color to input text when focused
+      color: 'black !important', // Change the color to black for the label text when focused
     },
   },
 }));
@@ -111,7 +99,7 @@ const UserDashboard = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [editedProfile, setEditedProfile] = useState({ ...userProfile, password: '' }); // Initialize with empty password
   const [showPassword, setShowPassword] = useState(false);
-  const [usernameAvailable, setUsernameAvailable] = useState(true); // State variable for username availability
+  const [usernameAvailable, setUsernameAvailable] = useState(); // State variable for username availability
   const [originalUsername, setOriginalUsername] = useState(''); // New state variable for storing the original username
 
   // Open the profile edit dialog
@@ -245,6 +233,12 @@ const UserDashboard = () => {
               name="name"
               value={editedProfile.name || ''}
               onChange={handleInputChange}
+              InputLabelProps={{
+                style: { color: 'black' }, // Set the label text color to black
+              }}
+              InputProps={{
+                style: { color: theme.palette.text.primary }, // Apply theme.palette.text.primary color to input text
+              }}
             />
 
             <TextField
@@ -255,7 +249,11 @@ const UserDashboard = () => {
               name="username"
               value={editedProfile.username || ''}
               onChange={handleInputChange}
+              InputLabelProps={{
+                style: { color: 'black' }, // Set the label text color to black
+              }}
               InputProps={{
+                style: { color: theme.palette.text.primary }, // Apply theme.palette.text.primary color to input text
                 endAdornment: (
                   <InputAdornment position="end">
                     <Button
@@ -274,11 +272,12 @@ const UserDashboard = () => {
                 ),
               }}
             />
-            {usernameAvailable !== null && (
+            {usernameAvailable !== null && usernameAvailable !== undefined && (
               <Typography variant="caption" color={usernameAvailable ? 'green' : 'error'}>
                 {usernameAvailable ? 'Username available' : 'Username already taken'}
               </Typography>
             )}
+
             <TextField
               fullWidth
               margin="normal"
@@ -287,6 +286,12 @@ const UserDashboard = () => {
               name="email"
               value={editedProfile.email || ''}
               onChange={handleInputChange}
+              InputLabelProps={{
+                style: { color: 'black' }, // Set the label text color to black
+              }}
+              InputProps={{
+                style: { color: theme.palette.text.primary }, // Apply theme.palette.text.primary color to input text
+              }}
             />
 
             <TextField
@@ -299,6 +304,12 @@ const UserDashboard = () => {
               InputLabelProps={{ shrink: true }}
               value={editedProfile.dob || ''}
               onChange={handleInputChange}
+              InputLabelProps={{
+                style: { color: 'black' }, // Set the label text color to black
+              }}
+              InputProps={{
+                style: { color: theme.palette.text.primary }, // Apply theme.palette.text.primary color to input text
+              }}
             />
 
             <TextField
