@@ -42,24 +42,35 @@ const cardActionsStyles = {
   marginBottom: '1rem',
 };
 
-// Styled component for the popup dialog box 
+// Styled component for the popup dialog box
 const CustomDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialog-paper': {
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
   },
   '& .MuiInputLabel-outlined': {
-    color: theme.palette.text.primary,
+    color: theme.palette.text.primary, // Apply theme.palette.text.primary color to label text
   },
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
-      borderColor: theme.palette.text.primary,
-      color: theme.palette.text.primary,
+      borderColor: theme.palette.text.primary, // Apply theme.palette.text.primary color to outline border
     },
-    '& .MuiDialogTitle-root': {
-      color: theme.palette.text.primary,
+    '& .MuiInputLabel-outlined': {
+      color: theme.palette.text.primary, // Apply theme.palette.text.primary color to label text
     },
-    '& .MuiDialogLabel-root': {
-      color: theme.palette.text.primary,
+    '& .MuiInputBase-input': {
+      color: theme.palette.text.primary, // Apply theme.palette.text.primary color to input text
+    },
+    '&:hover fieldset': {
+      borderColor: theme.palette.text.primary, // Apply theme.palette.text.primary color to outline border on hover
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: theme.palette.text.primary, // Apply theme.palette.text.primary color to outline border when focused
+    },
+    '&.Mui-focused .MuiInputLabel-outlined': {
+      color: theme.palette.text.primary, // Apply theme.palette.text.primary color to label text when focused
+    },
+    '&.Mui-focused .MuiInputBase-input': {
+      color: theme.palette.text.primary, // Apply theme.palette.text.primary color to input text when focused
     },
   },
 }));
@@ -102,11 +113,13 @@ const UserDashboard = () => {
   const [editedProfile, setEditedProfile] = useState({ ...expertProfile, password: '' }); // Initialize with empty password
   const [showPassword, setShowPassword] = useState(false);
   const [originalExpertname, setOriginalExpertname] = useState(''); // New state variable for storing the original username
-
+  const [expertnameAvailable, setExpertnameAvailable] = useState(true); // State variable for username availability
+ 
+  
   // Open the profile edit dialog
   const handleOpenDialog = () => {
     setOpenDialog(true);
-    setEditedProfile({ ...expertProfile });
+    setEditedProfile(expertProfile ? { ...expertProfile } : {});
   };
 
   // Close the profile edit dialog
@@ -133,6 +146,17 @@ const UserDashboard = () => {
   // Save the edited profile
   const handleSaveProfile = async () => {
     try {
+      // Fetch the user profile with the new username
+      const res = await fetch(`/api/experts/dashboard/${editedProfile.expertname}`);
+      const existingExpert = await res.json();
+
+      // Check if the username already exists and it belongs to a different user
+      if (existingExpert && existingExpert.expertname !== originalExpertname) {
+        console.error('Expertname already exists');
+        alert('Expertname already exists, try something else.');
+        return; // Stop execution and display an error message
+      }
+
       const response = await fetch(`/api/experts/dashboard/${expertname}`, {
         method: 'PUT',
         headers: {
@@ -164,6 +188,15 @@ const UserDashboard = () => {
   // Toggle password visibility
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
+  // Check username availability when Check Availability button is clicked
+  const handleCheckAvailability = async () => {
+    const { expertname } = editedProfile;
+    const response = await fetch(`/api/experts/${expertname}`);
+    const result = await response.json();
+    console.log(result)
+    setExpertnameAvailable(result.available);
   };
 
   // To generate random welcome messages for the user
@@ -215,7 +248,30 @@ const UserDashboard = () => {
               value={editedProfile.expertname || ''}
               onChange={handleInputChange}
               fullWidth
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Button
+                      onClick={handleCheckAvailability}
+                      style={{
+                        backgroundColor: theme.palette.quinary.main,
+                        fontSize: '1rem',
+                        '&:hover': {
+                          backgroundColor: theme.palette.secondary.main,
+                        },
+                      }}
+                    >
+                      Check Availability
+                    </Button>
+                  </InputAdornment>
+                ),
+              }}
             />
+            {expertnameAvailable !== null && (
+              <Typography variant="caption" color={expertnameAvailable ? 'green' : 'error'}>
+                {expertnameAvailable ? 'Expertname available' : 'Expertname already taken'}
+              </Typography>
+            )}
             <TextField
               margin="dense"
               label="Email"
