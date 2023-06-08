@@ -101,6 +101,7 @@ const UserDashboard = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [editedProfile, setEditedProfile] = useState({ ...expertProfile, password: '' }); // Initialize with empty password
   const [showPassword, setShowPassword] = useState(false);
+  const [originalExpertname, setOriginalExpertname] = useState(''); // New state variable for storing the original username
 
   // Open the profile edit dialog
   const handleOpenDialog = () => {
@@ -121,6 +122,7 @@ const UserDashboard = () => {
         const expertProfile = await response.json();
         setExpertProfile(expertProfile);
         setEditedProfile(expertProfile);
+        setOriginalExpertname(expertname); 
       } catch (error) {
         console.error('Failed to fetch expert profile', error);
       }
@@ -136,11 +138,12 @@ const UserDashboard = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(editedProfile),
+        body: JSON.stringify({ oldExpertname: originalExpertname, editedProfile}),
       });
       if (response.ok) {
         setExpertProfile(editedProfile);
         setOpenDialog(false);
+        router.push(`/experts/dashboard/${editedProfile.expertname}`);
       } else {
         console.error('Failed to update expert profile');
       }
@@ -200,7 +203,7 @@ const UserDashboard = () => {
               label="Name"
               type="text"
               name="name"
-              value={editedProfile.name}
+              value={editedProfile.name || ''}
               onChange={handleInputChange}
               fullWidth
             />
@@ -208,8 +211,8 @@ const UserDashboard = () => {
               margin="dense"
               label="Username"
               type="text"
-              name="username"
-              value={editedProfile.expertname}
+              name="expertname"
+              value={editedProfile.expertname || ''}
               onChange={handleInputChange}
               fullWidth
             />
@@ -218,7 +221,7 @@ const UserDashboard = () => {
               label="Email"
               type="email"
               name="email"
-              value={editedProfile.email}
+              value={editedProfile.email || ''}
               onChange={handleInputChange}
               fullWidth
             />
@@ -227,7 +230,7 @@ const UserDashboard = () => {
               label="Phone Number"
               type="tel"
               name="phoneNumber"
-              value={editedProfile.phoneNumber}
+              value={editedProfile.phoneNumber || ''}
               onChange={handleInputChange}
               fullWidth
             />
@@ -236,7 +239,7 @@ const UserDashboard = () => {
               label="Qualifications"
               type="text"
               name="qualifications"
-              value={editedProfile.qualifications}
+              value={editedProfile.qualifications || ''}
               onChange={handleInputChange}
               fullWidth
             />
@@ -245,7 +248,7 @@ const UserDashboard = () => {
               label="Years of Experience"
               type="number"
               name="yearsOfExperience"
-              value={editedProfile.yearsOfExperience}
+              value={editedProfile.yearsOfExperience || ''}
               onChange={handleInputChange}
               fullWidth
             />
@@ -254,7 +257,7 @@ const UserDashboard = () => {
               label="Speciality"
               type="text"
               name="speciality"
-              value={editedProfile.speciality}
+              value={editedProfile.speciality || ''}
               onChange={handleInputChange}
               fullWidth
             />
@@ -263,7 +266,7 @@ const UserDashboard = () => {
               label="Consultation Fee"
               type="number"
               name="consultationFee"
-              value={editedProfile.consultationFee}
+              value={editedProfile.consultationFee || ''}
               onChange={handleInputChange}
               fullWidth
             />
@@ -272,7 +275,7 @@ const UserDashboard = () => {
               label="Password"
               type={showPassword ? 'text' : 'password'}
               name="password"
-              value={editedProfile.password}
+              value={editedProfile.password || ''}
               onChange={handleInputChange}
               fullWidth
               InputProps={{
