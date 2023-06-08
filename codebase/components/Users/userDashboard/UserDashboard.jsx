@@ -53,6 +53,7 @@ const CustomDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiOutlinedInput-root': {
         '& fieldset': {
             borderColor: theme.palette.text.primary,
+            color: theme.palette.text.primary,
         },
         '& .MuiDialogTitle-root': {
             color: theme.palette.text.primary,

@@ -1,17 +1,66 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Button, Box, Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, Checkbox } from '@mui/material';
+import { Typography, Button, Box, Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, Checkbox } from '@mui/material';
 import Calendar from './Calendar';
 import TimeSlot from './TimeSlot';
 import { styled, ThemeProvider } from '@mui/system';
 import theme from '../../styles/theme';
+import RootContainer from '../../styles/RootContainerStyles';
+import SectionContainer from '../../styles/SectionsContainer';
+import IconContainer from '../../styles/IconContainerStyles';
 import DialogBox from '../../styles/DialogBox';
+import Loader from '../../styles/Loader';
 
-// Styled component for heading
-const Heading = styled('h2')(({ theme }) => ({
-  textAlign: 'center',
+// Custom styled components for the root container, content container, and dialog
+const CustomRootContainer = styled(RootContainer)(() => ({
+  padding: '1rem 2rem 2rem 2rem',
+}));
+
+// Styled component for the main content container
+const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
+  [theme.breakpoints.up('md')]: {
+    minWidth: '60vw',
+    padding: '3rem 5rem',
+  },
+  margin: '1rem',
+  padding: '3rem 2rem',
+  backgroundColor: theme.palette.primary.main,
+  border: `2px solid ${theme.palette.text.primary}`,
+}));
+
+const CustomTitle = styled(Typography)(({ theme }) => ({
+  ...theme.typography.h2,
+  fontWeight: '70pt',
+  fontSize: theme.typography.h3.fontSize,
+  padding: '1rem 0',
   [theme.breakpoints.down('sm')]: {
-    paddingBottom: '1rem',
+    fontSize: theme.typography.h4.fontSize,
+  },
+}));
+
+// Styled component for Calendar container
+const CalendarBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  gap: theme.spacing(15), 
+  padding: '2rem',
+  [theme.breakpoints.down('md')]: {
+    gap: theme.spacing(6), 
+  },
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+    gap: theme.spacing(4),
+  },
+}));
+
+// Styled component for Buttons container
+const ButtonBox = styled(Box)(({ theme }) => ({
+  display: 'flex', 
+  flexDirection: 'column', 
+  justifyContent: 'center',
+  gap: theme.spacing(2), 
+  [theme.breakpoints.up('sm')]: {
+    gap: theme.spacing(3), 
   },
 }));
 
@@ -23,6 +72,26 @@ const ButtonWrapper = styled('div')(({ theme, color }) => ({
   '& button + button': {
     marginTop: theme.spacing(2),
   },
+  '&:hover': {
+    cursor: 'pointer',
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', 
+    transform: 'scale(1.02)',
+  },
+}));
+
+const CustomDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialog-paper': {
+    width: '80%',
+    backgroundColor: theme.palette.quinary.main,
+  },
+}));
+
+const CustomDialogContainer = styled(DialogContent)(({ theme, checked }) => ({
+  backgroundColor: theme.palette.primary.main,
+  padding: '2rem 1.5rem',
+  '& .MuiCheckbox-root': {
+    color: checked ? theme.palette.quinary.main : '', 
+  },
 }));
 
 const AvailabilityForm = () => {
@@ -33,6 +102,7 @@ const AvailabilityForm = () => {
   const [expertAvailability, setExpertAvailability] = useState([]);
   const [openSetAvailabilityDialog, setOpenSetAvailabilityDialog] = useState(false);
   const [openCheckAvailabilityDialog, setOpenCheckAvailabilityDialog] = useState(false);
+  const [checkboxChecked, setCheckboxChecked] = useState(false); 
 
   // Fetch expert availability from the server
   useEffect(() => {
@@ -62,6 +132,7 @@ const AvailabilityForm = () => {
     } else {
       setSelectedSlots((prevSlots) => prevSlots.filter((slot) => slot !== time));
     }
+    setCheckboxChecked(selected); 
   };
 
   // Save expert availability to the server
@@ -208,88 +279,89 @@ const AvailabilityForm = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Heading>Appointment Slots</Heading>
-        <Calendar selectedDate={selectedDate} handleDateChange={handleDateChange} />
+      <CustomRootContainer>
+        <CustomTitle> Appointment Slots</CustomTitle>
+        <CustomSectionContainer>
+        <CalendarBox>
+          <Calendar selectedDate={selectedDate} handleDateChange={handleDateChange} />
+          {/* Availability slots setter and checker */}
+          <ButtonBox>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <ButtonWrapper color="tertiary" sx={{ marginTop: theme.spacing(0) }}>
+                <Button variant="contained" onClick={handleOpenCheckAvailabilityDialog}>
+                  Check Current Availability
+                </Button>
+              </ButtonWrapper>
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: theme.spacing(2) }}>
+              <ButtonWrapper color="quinary">
+                <Button variant="contained" onClick={handleOpenSetAvailabilityDialog}>
+                  Set Availability
+                </Button>
+              </ButtonWrapper>
+            </Box>
+          </ButtonBox>
 
-        {/* Availability slots setter and checker */}
-        <ButtonWrapper color="tertiary" sx={{ marginTop: theme.spacing(0) }}>
-          <Button variant="contained" onClick={handleOpenCheckAvailabilityDialog}>
-            Check Current Availability
-          </Button>
-        </ButtonWrapper>
 
-        <ButtonWrapper color="quinary" sx={{ marginTop: theme.spacing(2) }}>
-          <Button variant="contained" onClick={handleOpenSetAvailabilityDialog}>
-            Set Availability
-          </Button>
-        </ButtonWrapper>
+          {/* Availability slots setter */}
+          <CustomDialog open={openSetAvailabilityDialog} onClose={handleCloseSetAvailabilityDialog}>
+            <DialogTitle style={{ fontWeight: 'bold' }}>Set Availability</DialogTitle>
+            <CustomDialogContainer checked={checkboxChecked}>{renderTimeSlots()}</CustomDialogContainer>
+            <DialogActions>
+              <Button onClick={handleCloseSetAvailabilityDialog}>Close</Button>
+              <Button variant="contained" color="primary" onClick={handleSubmit}>
+                Save
+              </Button>
+            </DialogActions>
+          </CustomDialog>
 
-        {/* Availability slots setter */}
-        <DialogBox open={openSetAvailabilityDialog} onClose={handleCloseSetAvailabilityDialog}
-          PaperProps={{
-            style: {
-              backgroundColor: theme.palette.quinary.main,
-            },
-          }}>
-          <DialogTitle>Set Availability</DialogTitle>
-          <DialogContent>{renderTimeSlots()}</DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseSetAvailabilityDialog}>Close</Button>
-            <Button variant="contained" color="primary" onClick={handleSubmit}>
-              Save
-            </Button>
-          </DialogActions>
-        </DialogBox>
 
-        {/* Availability slots checker */}
-        <DialogBox
-          open={openCheckAvailabilityDialog}
-          onClose={handleCloseCheckAvailabilityDialog}
-          PaperProps={{
-            style: {
-              backgroundColor: theme.palette.tertiary.main,
-            },
-          }}
-        >
-          <DialogTitle>Check Current Availability</DialogTitle>
-          <DialogContent sx={{ textAlign: 'center' }}>
-            {expertAvailability === null ||
-              expertAvailability === undefined ||
-              expertAvailability.length === 0 ||
-              !expertAvailability.some((day) => day.date.slice(0, 10) === selectedDate.toISOString().slice(0, 10)) ? (
-              <p>No availability information set for the selected date</p>
-            ) : (
-              <ul style={{ listStyle: 'none', padding: 0 }}>
-                {expertAvailability.map((day) => {
-                  const dayDate = new Date(day.date);
-                  const selected = dayDate.toISOString().slice(0, 10) === selectedDate.toISOString().slice(0, 10);
-                  const formattedDate = dayDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+          {/* Availability slots checker */}
+          <CustomDialog 
+           sx={{ textAlign: 'center' }}
+            open={openCheckAvailabilityDialog}
+            onClose={handleCloseCheckAvailabilityDialog}
+          >
+            <DialogTitle>Check Current Availability</DialogTitle>
+            <CustomDialogContainer>
+              {expertAvailability === null ||
+                expertAvailability === undefined ||
+                expertAvailability.length === 0 ||
+                !expertAvailability.some((day) => day.date.slice(0, 10) === selectedDate.toISOString().slice(0, 10)) ? (
+                <p>No availability information set for the selected date</p>
+              ) : (
+                <ul style={{ listStyle: 'none', padding: 0 }}>
+                  {expertAvailability.map((day) => {
+                    const dayDate = new Date(day.date);
+                    const selected = dayDate.toISOString().slice(0, 10) === selectedDate.toISOString().slice(0, 10);
+                    const formattedDate = dayDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
-                  if (selected && day.timeSlots.length > 0) {
-                    return (
-                      <li key={day.date}>
-                        {`${formattedDate}: ${day.timeSlots.length} slots available`}
-                        <ul style={{ listStyle: 'none', padding: 0 }}>
-                          {day.timeSlots.map((slot) => (
-                            <li key={`${day.date}-${slot.startTime}-${slot.endTime}`} style={{ textDecoration: 'none' }}>
-                              {`${slot.startTime} - ${slot.endTime}`}
-                            </li>
-                          ))}
-                        </ul>
-                      </li>
-                    );
-                  }
-                  return null;
-                })}
-              </ul>
-            )}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseCheckAvailabilityDialog}>Close</Button>
-          </DialogActions>
-        </DialogBox>
-      </Box>
+                    if (selected && day.timeSlots.length > 0) {
+                      return (
+                        <li key={day.date}>
+                          {`${formattedDate}: ${day.timeSlots.length} slots available`}
+                          <ul style={{ listStyle: 'none', padding: 0 }}>
+                            {day.timeSlots.map((slot) => (
+                              <li key={`${day.date}-${slot.startTime}-${slot.endTime}`} style={{ textDecoration: 'none' }}>
+                                {`${slot.startTime} - ${slot.endTime}`}
+                              </li>
+                            ))}
+                          </ul>
+                        </li>
+                      );
+                    }
+                    return null;
+                  })}
+                </ul>
+              )}
+            </CustomDialogContainer>
+            <DialogActions>
+              <Button onClick={handleCloseCheckAvailabilityDialog}>Close</Button>
+            </DialogActions>
+          </CustomDialog>
+        </CalendarBox>
+        </CustomSectionContainer>
+      </CustomRootContainer>
     </ThemeProvider>
   );
 };

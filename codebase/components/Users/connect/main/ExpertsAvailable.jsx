@@ -92,6 +92,7 @@ const ExpertsPage = () => {
     fetchExperts();
   }, []);
 
+  // Fetch the list of experts
   const fetchExperts = async () => {
     try {
       const response = await fetch('/api/users/connect/experts');
@@ -104,15 +105,18 @@ const ExpertsPage = () => {
     }
   };
 
+  // Handle click on an expert card
   const handleExpertClick = (expert) => {
     setSelectedExpert(expert);
     setDialogOpen(true);
   };
 
+  // Close the dialog
   const handleCloseDialog = () => {
     setDialogOpen(false);
   };
 
+  // Handle slot selection
   const handleSlotSelection = (availability, slot) => {
     const { expertname } = selectedExpert;
 
@@ -123,6 +127,7 @@ const ExpertsPage = () => {
     });
   };
 
+  // Check if the screen size is small
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   if (isLoading) {
@@ -206,7 +211,6 @@ const ExpertsPage = () => {
       </CustomRootContainer>
     </ThemeProvider>
   );
-  
 };
 
 export default ExpertsPage;
