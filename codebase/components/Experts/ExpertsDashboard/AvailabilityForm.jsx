@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Typography, Button, Box, Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, Checkbox } from '@mui/material';
 import Calendar from './Calendar';
-import TimeSlot from './TimeSlot';
 import { styled, ThemeProvider } from '@mui/system';
 import theme from '../../styles/theme';
 import RootContainer from '../../styles/RootContainerStyles';
