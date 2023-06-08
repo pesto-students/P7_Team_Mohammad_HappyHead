@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { styled, ThemeProvider } from '@mui/system';
-import { Typography, Card, CardContent } from '@mui/material';
+import { Typography, Card, CardContent, Divider } from '@mui/material';
 import RootContainer from '../../styles/RootContainerStyles';
 import IconContainer from '../../styles/IconContainerStyles';
 import theme from '../../styles/theme';
@@ -131,6 +131,7 @@ const UpcomingAppointments = () => {
                     <SubText>
                       <strong>Time:</strong> {appointment.startTime} - {appointment.endTime}
                     </SubText>
+                    <Divider sx={{ backgroundColor: 'white', height: 2 }} /> {/* Modified divider */}
                     <SubText>
                       <strong>Expert Name:</strong> {appointment.user.name}
                     </SubText>
