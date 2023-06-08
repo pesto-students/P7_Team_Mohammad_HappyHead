@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { styled, ThemeProvider } from '@mui/system';
-import { Typography, Card, CardContent, Grid } from '@mui/material';
+import { Typography, Card, CardContent } from '@mui/material';
 import RootContainer from '../../styles/RootContainerStyles';
 import IconContainer from '../../styles/IconContainerStyles';
 import theme from '../../styles/theme';
 import Loader from '../../styles/Loader';
 
 // Custom styled components for the root container, content container, and dialog
-const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
+const CustomRootContainer = styled(RootContainer)(() => ({
   padding: '1rem 2rem 2rem 2rem',
 }));
 
@@ -23,8 +23,8 @@ const CustomCard = styled(Card)(({ theme, cardColor }) => ({
   borderRadius: '8px',
   '&:hover': {
     cursor: 'pointer',
-    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', // Update with desired box shadow style
-    transform: 'scale(1.02)', // Update with desired transformation
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', 
+    transform: 'scale(1.02)', 
   },
 }));
 
@@ -119,7 +119,6 @@ const UpcomingAppointments = () => {
                   <StyledIconContainer>
                     <img src="/images/dashboard/appointment.png" alt="appointment" />
                   </StyledIconContainer>
-
                   <div>
                     <SubText>
                       <strong>Date:</strong>{' '}
@@ -141,7 +140,6 @@ const UpcomingAppointments = () => {
                   </div>
                 </CustomCardContent>
               </CustomCard>
-
             ))}
           </>
         )}
