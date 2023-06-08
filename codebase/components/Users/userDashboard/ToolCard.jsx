@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ThemeProvider, styled } from '@mui/system';
 import { Grid, CardContent } from '@mui/material';
@@ -35,8 +35,8 @@ const StyledCard = styled(CardContent)(() => ({
   borderRadius: '8px',
   '&:hover': {
     cursor: 'pointer',
-    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', // Update with desired box shadow style
-    transform: 'scale(1.02)', // Update with desired transformation
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', 
+    transform: 'scale(1.02)',
   },
 }));
 
@@ -49,7 +49,18 @@ const muiLinkStyles = {
 const ToolCardContainer = () => {
   const router = useRouter();
   const { username } = router.query;
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    // Simulating a delay of 2 seconds for loading
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  //Array with all user tools data
   const toolsData = [
     {
       name: 'Your Mental Health Report',
@@ -84,6 +95,9 @@ const ToolCardContainer = () => {
 
   return (
     <ThemeProvider theme={theme}>
+     {isLoading ? (
+        <Loader />
+      ) : (
       <CustomRootContainer>
         <CustomSectionContainer>
           <Grid container spacing={2}>
@@ -115,7 +129,7 @@ const ToolCardContainer = () => {
                       component="p"
                       sx={{
                         ...muiLinkStyles,
-                        padding: '0 1rem', // Add desired padding values
+                        padding: '0 1rem', 
                       }}
                     >
                       {tool.subtext}
@@ -127,6 +141,7 @@ const ToolCardContainer = () => {
           </Grid>
         </CustomSectionContainer>
       </CustomRootContainer>
+      )}
     </ThemeProvider>
   );
 };

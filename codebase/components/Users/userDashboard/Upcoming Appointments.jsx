@@ -3,10 +3,9 @@ import { useRouter } from 'next/router';
 import { styled, ThemeProvider } from '@mui/system';
 import { Typography, Card, CardContent, Grid } from '@mui/material';
 import RootContainer from '../../styles/RootContainerStyles';
-import SectionContainer from '../../styles/SectionsContainer';
 import IconContainer from '../../styles/IconContainerStyles';
-import TextStyle from '../../styles/SubTextStyles';
 import theme from '../../styles/theme';
+import Loader from '../../styles/Loader';
 
 // Custom styled components for the root container, content container, and dialog
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -16,7 +15,7 @@ const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
 const CustomCard = styled(Card)(({ theme, cardColor }) => ({
   backgroundColor: cardColor,
   width: '100%',
-  [theme.breakpoints.up('md')]: {
+  [theme.breakpoints.up('sm')]: {
     width: '60vw',
     padding: '0 2rem',
   },
@@ -65,6 +64,7 @@ const UpcomingAppointments = () => {
   const router = useRouter();
   const { username } = router.query;
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -78,10 +78,11 @@ const UpcomingAppointments = () => {
           const currentDate = new Date();
           return appointmentDate > currentDate;
         });
-
         setUpcomingAppointments(filteredAppointments);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching appointments:', error);
+        setIsLoading(false);
       }
     };
 
@@ -101,6 +102,9 @@ const UpcomingAppointments = () => {
 
   return (
     <ThemeProvider theme={theme}>
+     {isLoading ? (
+        <Loader />
+      ) : (
       <CustomRootContainer>
       <CustomTitle> Upcoming Appointments</CustomTitle>
         {upcomingAppointments.length === 0 ? (
@@ -142,6 +146,7 @@ const UpcomingAppointments = () => {
           </>
         )}
       </CustomRootContainer>
+      )}
     </ThemeProvider>
   );
 };

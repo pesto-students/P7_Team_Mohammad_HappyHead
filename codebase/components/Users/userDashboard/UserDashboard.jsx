@@ -28,6 +28,7 @@ const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
     width: '100%',
 }));
 
+//Styled component for the Heading 
 const CustomTitle = styled(Typography)(({ theme }) => ({
     ...theme.typography.h2,
     [theme.breakpoints.down('sm')]: {
@@ -35,11 +36,13 @@ const CustomTitle = styled(Typography)(({ theme }) => ({
     },
 }));
 
+// Styled component for the cards 
 const cardActionsStyles = {
     justifyContent: 'center',
     marginBottom: '1rem',
 }
 
+// Styled component for the popup dialog box 
 const CustomDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialog-paper': {
         backgroundColor: theme.palette.secondary.main,
@@ -93,7 +96,6 @@ const UserDashboard = () => {
     const { username } = router.query;
     // State variables
     const [userProfile, setUserProfile] = useState();
-
     const [openDialog, setOpenDialog] = useState(false);
     const [editedProfile, setEditedProfile] = useState({ ...userProfile, password: '' }); // Initialize with empty password
     const [showPassword, setShowPassword] = useState(false);
@@ -168,6 +170,7 @@ const UserDashboard = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
     };
 
+    // To generate random welcome messages for the user
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
     
     if (!userProfile) {

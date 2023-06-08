@@ -15,7 +15,7 @@ export default function LoadingButtons() {
                 justifyContent="center"
                 sx={{
                     minHeight: '95vh',
-                    backgroundColor: theme.palette.secondary.main,
+                    backgroundColor: theme.palette.primary.main,
                 }}
             >
                 <LoadingButton
@@ -25,7 +25,7 @@ export default function LoadingButtons() {
                     variant="filled"
                     role="progressbar"
                     sx={{
-                        color: theme.palette.text.primary, 
+                        color: theme.palette.quinary.main, 
                         borderRadius: '8px',                         
                     }}
                 >
