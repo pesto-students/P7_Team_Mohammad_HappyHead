@@ -1,63 +1,70 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { styled, ThemeProvider } from '@mui/system';
-import { Typography } from '@mui/material';
+import { Typography, Card, CardContent, Divider } from '@mui/material';
+import RootContainer from '../../styles/RootContainerStyles';
+import IconContainer from '../../styles/IconContainerStyles';
 import theme from '../../styles/theme';
+import Loader from '../../styles/Loader';
 
-// Custom styled component for the container
-const CustomContainer = styled('div')(({ theme }) => ({
-  backgroundColor: theme.palette.tertiary.main,
-  padding: '2rem',
-  [theme.breakpoints.up('lg')]: {
-    paddingLeft: '7rem',
+// Custom styled components for the root container, content container, and dialog
+const CustomRootContainer = styled(RootContainer)(() => ({
+  padding: '1rem 2rem 2rem 2rem',
+}));
+
+const CustomCard = styled(Card)(({ theme, cardColor }) => ({
+  backgroundColor: cardColor,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    width: '60vw',
+    padding: '0 2rem',
+  },
+  margin: '0.5rem',
+  borderRadius: '8px',
+  '&:hover': {
+    cursor: 'pointer',
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
+    transform: 'scale(1.02)',
   },
 }));
 
-const CustomList = styled('ul')({
-  listStyleType: 'none',
-  padding: 0,
-});
-
-const CustomListItem = styled('li')({
-  display: 'inline-block',
-  border: '0.2rem solid white',
-  borderRadius: '8px',
-  background: theme.palette.quinary.main,
-  padding: '1rem',
-  marginBottom: '1rem',
-  [theme.breakpoints.up('lg')]: {
-    marginRight: '2rem',
-    width: '30%',
-    paddingLeft: '1rem',
+const CustomCardContent = styled(CardContent)(({ theme }) => ({
+  [theme.breakpoints.up('md')]: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 2fr',
   },
-  width: '100%',
-});
+}));
 
-const Heading = styled('h2')(({ theme }) => ({
-  textAlign: 'center',
-  paddingBottom: '1rem',
-  [theme.breakpoints.up('lg')]: {
-    textAlign: 'left',
+// Styled component for the IconContainer with styled icons
+const StyledIconContainer = styled(IconContainer)(() => ({
+  '& img': {
+    width: '10rem',
+    height: '10rem',
+  },
+}));
+
+const CustomTitle = styled(Typography)(({ theme }) => ({
+  ...theme.typography.h2,
+  fontWeight: '70pt',
+  fontSize: theme.typography.h3.fontSize,
+  padding: '1rem 0',
+  [theme.breakpoints.down('sm')]: {
+    fontSize: theme.typography.h4.fontSize,
   },
 }));
 
 const SubText = styled(Typography)(({ theme }) => ({
-  fontFamily: theme.typography.h3.fontFamily,
+  fontFamily: theme.typography.h2.fontFamily,
   marginBottom: theme.spacing(2),
   marginTop: theme.spacing(2),
-  [theme.breakpoints.down('sm')]: {
-    fontSize: '1.2rem',
-    width: '100%',
-    paddingLeft: '2rem',
-  },
-  width: '90%',
-  paddingLeft: '3rem',
+  fontSize: '1.2rem',
 }));
 
 const UpcomingAppointments = () => {
   const router = useRouter();
   const { expertname } = router.query;
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -84,10 +91,11 @@ const UpcomingAppointments = () => {
           }
           return slots;
         }, []);
-
         setUpcomingAppointments(expertAvailability);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching appointments:', error);
+        setIsLoading(false);
       }
     };
 
@@ -98,48 +106,72 @@ const UpcomingAppointments = () => {
 
   const noAppointmentsMessage = <p>No upcoming appointments</p>;
 
+  // Define an array of colors
+  const cardColors = [
+    theme.palette.tertiary.main,
+    theme.palette.secondary.main,
+    theme.palette.quinary.main,
+  ];
+
   return (
     <ThemeProvider theme={theme}>
-      <CustomContainer>
-        <Heading>Upcoming Appointments</Heading>
-        {upcomingAppointments.length === 0 ? (
-          noAppointmentsMessage
-        ) : (
-          <CustomList>
-            {upcomingAppointments.map((appointment) =>
-              appointment.timeSlots
-                .filter((slot) => slot.booked)
-                .map((slot) => (
-                  <CustomListItem key={`${appointment.date}-${slot.startTime}`}>
-                    <SubText style={{ whiteSpace: 'nowrap' }}>
-                      <strong>Date:</strong>{' '}
-                      {new Date(appointment.date).toLocaleDateString('en-US', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric',
-                      })}
-                    </SubText>
-                    <SubText>
-                      <strong>Day:</strong> {appointment.day}
-                    </SubText>
-                    <SubText>
-                      <strong>Time:</strong> {slot.startTime} - {slot.endTime}
-                    </SubText>
-                    <SubText color="tertiary" sx={{ color: theme.palette.primary.main }}>
-                      <strong>{`Patient's Details:`}</strong>
-                    </SubText>
-                    <SubText>
-                      <strong>Name:</strong> {slot.user.name}
-                    </SubText>
-                    <SubText>
-                      <strong>Contact:</strong> {slot.user.phoneNumber}
-                    </SubText>
-                  </CustomListItem>
-                ))
-            )}
-          </CustomList>
-        )}
-      </CustomContainer>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <CustomRootContainer>
+          <CustomTitle>Upcoming Appointments</CustomTitle>
+          {upcomingAppointments.length === 0 ? (
+            noAppointmentsMessage
+          ) : (
+            <>
+              {upcomingAppointments.map((appointment, index) =>
+                appointment.timeSlots
+                  .filter((slot) => slot.booked)
+                  .map((slot, slotIndex) => (
+                    <CustomCard
+                      key={`${appointment.date}-${slot.startTime}-${slotIndex}`}
+                      cardColor={cardColors[(index * 3 + slotIndex) % cardColors.length]}
+                    >
+                      <CustomCardContent>
+                        <StyledIconContainer>
+                          <img src="/images/dashboard/appointment.png" alt="appointment" />
+                        </StyledIconContainer>
+                        <div>
+                          {/* Slot details */}
+                          <SubText style={{ whiteSpace: 'nowrap' }}>
+                            <strong>Date:</strong>{' '}
+                            {new Date(appointment.date).toLocaleDateString('en-US', {
+                              day: 'numeric',
+                              month: 'long',
+                              year: 'numeric',
+                            })}
+                          </SubText>
+                          <SubText>
+                            <strong>Day:</strong> {appointment.day}
+                          </SubText>
+                          <SubText>
+                            <strong>Time:</strong> {slot.startTime} - {slot.endTime}
+                          </SubText>
+                          <Divider sx={{ backgroundColor: 'white', height: 2 }} /> {/* Modified divider */}
+                          {/* Patient details */}
+                          <SubText>
+                            <strong>{`Patient's Details:`}</strong>
+                          </SubText>
+                          <SubText>
+                            <strong>Name:</strong> {slot.user.name}
+                          </SubText>
+                          <SubText>
+                            <strong>Contact:</strong> {slot.user.phoneNumber}
+                          </SubText>
+                        </div>
+                      </CustomCardContent>
+                    </CustomCard>
+                  ))
+              )}
+            </>
+          )}
+        </CustomRootContainer>
+      )}
     </ThemeProvider>
   );
 };

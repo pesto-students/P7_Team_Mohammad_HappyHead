@@ -24,7 +24,7 @@ const Heading = styled(Typography)(({ theme }) => ({
 // Styled component for the custom content container
 const CustomContentContainer = styled(Box)(({ theme }) => ({
     padding: '1rem 8rem',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
         padding: '0.5rem',
     },
 }));
@@ -34,7 +34,7 @@ const GridContainer = styled('div')(({ theme }) => ({
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
     gap: '5rem',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
         gridTemplateColumns: '1fr',
         gap: '2rem',
     },

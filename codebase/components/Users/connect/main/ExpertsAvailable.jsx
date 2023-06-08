@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Card, CardContent, Dialog, DialogContent, DialogTitle, Grid, Typography, useMediaQuery } from '@mui/material';
-import { ThemeProvider, createTheme, styled } from '@mui/system';
+import { ThemeProvider, styled } from '@mui/system';
 import theme from '../../../styles/theme'
 import RootContainer from '../../../styles/RootContainerStyles';
 import Loader from '../../../styles/Loader';
@@ -45,7 +45,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 const CustomDialogContainer = styled(DialogContent)(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.main,
+  backgroundColor: theme.palette.primary.main,
   padding: '2rem 1.5rem',
 }));
 
@@ -53,6 +53,7 @@ const CustomDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialog-paper': {
     width: '70%',
     maxWidth: 'none',
+    backgroundColor: theme.palette.quinary.main,
   },
   [theme.breakpoints.up('md')]: {
     '& .MuiDialog-paper': {
@@ -62,11 +63,12 @@ const CustomDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 const StyledSlotButton = styled(Button)(({ theme }) => ({
-  backgroundColor:  theme.palette.primary.main,
+  backgroundColor: 'transparent',
+  border: `1px solid ${theme.palette.quinary.main}`,
   color: theme.palette.text.primary,
-  border: `2px solid ${theme.palette.primary.main}`,
   '&:hover': {
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.quinary.main,
+    border: `1px solid ${theme.palette.quinary.main}`,
   },
 }));
 
@@ -90,6 +92,7 @@ const ExpertsPage = () => {
     fetchExperts();
   }, []);
 
+  // Fetch the list of experts
   const fetchExperts = async () => {
     try {
       const response = await fetch('/api/users/connect/experts');
@@ -102,15 +105,18 @@ const ExpertsPage = () => {
     }
   };
 
+  // Handle click on an expert card
   const handleExpertClick = (expert) => {
     setSelectedExpert(expert);
     setDialogOpen(true);
   };
 
+  // Close the dialog
   const handleCloseDialog = () => {
     setDialogOpen(false);
   };
 
+  // Handle slot selection
   const handleSlotSelection = (availability, slot) => {
     const { expertname } = selectedExpert;
 
@@ -121,6 +127,7 @@ const ExpertsPage = () => {
     });
   };
 
+  // Check if the screen size is small
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   if (isLoading) {
@@ -204,7 +211,6 @@ const ExpertsPage = () => {
       </CustomRootContainer>
     </ThemeProvider>
   );
-  
 };
 
 export default ExpertsPage;

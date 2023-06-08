@@ -16,7 +16,9 @@ import UserMenu from './UserMenu'
 // ResponsiveAppBar component
 function ResponsiveAppBar({ isLoggedIn }) {
   const router = useRouter();
-  const { username } = router.query;
+  const { username, expertname } = router.query;
+  const dashboardPath = isLoggedIn ? (username ? `/users/dashboard/${username}` : `/experts/dashboard/${expertname}`) : '/features';
+
   // State variables
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
@@ -24,7 +26,7 @@ function ResponsiveAppBar({ isLoggedIn }) {
   // Array of pages for navigation
   const pages = [
     { name: 'About', path: '/about' },
-    { name: isLoggedIn ? 'Dashboard' : 'Features', path: isLoggedIn ? `/users/dashboard/${username}` : '/features' },
+    { name: isLoggedIn ? 'Dashboard' : 'Features', path: dashboardPath },
     { name: 'Contact', path: '/contact' },
   ];
 
@@ -32,7 +34,7 @@ function ResponsiveAppBar({ isLoggedIn }) {
   const login = [
     { name: 'Sign In', path: '/signin' },
     { name: 'Sign Up', path: '/signup' },
-    { name: 'Dashboard', path: `/users/dashboard/${username}` },
+    { name: 'Dashboard', path: dashboardPath },
     { name: 'Logout', path: '/logout' },
   ];
 
@@ -61,7 +63,7 @@ function ResponsiveAppBar({ isLoggedIn }) {
   });
 
   // Filtering login options based on user's login status
-  const filteredLoginOptions = username ? login.slice(2, 4) : login.slice(0, 2);
+  const filteredLoginOptions = username || expertname ? login.slice(2, 4) : login.slice(0, 2);
 
   return (
     <ThemeProvider theme={theme}>

@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { styled, ThemeProvider } from '@mui/system';
-import { Typography, Card, CardContent, Grid } from '@mui/material';
+import { Typography, Card, CardContent, Divider } from '@mui/material';
 import RootContainer from '../../styles/RootContainerStyles';
-import SectionContainer from '../../styles/SectionsContainer';
 import IconContainer from '../../styles/IconContainerStyles';
-import TextStyle from '../../styles/SubTextStyles';
 import theme from '../../styles/theme';
+import Loader from '../../styles/Loader';
 
 // Custom styled components for the root container, content container, and dialog
-const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
+const CustomRootContainer = styled(RootContainer)(() => ({
   padding: '1rem 2rem 2rem 2rem',
 }));
 
 const CustomCard = styled(Card)(({ theme, cardColor }) => ({
   backgroundColor: cardColor,
   width: '100%',
-  [theme.breakpoints.up('md')]: {
+  [theme.breakpoints.up('sm')]: {
     width: '60vw',
     padding: '0 2rem',
   },
@@ -24,8 +23,8 @@ const CustomCard = styled(Card)(({ theme, cardColor }) => ({
   borderRadius: '8px',
   '&:hover': {
     cursor: 'pointer',
-    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', // Update with desired box shadow style
-    transform: 'scale(1.02)', // Update with desired transformation
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', 
+    transform: 'scale(1.02)', 
   },
 }));
 
@@ -65,6 +64,7 @@ const UpcomingAppointments = () => {
   const router = useRouter();
   const { username } = router.query;
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -78,10 +78,11 @@ const UpcomingAppointments = () => {
           const currentDate = new Date();
           return appointmentDate > currentDate;
         });
-
         setUpcomingAppointments(filteredAppointments);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching appointments:', error);
+        setIsLoading(false);
       }
     };
 
@@ -101,6 +102,9 @@ const UpcomingAppointments = () => {
 
   return (
     <ThemeProvider theme={theme}>
+     {isLoading ? (
+        <Loader />
+      ) : (
       <CustomRootContainer>
       <CustomTitle> Upcoming Appointments</CustomTitle>
         {upcomingAppointments.length === 0 ? (
@@ -115,7 +119,6 @@ const UpcomingAppointments = () => {
                   <StyledIconContainer>
                     <img src="/images/dashboard/appointment.png" alt="appointment" />
                   </StyledIconContainer>
-
                   <div>
                     <SubText>
                       <strong>Date:</strong>{' '}
@@ -128,6 +131,7 @@ const UpcomingAppointments = () => {
                     <SubText>
                       <strong>Time:</strong> {appointment.startTime} - {appointment.endTime}
                     </SubText>
+                    <Divider sx={{ backgroundColor: 'white', height: 2 }} /> {/* Modified divider */}
                     <SubText>
                       <strong>Expert Name:</strong> {appointment.user.name}
                     </SubText>
@@ -137,11 +141,11 @@ const UpcomingAppointments = () => {
                   </div>
                 </CustomCardContent>
               </CustomCard>
-
             ))}
           </>
         )}
       </CustomRootContainer>
+      )}
     </ThemeProvider>
   );
 };
