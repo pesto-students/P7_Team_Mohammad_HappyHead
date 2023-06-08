@@ -78,7 +78,7 @@ const CenteredSubText = styled(SubText)({
     textAlign: 'center',
     padding: '0 1rem',
     width: '100%'
-  });
+});
 
 // Button styles for cancel and save buttons
 const buttonStyles = {
@@ -100,6 +100,7 @@ const UserDashboard = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [editedProfile, setEditedProfile] = useState({ ...userProfile, password: '' }); // Initialize with empty password
     const [showPassword, setShowPassword] = useState(false);
+    const [originalUsername, setOriginalUsername] = useState(''); // New state variable for storing the original username
 
     // Open the profile edit dialog
     const handleOpenDialog = () => {
@@ -120,6 +121,7 @@ const UserDashboard = () => {
                 const userProfile = await response.json();
                 setUserProfile(userProfile);
                 setEditedProfile(userProfile);
+                setOriginalUsername(username);
             } catch (error) {
                 console.error('Failed to fetch user profile', error);
             }
@@ -127,19 +129,22 @@ const UserDashboard = () => {
         getUserProfile();
     }, [username]);
 
-    // Save the edited profile
+    
+
     const handleSaveProfile = async () => {
         try {
-            const response = await fetch(`/api/users/dashboard/${username}`, {
+            const response = await fetch(`/api/users/dashboard/${originalUsername}`, { // Use the original username to make the request
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(editedProfile),
+                body: JSON.stringify({ oldUsername: originalUsername, editedProfile}), // Include oldUsername field in the request body
             });
+
             if (response.ok) {
                 setUserProfile(editedProfile);
                 setOpenDialog(false);
+                router.push(`/users/dashboard/${editedProfile.username}`);
             } else {
                 console.error('Failed to update user profile');
             }
@@ -147,6 +152,7 @@ const UserDashboard = () => {
             console.error('Failed to update user profile', error);
         }
     };
+
 
     // Handle input change in the profile edit form
     const handleInputChange = (e) => {
@@ -173,7 +179,7 @@ const UserDashboard = () => {
 
     // To generate random welcome messages for the user
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-    
+
     if (!userProfile) {
         return <Loader />;
     }
@@ -208,27 +214,30 @@ const UserDashboard = () => {
                             variant="outlined"
                             label="Name"
                             name="name"
-                            value={editedProfile.name}
+                            value={editedProfile.name || ''}
                             onChange={handleInputChange}
                         />
+
                         <TextField
                             fullWidth
                             margin="normal"
                             variant="outlined"
                             label="Username"
                             name="username"
-                            value={editedProfile.username}
+                            value={editedProfile.username || ''}
                             onChange={handleInputChange}
                         />
+
                         <TextField
                             fullWidth
                             margin="normal"
                             variant="outlined"
                             label="Email"
                             name="email"
-                            value={editedProfile.email}
+                            value={editedProfile.email || ''}
                             onChange={handleInputChange}
                         />
+
                         <TextField
                             fullWidth
                             margin="normal"
@@ -237,9 +246,10 @@ const UserDashboard = () => {
                             name="dob"
                             type="date"
                             InputLabelProps={{ shrink: true }}
-                            value={editedProfile.dob}
+                            value={editedProfile.dob || ''}
                             onChange={handleInputChange}
                         />
+
                         <TextField
                             fullWidth
                             margin="normal"
@@ -247,7 +257,7 @@ const UserDashboard = () => {
                             label="Password"
                             name="password"
                             type={showPassword ? 'text' : 'password'}
-                            value={editedProfile.password}
+                            value={editedProfile.password || ''}
                             onChange={handleInputChange}
                             InputProps={{
                                 endAdornment: (
