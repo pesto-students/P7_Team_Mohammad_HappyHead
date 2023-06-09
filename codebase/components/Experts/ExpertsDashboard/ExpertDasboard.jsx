@@ -4,12 +4,12 @@ import { Button, CardActions, Dialog, DialogTitle, DialogContent, TextField, Inp
 import { styled, ThemeProvider } from '@mui/system';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import RootContainer from '../../styles/RootContainerStyles';
-import IconContainer from '../../styles/IconContainerStyles'
 import SectionContainer from '../../styles/SectionsContainer';
 import SubText from '../../styles/SubTextStyles';
 import theme from '../../styles/theme';
 import Loader from '../../styles/Loader';
 import messages from './messages';
+import Image from 'next/image'
 
 // Custom styled components for the root container, content container, and dialog
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -31,6 +31,7 @@ const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
 //Styled component for the Heading 
 const CustomTitle = styled(Typography)(({ theme }) => ({
   ...theme.typography.h2,
+  paddingTop: '1rem',
   [theme.breakpoints.down('sm')]: {
     fontSize: theme.typography.h4.fontSize,
   },
@@ -42,34 +43,27 @@ const cardActionsStyles = {
   marginBottom: '1rem',
 };
 
-// Styled component for the popup dialog box 
+// Styled component for the popup dialog box
 const CustomDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialog-paper': {
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
   },
   '& .MuiInputLabel-outlined': {
-    color: theme.palette.text.primary,
+    color: theme.palette.text.primary, // Apply theme.palette.text.primary color to label text
+  },
+  '&.Mui-focused fieldset': {
+    borderColor: theme.palette.text.primary, // Apply theme.palette.text.primary color to outline border when focused
   },
   '& .MuiOutlinedInput-root': {
-    '& fieldset': {
-      borderColor: theme.palette.text.primary,
-      color: theme.palette.text.primary,
+    '&:hover fieldset': {
+      borderColor: theme.palette.text.primary, // Apply theme.palette.text.primary color to outline border on hover
     },
-    '& .MuiDialogTitle-root': {
-      color: theme.palette.text.primary,
+    '&.Mui-focused fieldset': {
+      borderColor: theme.palette.text.primary, // Apply theme.palette.text.primary color to outline border when focused
     },
-    '& .MuiDialogLabel-root': {
-      color: theme.palette.text.primary,
+    '&.Mui-focused .MuiInputLabel-outlined': {
+      color: 'black !important', // Change the color to black for the label text when focused
     },
-  },
-}));
-
-// Styled component for the IconContainer with styled icons
-const StyledImg = styled(IconContainer)(() => ({
-  '& img': {
-    width: '8rem',
-    height: '8rem',
-    marging: '0',
   },
 }));
 
@@ -101,11 +95,14 @@ const UserDashboard = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [editedProfile, setEditedProfile] = useState({ ...expertProfile, password: '' }); // Initialize with empty password
   const [showPassword, setShowPassword] = useState(false);
+  const [originalExpertname, setOriginalExpertname] = useState(''); // New state variable for storing the original username
+  const [expertnameAvailable, setExpertnameAvailable] = useState(); // State variable for username availability
+
 
   // Open the profile edit dialog
   const handleOpenDialog = () => {
     setOpenDialog(true);
-    setEditedProfile({ ...expertProfile });
+    setEditedProfile(expertProfile ? { ...expertProfile } : {});
   };
 
   // Close the profile edit dialog
@@ -121,6 +118,7 @@ const UserDashboard = () => {
         const expertProfile = await response.json();
         setExpertProfile(expertProfile);
         setEditedProfile(expertProfile);
+        setOriginalExpertname(expertname);
       } catch (error) {
         console.error('Failed to fetch expert profile', error);
       }
@@ -131,16 +129,28 @@ const UserDashboard = () => {
   // Save the edited profile
   const handleSaveProfile = async () => {
     try {
+      // Fetch the user profile with the new username
+      const res = await fetch(`/api/experts/dashboard/${editedProfile.expertname}`);
+      const existingExpert = await res.json();
+
+      // Check if the username already exists and it belongs to a different user
+      if (existingExpert && existingExpert.expertname !== originalExpertname) {
+        console.error('Expertname already exists');
+        alert('Expertname already exists, try something else.');
+        return; // Stop execution and display an error message
+      }
+
       const response = await fetch(`/api/experts/dashboard/${expertname}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(editedProfile),
+        body: JSON.stringify({ oldExpertname: originalExpertname, editedProfile }),
       });
       if (response.ok) {
         setExpertProfile(editedProfile);
         setOpenDialog(false);
+        router.push(`/experts/dashboard/${editedProfile.expertname}`);
       } else {
         console.error('Failed to update expert profile');
       }
@@ -163,6 +173,15 @@ const UserDashboard = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
+  // Check username availability when Check Availability button is clicked
+  const handleCheckAvailability = async () => {
+    const { expertname } = editedProfile;
+    const response = await fetch(`/api/experts/${expertname}`);
+    const result = await response.json();
+    console.log(result)
+    setExpertnameAvailable(result.available);
+  };
+
   // To generate random welcome messages for the user
   const randomMessage = messages[Math.floor(Math.random() * messages.length)];
 
@@ -175,9 +194,12 @@ const UserDashboard = () => {
       <CustomRootContainer>
         {/* Expert profile component */}
         <CustomSectionContainer>
-          <StyledImg>
-            <img src="/images/dashboard/bee.png" alt="happy-bee" />
-          </StyledImg>
+          <Image
+            src="/images/dashboard/bee.png"
+            alt="happy-bee"
+            width={125}
+            height={125}
+          />
           {expertProfile && (
             <CustomTitle component="h2">Hey there, {expertProfile.name}!</CustomTitle>
           )}
@@ -200,79 +222,149 @@ const UserDashboard = () => {
               label="Name"
               type="text"
               name="name"
-              value={editedProfile.name}
+              value={editedProfile.name || ''}
               onChange={handleInputChange}
               fullWidth
+              InputLabelProps={{
+                style: { color: 'black' }, // Set the label text color to black
+              }}
+              InputProps={{
+                style: { color: theme.palette.text.primary }, // Apply theme.palette.text.primary color to input text
+              }}
             />
             <TextField
               margin="dense"
               label="Username"
               type="text"
-              name="username"
-              value={editedProfile.expertname}
+              name="expertname"
+              value={editedProfile.expertname || ''}
               onChange={handleInputChange}
               fullWidth
+              InputLabelProps={{
+                style: { color: 'black' }, // Set the label text color to black
+              }}
+              InputProps={{
+                style: { color: theme.palette.text.primary }, // Apply theme.palette.text.primary color to input text
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Button
+                      onClick={handleCheckAvailability}
+                      style={{
+                        backgroundColor: theme.palette.quinary.main,
+                        fontSize: '1rem',
+                        '&:hover': {
+                          backgroundColor: theme.palette.secondary.main,
+                        },
+                      }}
+                    >
+                      Check Availability
+                    </Button>
+                  </InputAdornment>
+                ),
+              }}
             />
+            {expertnameAvailable !== null && expertnameAvailable !== undefined && (
+              <Typography variant="caption" color={expertnameAvailable ? 'green' : 'error'}>
+                {expertnameAvailable ? 'Expertname available' : 'Expertname already taken'}
+              </Typography>
+            )}
+
             <TextField
               margin="dense"
               label="Email"
               type="email"
               name="email"
-              value={editedProfile.email}
+              value={editedProfile.email || ''}
               onChange={handleInputChange}
               fullWidth
+              InputLabelProps={{
+                style: { color: 'black' }, // Set the label text color to black
+              }}
+              InputProps={{
+                style: { color: theme.palette.text.primary }, // Apply theme.palette.text.primary color to input text
+              }}
             />
             <TextField
               margin="dense"
               label="Phone Number"
               type="tel"
               name="phoneNumber"
-              value={editedProfile.phoneNumber}
+              value={editedProfile.phoneNumber || ''}
               onChange={handleInputChange}
               fullWidth
+              InputLabelProps={{
+                style: { color: 'black' }, // Set the label text color to black
+              }}
+              InputProps={{
+                style: { color: theme.palette.text.primary }, // Apply theme.palette.text.primary color to input text
+              }}
             />
             <TextField
               margin="dense"
               label="Qualifications"
               type="text"
               name="qualifications"
-              value={editedProfile.qualifications}
+              value={editedProfile.qualifications || ''}
               onChange={handleInputChange}
               fullWidth
+              InputLabelProps={{
+                style: { color: 'black' }, // Set the label text color to black
+              }}
+              InputProps={{
+                style: { color: theme.palette.text.primary }, // Apply theme.palette.text.primary color to input text
+              }}
             />
             <TextField
               margin="dense"
               label="Years of Experience"
               type="number"
               name="yearsOfExperience"
-              value={editedProfile.yearsOfExperience}
+              value={editedProfile.yearsOfExperience || ''}
               onChange={handleInputChange}
               fullWidth
+              InputLabelProps={{
+                style: { color: 'black' }, // Set the label text color to black
+              }}
+              InputProps={{
+                style: { color: theme.palette.text.primary }, // Apply theme.palette.text.primary color to input text
+              }}
             />
             <TextField
               margin="dense"
               label="Speciality"
               type="text"
               name="speciality"
-              value={editedProfile.speciality}
+              value={editedProfile.speciality || ''}
               onChange={handleInputChange}
               fullWidth
+              InputLabelProps={{
+                style: { color: 'black' }, // Set the label text color to black
+              }}
+              InputProps={{
+                style: { color: theme.palette.text.primary }, // Apply theme.palette.text.primary color to input text
+              }}
             />
             <TextField
               margin="dense"
               label="Consultation Fee"
               type="number"
               name="consultationFee"
-              value={editedProfile.consultationFee}
+              value={editedProfile.consultationFee || ''}
               onChange={handleInputChange}
               fullWidth
+              InputLabelProps={{
+                style: { color: 'black' }, // Set the label text color to black
+              }}
+              InputProps={{
+                style: { color: theme.palette.text.primary }, // Apply theme.palette.text.primary color to input text
+              }}
             />
             <TextField
               margin="dense"
               label="Password"
               type={showPassword ? 'text' : 'password'}
               name="password"
-              value={editedProfile.password}
+              value={editedProfile.password || ''}
               onChange={handleInputChange}
               fullWidth
               InputProps={{

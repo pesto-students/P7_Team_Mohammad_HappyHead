@@ -4,14 +4,14 @@ import { ThemeProvider, styled } from '@mui/system';
 import { redirectToPage } from '../../../utils/redirect';
 import RootContainer from '../../styles/RootContainerStyles';
 import SectionContainer from '../../styles/SectionsContainer';
-import IconContainer from '../../styles/IconContainerStyles'
 import theme from '../../styles/theme';
 import MuiLink from '../../MuiLink';
 import Loader from '../../styles/Loader'
+import Image from 'next/image'
 import { toolsData } from '../toolsData';
 
 // Custom styled components for the root container, content container, and dialog
-const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
+const CustomRootContainer = styled(RootContainer)(() => ({
   padding: '1rem 2rem 2rem 2rem',
 }));
 
@@ -34,14 +34,6 @@ const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
     cursor: 'pointer',
     boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', // Update with desired box shadow style
     transform: 'scale(1.02)', // Update with desired transformation
-  },
-}));
-
-// Styled component for the IconContainer with styled icons
-const StyledIconContainer = styled(IconContainer)(() => ({
-  '& img': {
-    width: '10rem',
-    height: '10rem',
   },
 }));
 
@@ -92,14 +84,17 @@ const Features = ({ isLoggedIn }) => {
           {section1.map((tool, index) => (
             <CustomSectionContainer key={index} onClick={() => handleCardClick(tool)}>
               <CardContent>
-                <StyledIconContainer>
-                  <img src={tool.image} alt={tool.name} />
-                </StyledIconContainer>
+                <Image
+                  src={tool.image}
+                  alt={tool.name}
+                  width={200}
+                  height={200}
+                />
                 <MuiLink
                   href={tool.path ? tool.path : '/loginUser'}
                   underline="none"
                   color="inherit"
-                  variant="h3" 
+                  variant="h3"
                   gutterBottom
                   sx={{
                     ...muiLinkStyles,
@@ -112,7 +107,7 @@ const Features = ({ isLoggedIn }) => {
                   href={isLoggedIn ? tool.path : '/loginUser'}
                   underline="none"
                   color="inherit"
-                  variant="h6" 
+                  variant="h6"
                   component="p"
                   sx={muiLinkStyles}
                 >
@@ -126,9 +121,12 @@ const Features = ({ isLoggedIn }) => {
           {section2.map((tool, index) => (
             <CustomSectionContainer key={index} onClick={() => handleCardClick(tool)}>
               <CardContent>
-                <StyledIconContainer>
-                  <img src={tool.image} alt={tool.name} />
-                </StyledIconContainer>
+                <Image
+                  src={tool.image}
+                  alt={tool.name}
+                  width={200}
+                  height={200}
+                />
                 <MuiLink
                   href={tool.path ? tool.path : '/loginUser'}
                   underline="none"
@@ -167,9 +165,12 @@ const Features = ({ isLoggedIn }) => {
           {section3.map((tool, index) => (
             <CustomSectionContainer key={index} onClick={() => handleCardClick(tool)}>
               <CardContent>
-                <StyledIconContainer>
-                  <img src={tool.image} alt={tool.name} />
-                </StyledIconContainer>
+                <Image
+                  src={tool.image}
+                  alt={tool.name}
+                  width={200}
+                  height={200}
+                />
                 <MuiLink
                   href={tool.path ? tool.path : '/loginUser'}
                   underline="none"

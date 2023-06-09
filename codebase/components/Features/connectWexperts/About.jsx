@@ -4,8 +4,8 @@ import ContentContainer from '../../styles/ContentContainerStyles';
 import SubText from '../../styles/SubTextStyles';
 import RootContainer from '../../styles/RootContainerStyles';
 import Title from '../../styles/TitleStyles'
-import IconContainer from '../../styles/IconContainerStyles'
 import theme from '../../styles/theme';
+import Image from 'next/image'
 import Loader from '../../styles/Loader'
 import Section1 from './Experts'
 import Section2 from './Booking'
@@ -33,46 +33,39 @@ const CenteredSubText = styled(SubText)({
     color: theme.palette.text.primary,
 });
 
-// Styled component for the IconContainer with styled icons
-const StyledIconContainer = styled(IconContainer)(() => ({
-    '& img': {
-        width: '10rem',
-        height: '10rem',
-        margin: '0',
-    },
-}));
-
 export default function Connect() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         // Simulating a delay of 2 seconds for loading
         const timer = setTimeout(() => {
-          setLoading(false);
+            setLoading(false);
         }, 1000);
-    
+
         return () => clearTimeout(timer);
-      }, []);
+    }, []);
 
     return (
         <ThemeProvider theme={theme}>
-        {loading ? (
-        <Loader />
-      ) : (
-        <CustomRootContainer>
-                {/* Page heading */}
-                <CustomHeaderContainer>
-                    <StyledIconContainer>
-                        <img src="/images/connectwexperts/expertsconnect.png" alt="connect" />
-                    </StyledIconContainer>
-
-                    <Title variant="h3">Connect With Experts</Title>
-                    <CenteredSubText variant="h5">
-                        HappyHead provides users with a convenient and reliable way to connect and seek guidance from qualified mental health professionals. We understand the importance of mental well-being and aim to make professional support easily accessible to those in need.
-                    </CenteredSubText>
-                </CustomHeaderContainer>
-            </CustomRootContainer>
-            )}  
+            {loading ? (
+                <Loader />
+            ) : (
+                <CustomRootContainer>
+                    {/* Page heading */}
+                    <CustomHeaderContainer>
+                        <Image
+                            src="/images/connectwexperts/expertsconnect.png"
+                            alt="connect"
+                            width={170}
+                            height={170}
+                        />
+                        <Title variant="h3" sx={{ paddingTop: "2rem" }}>Connect With Experts</Title>
+                        <CenteredSubText variant="h5">
+                            HappyHead provides users with a convenient and reliable way to connect and seek guidance from qualified mental health professionals. We understand the importance of mental well-being and aim to make professional support easily accessible to those in need.
+                        </CenteredSubText>
+                    </CustomHeaderContainer>
+                </CustomRootContainer>
+            )}
             {/* Page sections */}
             <Section1 />
             <Section2 />

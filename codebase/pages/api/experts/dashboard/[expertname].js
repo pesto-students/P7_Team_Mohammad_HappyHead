@@ -123,23 +123,21 @@ const expertProfileHandler = async (req, res) => {
     }
   } else if (req.method === 'PUT') {
     try {
-      const { expertname } = req.body;
-
-      // Connect to the MongoDB Atlas cluster
+          // Connect to the MongoDB Atlas cluster
       let { db } = await connectToDatabase();
 
       // Update the user profile in the database
-      await db.collection('Experts').updateOne({ expertname: expertname }, {
+      await db.collection('Experts').updateOne({ expertname: req.body.oldExpertname }, {
         $set: {
-          name: req.body.name,
-          expertname: req.body.expertname,
-          email: req.body.email,
-          phoneNumber: req.body.phoneNumber,
-          qualifications: req.body.qualifications,
-          yearsOfExperience: req.body.phoneNumber,
-          speciality: req.body.qualifications,
-          consultationFee: req.body.consultationFee,
-          password: req.body.password,
+          name: req.body.editedProfile.name,
+          expertname: req.body.editedProfile.expertname,
+          email: req.body.editedProfile.email,
+          phoneNumber: req.body.editedProfile.phoneNumber,
+          qualifications: req.body.editedProfile.qualifications,
+          yearsOfExperience: req.body.editedProfile.yearsOfExperience,
+          speciality: req.body.editedProfile.speciality,
+          consultationFee: req.body.editedProfile.consultationFee,
+          password: req.body.editedProfile.password,
         }
       });
 

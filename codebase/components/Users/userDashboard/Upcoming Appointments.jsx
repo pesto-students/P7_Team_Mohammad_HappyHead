@@ -3,9 +3,9 @@ import { useRouter } from 'next/router';
 import { styled, ThemeProvider } from '@mui/system';
 import { Typography, Card, CardContent, Divider } from '@mui/material';
 import RootContainer from '../../styles/RootContainerStyles';
-import IconContainer from '../../styles/IconContainerStyles';
 import theme from '../../styles/theme';
 import Loader from '../../styles/Loader';
+import Image from 'next/image'
 
 // Custom styled components for the root container, content container, and dialog
 const CustomRootContainer = styled(RootContainer)(() => ({
@@ -23,8 +23,8 @@ const CustomCard = styled(Card)(({ theme, cardColor }) => ({
   borderRadius: '8px',
   '&:hover': {
     cursor: 'pointer',
-    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', 
-    transform: 'scale(1.02)', 
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
+    transform: 'scale(1.02)',
   },
 }));
 
@@ -32,14 +32,6 @@ const CustomCardContent = styled(CardContent)(({ theme, cardColor }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'grid',
     gridTemplateColumns: '1fr 2fr',
-  },
-}));
-
-// Styled component for the IconContainer with styled icons
-const StyledIconContainer = styled(IconContainer)(() => ({
-  '& img': {
-    width: '10rem',
-    height: '10rem',
   },
 }));
 
@@ -102,49 +94,52 @@ const UpcomingAppointments = () => {
 
   return (
     <ThemeProvider theme={theme}>
-     {isLoading ? (
+      {isLoading ? (
         <Loader />
       ) : (
-      <CustomRootContainer>
-      <CustomTitle> Upcoming Appointments</CustomTitle>
-        {upcomingAppointments.length === 0 ? (
-          noAppointmentsMessage
-        ) : (
-          <>
-            {upcomingAppointments.map((appointment, index) => (
-              <CustomCard
-                cardColor={cardColors[index % cardColors.length]}
-                key={`${appointment.date}-${index}`}>
-                <CustomCardContent>
-                  <StyledIconContainer>
-                    <img src="/images/dashboard/appointment.png" alt="appointment" />
-                  </StyledIconContainer>
-                  <div>
-                    <SubText>
-                      <strong>Date:</strong>{' '}
-                      {new Date(appointment.date).toLocaleDateString('en-US', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric',
-                      })}
-                    </SubText>
-                    <SubText>
-                      <strong>Time:</strong> {appointment.startTime} - {appointment.endTime}
-                    </SubText>
-                    <Divider sx={{ backgroundColor: 'white', height: 2 }} /> {/* Modified divider */}
-                    <SubText>
-                      <strong>Expert Name:</strong> {appointment.user.name}
-                    </SubText>
-                    <SubText>
-                      <strong>Expert Phone Number:</strong> {appointment.user.phoneNumber}
-                    </SubText>
-                  </div>
-                </CustomCardContent>
-              </CustomCard>
-            ))}
-          </>
-        )}
-      </CustomRootContainer>
+        <CustomRootContainer>
+          <CustomTitle> Upcoming Appointments</CustomTitle>
+          {upcomingAppointments.length === 0 ? (
+            noAppointmentsMessage
+          ) : (
+            <>
+              {upcomingAppointments.map((appointment, index) => (
+                <CustomCard
+                  cardColor={cardColors[index % cardColors.length]}
+                  key={`${appointment.date}-${index}`}>
+                  <CustomCardContent>
+                    <Image
+                      src="/images/dashboard/appointment.png"
+                      alt="appointment"
+                      width={200}
+                      height={200}
+                    />
+                    <div>
+                      <SubText>
+                        <strong>Date:</strong>{' '}
+                        {new Date(appointment.date).toLocaleDateString('en-US', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric',
+                        })}
+                      </SubText>
+                      <SubText>
+                        <strong>Time:</strong> {appointment.startTime} - {appointment.endTime}
+                      </SubText>
+                      <Divider sx={{ backgroundColor: 'white', height: 2 }} /> {/* Modified divider */}
+                      <SubText>
+                        <strong>Expert Name:</strong> {appointment.user.name}
+                      </SubText>
+                      <SubText>
+                        <strong>Expert Phone Number:</strong> {appointment.user.phoneNumber}
+                      </SubText>
+                    </div>
+                  </CustomCardContent>
+                </CustomCard>
+              ))}
+            </>
+          )}
+        </CustomRootContainer>
       )}
     </ThemeProvider>
   );

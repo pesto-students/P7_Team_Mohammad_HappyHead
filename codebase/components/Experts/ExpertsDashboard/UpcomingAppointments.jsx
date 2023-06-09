@@ -3,9 +3,9 @@ import { useRouter } from 'next/router';
 import { styled, ThemeProvider } from '@mui/system';
 import { Typography, Card, CardContent, Divider } from '@mui/material';
 import RootContainer from '../../styles/RootContainerStyles';
-import IconContainer from '../../styles/IconContainerStyles';
 import theme from '../../styles/theme';
 import Loader from '../../styles/Loader';
+import Image from 'next/image'
 
 // Custom styled components for the root container, content container, and dialog
 const CustomRootContainer = styled(RootContainer)(() => ({
@@ -32,14 +32,6 @@ const CustomCardContent = styled(CardContent)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'grid',
     gridTemplateColumns: '1fr 2fr',
-  },
-}));
-
-// Styled component for the IconContainer with styled icons
-const StyledIconContainer = styled(IconContainer)(() => ({
-  '& img': {
-    width: '10rem',
-    height: '10rem',
   },
 }));
 
@@ -133,9 +125,12 @@ const UpcomingAppointments = () => {
                       cardColor={cardColors[(index * 3 + slotIndex) % cardColors.length]}
                     >
                       <CustomCardContent>
-                        <StyledIconContainer>
-                          <img src="/images/dashboard/appointment.png" alt="appointment" />
-                        </StyledIconContainer>
+                        <Image
+                          src="/images/dashboard/appointment.png"
+                          alt="appointment"
+                          width={200}
+                          height={200}
+                        />
                         <div>
                           {/* Slot details */}
                           <SubText style={{ whiteSpace: 'nowrap' }}>

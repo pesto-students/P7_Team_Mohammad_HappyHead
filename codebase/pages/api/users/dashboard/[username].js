@@ -48,19 +48,18 @@ const userProfileHandler = async (req, res) => {
     }
   } else if (req.method === 'PUT') {
     try {
-      const { username } = req.body;
-
       // Connect to the MongoDB Atlas cluster
       let { db } = await connectToDatabase();
      
       // Update the user profile in the database
-      await db.collection('Users').updateOne({ username: username }, {
+      await db.collection('Users').updateOne({ username: req.body.oldUsername }, {
         $set: {
-          name: req.body.name,
-          email: req.body.email,
-          phonenumber: req.body.phonenumber,
-          dob: req.body.dob,
-          password: req.body.password,
+          name: req.body.editedProfile.name,
+          email: req.body.editedProfile.email,
+          username: req.body.editedProfile.username,
+          phonenumber: req.body.editedProfile.phonenumber,
+          dob: req.body.editedProfile.dob,
+          password: req.body.editedProfile.password,
         }
       });
 
