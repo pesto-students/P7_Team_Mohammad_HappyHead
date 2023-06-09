@@ -44,7 +44,7 @@ const Tile1 = () => {
         <CustomAboutContainer>
           <Grid container spacing={2}>
             {/* First column */}
-            <Grid item xs={12} sm={4} sx={{ textAlign: 'center' }}>
+            <Grid item  xs={12} md={4} sx={{ textAlign: 'center' }}>
               <ColumnContainer>
                 {/* StyledIconContainer for Joy */}
                 <StyledIconContainer>
@@ -57,7 +57,7 @@ const Tile1 = () => {
             </Grid>
 
             {/* Second column */}
-            <Grid item xs={12} sm={4} sx={{ textAlign: 'center' }}>
+            <Grid item  xs={12} md={4} sx={{ textAlign: 'center' }}>
               <ColumnContainer>
                 {/* StyledIconContainer for Sleep */}
                 <StyledIconContainer>
@@ -70,7 +70,7 @@ const Tile1 = () => {
             </Grid>
 
             {/* Third column */}
-            <Grid item xs={12} sm={4} sx={{ textAlign: 'center' }}>
+            <Grid item  xs={12} md={4} sx={{ textAlign: 'center' }}>
               <ColumnContainer>
                 {/* StyledIconContainer for Happiness */}
                 <StyledIconContainer>

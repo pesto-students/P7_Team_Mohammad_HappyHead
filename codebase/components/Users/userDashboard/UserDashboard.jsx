@@ -4,7 +4,7 @@ import { Button, CardActions, Dialog, DialogTitle, DialogContent, TextField, Inp
 import { styled, ThemeProvider } from '@mui/system';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import RootContainer from '../../styles/RootContainerStyles';
-import IconContainer from '../../styles/IconContainerStyles'
+import Image from 'next/image'
 import SectionContainer from '../../styles/SectionsContainer';
 import SubText from '../../styles/SubTextStyles';
 import theme from '../../styles/theme';
@@ -60,15 +60,6 @@ const CustomDialog = styled(Dialog)(({ theme }) => ({
     '&.Mui-focused .MuiInputLabel-outlined': {
       color: 'black !important', // Change the color to black for the label text when focused
     },
-  },
-}));
-
-// Styled component for the IconContainer with styled icons
-const StyledImg = styled(IconContainer)(() => ({
-  '& img': {
-    width: '8rem',
-    height: '8rem',
-    marging: '0',
   },
 }));
 
@@ -206,9 +197,12 @@ const UserDashboard = () => {
       <CustomRootContainer>
         {/* User profile component */}
         <CustomSectionContainer>
-          <StyledImg>
-            <img src="/images/dashboard/bee.png" alt="happy-bee" />
-          </StyledImg>
+        <Image
+            src="/images/dashboard/bee.png"
+            alt="happy-bee"
+            width={125}
+            height={125}
+          />
           {userProfile && (
             <CustomTitle component="h2">Hey there, {userProfile.name}!</CustomTitle>
           )}

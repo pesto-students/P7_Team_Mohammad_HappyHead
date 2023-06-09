@@ -4,12 +4,12 @@ import { Button, CardActions, Dialog, DialogTitle, DialogContent, TextField, Inp
 import { styled, ThemeProvider } from '@mui/system';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import RootContainer from '../../styles/RootContainerStyles';
-import IconContainer from '../../styles/IconContainerStyles'
 import SectionContainer from '../../styles/SectionsContainer';
 import SubText from '../../styles/SubTextStyles';
 import theme from '../../styles/theme';
 import Loader from '../../styles/Loader';
 import messages from './messages';
+import Image from 'next/image'
 
 // Custom styled components for the root container, content container, and dialog
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -31,6 +31,7 @@ const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
 //Styled component for the Heading 
 const CustomTitle = styled(Typography)(({ theme }) => ({
   ...theme.typography.h2,
+  paddingTop: '1rem',
   [theme.breakpoints.down('sm')]: {
     fontSize: theme.typography.h4.fontSize,
   },
@@ -51,8 +52,8 @@ const CustomDialog = styled(Dialog)(({ theme }) => ({
     color: theme.palette.text.primary, // Apply theme.palette.text.primary color to label text
   },
   '&.Mui-focused fieldset': {
-      borderColor: theme.palette.text.primary, // Apply theme.palette.text.primary color to outline border when focused
-    },
+    borderColor: theme.palette.text.primary, // Apply theme.palette.text.primary color to outline border when focused
+  },
   '& .MuiOutlinedInput-root': {
     '&:hover fieldset': {
       borderColor: theme.palette.text.primary, // Apply theme.palette.text.primary color to outline border on hover
@@ -63,16 +64,6 @@ const CustomDialog = styled(Dialog)(({ theme }) => ({
     '&.Mui-focused .MuiInputLabel-outlined': {
       color: 'black !important', // Change the color to black for the label text when focused
     },
-  },
-}));
-
-
-// Styled component for the IconContainer with styled icons
-const StyledImg = styled(IconContainer)(() => ({
-  '& img': {
-    width: '8rem',
-    height: '8rem',
-    marging: '0',
   },
 }));
 
@@ -203,9 +194,12 @@ const UserDashboard = () => {
       <CustomRootContainer>
         {/* Expert profile component */}
         <CustomSectionContainer>
-          <StyledImg>
-            <img src="/images/dashboard/bee.png" alt="happy-bee" />
-          </StyledImg>
+          <Image
+            src="/images/dashboard/bee.png"
+            alt="happy-bee"
+            width={125}
+            height={125}
+          />
           {expertProfile && (
             <CustomTitle component="h2">Hey there, {expertProfile.name}!</CustomTitle>
           )}

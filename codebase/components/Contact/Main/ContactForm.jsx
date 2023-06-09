@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { TextField, Button, Container, useMediaQuery, ThemeProvider } from '@mui/material';
 import { styled } from '@mui/system';
+import Image from 'next/image'
 import RootContainer from '../../styles/RootContainerStyles';
 import ContentContainer from '../../styles/ContentContainerStyles';
 import ButtonWrapper from '../../styles/ButtonWrapperStyles';
 import SubText from '../../styles/SubTextStyles';
-import IconContainer from '../../styles/IconContainerStyles'
 import SectionContainer from '../../styles/SectionsContainer';
 import theme from '../../styles/theme';
 
@@ -27,15 +27,6 @@ const CustomTextField = styled(TextField)({
     color: theme.palette.text.primary,
   },
 });
-
-// Styled component for the IconContainer with styled icons
-const StyledIconContainer = styled(IconContainer)(() => ({
-  '& img': {
-    width: '8rem',
-    height: '8rem',
-    marging: '0',
-  },
-}));
 
 export default function Contact() {
   const [name, setName] = useState('');
@@ -105,9 +96,12 @@ export default function Contact() {
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
         <CustomSectionContainer>
-          <StyledIconContainer>
-            <img src="/images/contact/contact.png" alt="contact" />
-          </StyledIconContainer>
+          <Image
+            src="/images/contact/contact.png"
+            alt="contact"
+            width={200}
+            height={200}
+          />
           <Container maxWidth="80%">
             <ContentContainer>
               <h1>Contact Us</h1>

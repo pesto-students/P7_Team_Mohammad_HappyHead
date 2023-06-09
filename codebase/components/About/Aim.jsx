@@ -1,12 +1,11 @@
 import { styled } from '@mui/system'
 import { ThemeProvider } from '@mui/system'
 import { Grid } from '@mui/material'
-
+import Image from 'next/image'
 import theme from '../styles/theme'
 import Title from '../styles/TitleStyles'
 import SubText from '../styles/SubTextStyles'
 import RootContainer from '../styles/RootContainerStyles'
-import IconContainer from '../styles/IconContainerStyles'
 import ColumnContainer from '../styles/ColumnContainerStyle'
 import SectionContainer from '../styles/SectionsContainer'
 
@@ -18,14 +17,6 @@ const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
 // Styled component for the main content container
 const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
   backgroundColor: theme.palette.tertiary.main,
-}));
-
-// Styled component for the IconContainer with styled icons
-const StyledIconContainer = styled(IconContainer)(() => ({
-  '& img': {
-    width: '10rem',
-    height: '10rem',
-  },
 }));
 
 const CustomTitle = styled(Title)(({ theme }) => ({
@@ -40,15 +31,18 @@ const WhoWhatWe = () => {
       <CustomRootContainer>
         {/* Main content container */}
         <CustomSectionContainer>
-        <CustomTitle variant="h3">The Aim</CustomTitle>
-          <Grid container spacing={2}>
+          <CustomTitle variant="h3">The Aim</CustomTitle>
+          <Grid container spacing={1}>
             {/* First column */}
-            <Grid item xs={12} sm={4} sx={{ textAlign: 'center' }}>
+            <Grid item xs={12} md={4}sx={{ textAlign: 'center' }}>
               <ColumnContainer>
-                {/* StyledIconContainer for Who */}
-                <StyledIconContainer>
-                <img src="/images/aboutpage/fistbump.png" alt="Who" />
-                </StyledIconContainer>
+            
+                <Image
+                  src="/images/aboutpage/fistbump.png"
+                  alt="who-are-we"
+                  width={200}
+                  height={200}
+                />
                 <Title variant="h5">Who we are</Title>
                 <SubText variant="body1">
                   Think of HappyHead as your mind’s best friend. We’re here for you whenever you need us, wherever you are,
@@ -58,12 +52,15 @@ const WhoWhatWe = () => {
             </Grid>
 
             {/* Second column */}
-            <Grid item xs={12} sm={4} sx={{ textAlign: 'center' }}>
+            <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
               <ColumnContainer>
-                {/* StyledIconContainer for What */}
-                <StyledIconContainer>
-                <img src="/images/aboutpage/meditation.png" alt="What" />
-                </StyledIconContainer>
+       
+                <Image
+                  src="/images/aboutpage/meditation.png"
+                  alt="what-we-do"
+                  width={200}
+                  height={200}
+                />
                 <Title variant="h5">What we do</Title>
                 <SubText variant="body1">
                   Through science-backed meditation and mindfulness tools, HappyHead helps you create life-changing habits
@@ -73,12 +70,15 @@ const WhoWhatWe = () => {
             </Grid>
 
             {/* Third column */}
-            <Grid item xs={12} sm={4} sx={{ textAlign: 'center' }}>
+            <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
               <ColumnContainer>
-                {/* StyledIconContainer for Why */}
-                <StyledIconContainer>
-                <img src="/images/aboutpage/relax.png" alt="Why" />
-                </StyledIconContainer>
+              
+                <Image
+                  src="/images/aboutpage/relax.png"
+                  alt="why-we-do"
+                  width={200}
+                  height={200}
+                />
                 <Title variant="h5">Why we do it</Title>
                 <SubText variant="body1">
                   HappyHead is proven to reduce stress by 14% in just 10 days. It can also help you relax your mind in minutes,

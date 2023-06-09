@@ -1,9 +1,8 @@
 import { ThemeProvider, styled } from '@mui/system';
+import Image from 'next/image'
 import RootContainer from '../../styles/RootContainerStyles';
 import ContentContainer from '../../styles/ContentContainerStyles';
-import SectionContainer from '../../styles/SectionsContainer';
 import SubText from '../../styles/SubTextStyles';
-import IconContainer from '../../styles/IconContainerStyles'
 import theme from '../../styles/theme';
 
 // Custom styled components for the root container, content container, and dialog
@@ -23,14 +22,6 @@ const CenteredSubText = styled(SubText)({
   textAlign: 'center',
 });
 
-// Styled component for the IconContainer with styled icons
-const StyledIconContainer = styled(IconContainer)(() => ({
-  '& img': {
-    width: '8rem',
-    height: '8rem',
-  },
-}));
-
 const info =
 {
   mission: `Our mission is to create a world where everyone is kind to their mind — which is why we’re committed to making our mobile products more accessible for every person, regardless of their visual, auditory, cognitive, or motor abilities.`,
@@ -44,9 +35,12 @@ export default function Accessibility() {
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
         <CustomContentContainer>
-          <StyledIconContainer>
-            <img src="/images/contact/access.png" alt="Who" />
-          </StyledIconContainer>
+          <Image
+            src="/images/contact/access.png"
+            alt="accessibility"
+            width={200}
+            height={200}
+          />
           <h1>HappyHead Accessibility Statement</h1>
           {/* Centered Sub text */}
           <CenteredSubText variant="h6">
