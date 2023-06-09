@@ -147,7 +147,7 @@ function ResponsiveAppBar({ isLoggedIn }) {
 
 // Default props for ResponsiveAppBar component
 ResponsiveAppBar.defaultProps = {
-  isLoggedIn: true,
+  isLoggedIn: false,
 }
 
 export default ResponsiveAppBar;

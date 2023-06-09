@@ -5,9 +5,9 @@ import { Grid, CardContent } from '@mui/material';
 import MuiLink from '../../MuiLink';
 import RootContainer from '../../styles/RootContainerStyles';
 import SectionContainer from '../../styles/SectionsContainer';
-import IconContainer from '../../styles/IconContainerStyles';
 import theme from '../../styles/theme';
 import Loader from '../../styles/Loader';
+import Image from 'next/image'
 import { redirectToPage } from '../../../utils/redirect';
 
 // Custom styled components for the root container, content container, and dialog
@@ -23,19 +23,11 @@ const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
 }));
 
 // Styled component for the IconContainer with styled icons
-const StyledIconContainer = styled(IconContainer)(() => ({
-  '& img': {
-    width: '10rem',
-    height: '10rem',
-  },
-}));
-
-// Styled component for the IconContainer with styled icons
 const StyledCard = styled(CardContent)(() => ({
   borderRadius: '8px',
   '&:hover': {
     cursor: 'pointer',
-    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', 
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
     transform: 'scale(1.02)',
   },
 }));
@@ -95,52 +87,55 @@ const ToolCardContainer = () => {
 
   return (
     <ThemeProvider theme={theme}>
-     {isLoading ? (
+      {isLoading ? (
         <Loader />
       ) : (
-      <CustomRootContainer>
-        <CustomSectionContainer>
-          <Grid container spacing={2}>
-            {toolsData.map((tool, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index} style={{ display: 'flex' }}>
-                <StyledCard style={{ backgroundColor: tool.color }} onClick={() => handleCardClick(tool)}>
-                  <StyledIconContainer>
-                    <img src={tool.image} alt={tool.name} />
-                  </StyledIconContainer>
-                  <div>
-                    <MuiLink
-                      href={tool.path}
-                      underline="none"
-                      color="inherit"
-                      variant="h3"
-                      gutterBottom
-                      sx={{
-                        ...muiLinkStyles,
-                        fontSize: { xs: '2rem', sm: '2rem', md: '2rem', lg: '3rem' },
-                      }}
-                    >
-                      {tool.name}
-                    </MuiLink>
-                    <MuiLink
-                      href={tool.path}
-                      underline="none"
-                      color="inherit"
-                      variant="h6"
-                      component="p"
-                      sx={{
-                        ...muiLinkStyles,
-                        padding: '0 1rem', 
-                      }}
-                    >
-                      {tool.subtext}
-                    </MuiLink>
-                  </div>
-                </StyledCard>
-              </Grid>
-            ))}
-          </Grid>
-        </CustomSectionContainer>
-      </CustomRootContainer>
+        <CustomRootContainer>
+          <CustomSectionContainer>
+            <Grid container spacing={2}>
+              {toolsData.map((tool, index) => (
+                <Grid item xs={12} sm={6} md={4} key={index} style={{ display: 'flex' }}>
+                  <StyledCard style={{ backgroundColor: tool.color }} onClick={() => handleCardClick(tool)}>
+                    <Image
+                      src={tool.image}
+                      alt={tool.name}
+                      width={200}
+                      height={200}
+                    />
+                    <div>
+                      <MuiLink
+                        href={tool.path}
+                        underline="none"
+                        color="inherit"
+                        variant="h3"
+                        gutterBottom
+                        sx={{
+                          ...muiLinkStyles,
+                          fontSize: { xs: '2rem', sm: '2rem', md: '2rem', lg: '3rem' },
+                        }}
+                      >
+                        {tool.name}
+                      </MuiLink>
+                      <MuiLink
+                        href={tool.path}
+                        underline="none"
+                        color="inherit"
+                        variant="h6"
+                        component="p"
+                        sx={{
+                          ...muiLinkStyles,
+                          padding: '0 1rem',
+                        }}
+                      >
+                        {tool.subtext}
+                      </MuiLink>
+                    </div>
+                  </StyledCard>
+                </Grid>
+              ))}
+            </Grid>
+          </CustomSectionContainer>
+        </CustomRootContainer>
       )}
     </ThemeProvider>
   );

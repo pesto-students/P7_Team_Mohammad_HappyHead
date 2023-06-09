@@ -4,8 +4,8 @@ import RootContainer from '../../styles/RootContainerStyles';
 import ContentContainer from '../../styles/ContentContainerStyles';
 import SubText from '../../styles/SubTextStyles';
 import ButtonWrapper from '../../styles/ButtonWrapperStyles';
-import IconContainer from '../../styles/IconContainerStyles'
 import theme from '../../styles/theme';
+import Image from 'next/image'
 import { redirectToPage } from '../../../utils/redirect';
 
 // Styled component for the root container
@@ -48,15 +48,6 @@ const ButtonWrapperContainer = styled(Box)({
     },
 });
 
-// Styled component for the IconContainer with styled icons
-const StyledIconContainer = styled(IconContainer)(() => ({
-    '& img': {
-        width: '8rem',
-        height: '8rem',
-        marging: '0',
-    },
-}));
-
 const info = {
     text1: `This feature on HappyHead is designed to provide users with tailored recommendations and actionable steps to improve their mental health and well-being.`,
     text2: `By answering a series of simple questions about their current state of mind, lifestyle, and perceived problems, the platform generates a personalized report that identifies areas for improvement and suggests specific actions the user can take to feel healthier and happier again.`,
@@ -73,10 +64,13 @@ const QnAMain = () => {
         <ThemeProvider theme={theme}>
             <CustomRootContainer>
                 <CustomContentContainer>
-                    <StyledIconContainer>
-                        <img src="/images/tools/clipboard.png" alt="report" />
-                    </StyledIconContainer>
-                    <Heading variant="h3">Personalised Recommendations</Heading>
+                    <Image
+                        src="/images/tools/clipboard.png"
+                        alt="report"
+                        width={170}
+                        height={170}
+                    />
+                    <Heading variant="h3" sx={{ padding: "1rem 0.5rem"}}>Personalised Recommendations</Heading>
 
                     {/* Centered Sub text */}
                     {Object.values(info).map((text, index) => (
