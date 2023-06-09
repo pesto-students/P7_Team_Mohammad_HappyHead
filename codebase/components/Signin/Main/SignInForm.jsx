@@ -31,26 +31,21 @@ const CustomTextField = styled(TextField)({
 });
 
 export default function Contact() {
-  const [userName, setName] = useState('')
-  const [password, setEmail] = useState('')
-  const [query, setQuery] = useState('')
+  const [userName, setUserName] = useState('')
+  const [password, setPassword] = useState('')
   const [errors, setErrors] = useState({})
 
   const validateForm = () => {
     const newErrors = {}
 
     if (userName.trim() === '') {
-      newErrors.name = 'Name is required';
+      newErrors.userName = 'userName is required';
     }
 
     if (password.trim() === '') {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(password)) {
-      newErrors.email = 'Invalid email address';
-    }
-
-    if (query.trim() === '') {
-      newErrors.query = 'Query is required'
+      newErrors.password = 'Password is required';
+    // } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/.test(password)) {
+    //   newErrors.password = 'Password must be 8 Characters long';
     }
 
     setErrors(newErrors)
@@ -63,10 +58,10 @@ export default function Contact() {
 
     if (validateForm()) {
       try {
-        const formData = { name: userName, email: password, query };
+        const formData = { username: userName, password: password };
 
         // Send form data to the server using Fetch API
-        const response = await fetch('/api/contact', {
+        const response = await fetch('/api/auth/signin', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -77,11 +72,11 @@ export default function Contact() {
         if (response.ok) {
           const data = await response.json();
           console.log(data); // Handle the response as desired
+          console.log('Login Successful');
 
           // Clear the form fields
-          setName('')
-          setEmail('')
-          setQuery('')
+          setUserName('')
+          setPassword('')
         } else {
           throw new Error('Request failed');
         }
@@ -106,7 +101,7 @@ export default function Contact() {
                 label="Username"
                 fullWidth
                 value={userName}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setUserName(e.target.value)}
                 margin="normal"
                 InputLabelProps={{
                   style: {
@@ -120,7 +115,7 @@ export default function Contact() {
                 label="Password"
                 fullWidth
                 value={password}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 margin="normal"
                 InputLabelProps={{
                   style: {

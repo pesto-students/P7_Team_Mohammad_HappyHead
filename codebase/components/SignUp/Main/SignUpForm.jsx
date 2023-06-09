@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { TextField, Button, Container } from "@mui/material";
+import { TextField, Button, Container, IconButton } from "@mui/material";
 import { ThemeProvider, styled } from "@mui/system";
+import GoogleIcon from '@mui/icons-material/Google'
 import RootContainer from "../../styles/RootContainerStyles";
 import ContentContainer from "../../styles/ContentContainerStyles";
 import ButtonWrapper from "../../styles/ButtonWrapperStyles";
@@ -20,6 +21,9 @@ const CustomContentContainer = styled(ContentContainer)({
 // Styled component for the centered subtext
 const IdPSignInButton = styled(Button)({
   textAlign: "center",
+  backgroundColor: theme.palette.secondary.main,
+  color: theme.palette.text.primary,
+  
 });
 
 // Styled component for the custom text field
@@ -30,26 +34,26 @@ const CustomTextField = styled(TextField)({
 });
 
 export default function Contact() {
-  const [email, setName] = useState("");
-  const [password, setEmail] = useState("");
-  const [name, setQuery] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
     const newErrors = {};
 
-    if (email.trim() === "") {
+    if (name.trim() === "") {
       newErrors.name = "Name is required";
     }
 
-    if (password.trim() === "") {
+    if (email.trim() === "") {
       newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(password)) {
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = "Invalid email address";
     }
 
-    if (name.trim() === "") {
-      newErrors.query = "Query is required";
+    if (password.trim() === "") {
+      newErrors.password = "Password is required";
     }
 
     setErrors(newErrors);
@@ -62,10 +66,10 @@ export default function Contact() {
 
     if (validateForm()) {
       try {
-        const formData = { name: email, email: password, query: name };
+        const formData = { name: name, email: email, password: password };
 
         // Send form data to the server using Fetch API
-        const response = await fetch("/api/contact", {
+        const response = await fetch("/api/auth/signup", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -78,9 +82,9 @@ export default function Contact() {
           console.log(data); // Handle the response as desired
 
           // Clear the form fields
-          setName("");
           setEmail("");
-          setQuery("");
+          setPassword("");
+          setEmail("");
         } else {
           throw new Error("Request failed");
         }
@@ -96,13 +100,13 @@ export default function Contact() {
         <CustomContentContainer>
           <h1>Sign Up</h1>
           {/* Centered Sub text */}
-          <IdPSignInButton variant="h6">Sign Up with Google</IdPSignInButton>
+          <IdPSignInButton variant="outlined" startIcon={<GoogleIcon />}>Sign Up With Google</IdPSignInButton>
           <Container maxWidth="sm">
             <form onSubmit={handleSubmit}>
               <CustomTextField
                 label="Name"
                 fullWidth
-                value={email}
+                value={name}
                 onChange={(e) => setName(e.target.value)}
                 margin="normal"
                 InputLabelProps={{
@@ -117,7 +121,7 @@ export default function Contact() {
                 label="Email"
                 fullWidth
                 value={email}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 margin="normal"
                 InputLabelProps={{
                   style: {
@@ -131,7 +135,7 @@ export default function Contact() {
                 label="Password"
                 fullWidth
                 value={password}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 margin="normal"
                 InputLabelProps={{
                   style: {
@@ -144,7 +148,7 @@ export default function Contact() {
               />
               <ButtonWrapper color="tertiary">
                 <Button variant="contained" color="tertiary" type="submit">
-                  Sign In
+                  Sign Up
                 </Button>
               </ButtonWrapper>
             </form>
