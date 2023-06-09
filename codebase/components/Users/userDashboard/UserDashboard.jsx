@@ -295,11 +295,11 @@ const UserDashboard = () => {
               label="Date of Birth"
               name="dob"
               type="date"
-              InputLabelProps={{ shrink: true }}
               value={editedProfile.dob || ''}
               onChange={handleInputChange}
               InputLabelProps={{
                 style: { color: 'black' }, // Set the label text color to black
+                shrink: true,
               }}
               InputProps={{
                 style: { color: theme.palette.text.primary }, // Apply theme.palette.text.primary color to input text
