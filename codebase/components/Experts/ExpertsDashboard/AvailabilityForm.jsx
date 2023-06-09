@@ -279,7 +279,7 @@ const AvailabilityForm = () => {
   return (
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
-        <CustomTitle> Appointment Slots</CustomTitle>
+        <CustomTitle> Check And Set Appointment Slots</CustomTitle>
         <CustomSectionContainer>
         <CalendarBox>
           <Calendar selectedDate={selectedDate} handleDateChange={handleDateChange} />
@@ -288,7 +288,7 @@ const AvailabilityForm = () => {
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <ButtonWrapper color="tertiary" sx={{ marginTop: theme.spacing(0) }}>
                 <Button variant="contained" onClick={handleOpenCheckAvailabilityDialog}>
-                  Check Current Availability
+                  Check Current Slots
                 </Button>
               </ButtonWrapper>
             </Box>

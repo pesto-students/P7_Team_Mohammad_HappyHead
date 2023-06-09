@@ -11,7 +11,7 @@ import Image from 'next/image'
 import { toolsData } from '../toolsData';
 
 // Custom styled components for the root container, content container, and dialog
-const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
+const CustomRootContainer = styled(RootContainer)(() => ({
   padding: '1rem 2rem 2rem 2rem',
 }));
 
@@ -165,9 +165,12 @@ const Features = ({ isLoggedIn }) => {
           {section3.map((tool, index) => (
             <CustomSectionContainer key={index} onClick={() => handleCardClick(tool)}>
               <CardContent>
-                <StyledIconContainer>
-                  <img src={tool.image} alt={tool.name} />
-                </StyledIconContainer>
+                <Image
+                  src={tool.image}
+                  alt={tool.name}
+                  width={200}
+                  height={200}
+                />
                 <MuiLink
                   href={tool.path ? tool.path : '/loginUser'}
                   underline="none"
