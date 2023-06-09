@@ -121,9 +121,12 @@ const Features = ({ isLoggedIn }) => {
           {section2.map((tool, index) => (
             <CustomSectionContainer key={index} onClick={() => handleCardClick(tool)}>
               <CardContent>
-                <StyledIconContainer>
-                  <img src={tool.image} alt={tool.name} />
-                </StyledIconContainer>
+                <Image
+                  src={tool.image}
+                  alt={tool.name}
+                  width={200}
+                  height={200}
+                />
                 <MuiLink
                   href={tool.path ? tool.path : '/loginUser'}
                   underline="none"
