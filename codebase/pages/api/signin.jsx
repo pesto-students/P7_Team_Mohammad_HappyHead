@@ -14,7 +14,7 @@ const authenticateUser = async (req, res) => {
       const { db } = await connectToDatabase();
 
       // Find the user by username
-      let user = await db.collection('User').findOne({ email: username });
+      let user = await db.collection('Users').findOne({ email: username });
       console.log(`$user`);
       // Send the user profile data as the response
       if (user) {
@@ -24,7 +24,7 @@ const authenticateUser = async (req, res) => {
         } else {
           console.log(`unauthorized user - ${JSON.stringify(user)}`);
           res.status(401).json({error: 'Invalid Credentials'});  
-        }        
+        }
       } else {
         console.log(`unauthorized user - ${JSON.stringify(user)}`);
         res.status(401).json({error: 'Invalid Credentials'});

@@ -14,6 +14,12 @@ import IconContainer from '../styles/IconContainerStyles';
 import Title from '../styles/TitleStyles';
 import Subtitle from '../styles/SubtitleStyles';
 import ButtonWrapper from '../styles/ButtonWrapperStyles';
+import { useRouter } from "next/router";
+
+// Styled component for the root container
+const CustomRoot = styled(RootContainer)(({ theme }) => ({
+  backgroundColor: theme.palette.secondary.main,
+}));
 
 const LoginLinkTypography = styled(Typography)`
   padding-top: 16px;
@@ -24,7 +30,15 @@ const LoginLinkTypography = styled(Typography)`
   }
 `;
 
+
+
 const HeroComponent = () => {
+  const router = useRouter();
+
+  const handleIdpClick = (e) => {
+    router?.push("/api/auth/signin");
+  };
+
   return (
     <ThemeProvider theme={theme}>
       {/* Custom root container */}

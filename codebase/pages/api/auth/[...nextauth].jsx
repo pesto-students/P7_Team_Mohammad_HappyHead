@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
+import {updateDBSignup} from '../signup';
 
 const authOptions = {
   providers: [
@@ -86,7 +87,8 @@ const authOptions = {
       return true;
     },
     saveUser(obj) {
-      
+      const {name, email} = obj
+      updateDBSignup(name, email, "")
     }
   },
 };
