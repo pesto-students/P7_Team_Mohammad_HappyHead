@@ -1,70 +1,71 @@
-import { useState } from 'react'
-import { TextField, Button, Container } from '@mui/material'
-import { ThemeProvider, styled } from '@mui/system'
-import RootContainer from '../../styles/RootContainerStyles'
-import ContentContainer from '../../styles/ContentContainerStyles'
-import ButtonWrapper from '../../styles/ButtonWrapperStyles'
-import SubText from '../../styles/SubTextStyles'
-import theme from '../../styles/theme'
+import { useState } from "react";
+import { TextField, Button, Container } from "@mui/material";
+import { ThemeProvider, styled } from "@mui/system";
+import RootContainer from "../../styles/RootContainerStyles";
+import ContentContainer from "../../styles/ContentContainerStyles";
+import ButtonWrapper from "../../styles/ButtonWrapperStyles";
+import theme from "../../styles/theme";
+import { useRouter } from "next/router";
 
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
-}))
+}));
 
 // Styled component for the custom content container
 const CustomContentContainer = styled(ContentContainer)({
   backgroundColor: theme.palette.secondary.main,
-  padding: '2rem 0',
+  padding: "2rem 0",
 });
 
 // Styled component for the centered subtext
 const IdPSignInButton = styled(Button)({
-  textAlign: 'center',
+  textAlign: "center",
 });
 
 // Styled component for the custom text field
 const CustomTextField = styled(TextField)({
-  '& .MuiFormLabel-root': {
+  "& .MuiFormLabel-root": {
     color: theme.palette.text.primary,
   },
 });
 
-export default function Contact() {
-  const [userName, setUserName] = useState('')
-  const [password, setPassword] = useState('')
-  const [errors, setErrors] = useState({})
+export default function SignInForm() {
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+  const router = useRouter();
 
   const validateForm = () => {
-    const newErrors = {}
+    const newErrors = {};
 
-    if (userName.trim() === '') {
-      newErrors.userName = 'userName is required';
+    if (userName.trim() === "") {
+      newErrors.userName = "userName is required";
     }
 
-    if (password.trim() === '') {
-      newErrors.password = 'Password is required';
-    // } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/.test(password)) {
-    //   newErrors.password = 'Password must be 8 Characters long';
+    if (password.trim() === "") {
+      newErrors.password = "Password is required";
+      // } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/.test(password)) {
+      //   newErrors.password = 'Password must be 8 Characters long';
     }
 
-    setErrors(newErrors)
+    setErrors(newErrors);
 
-    return Object.keys(newErrors).length === 0
-  }
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (validateForm()) {
       try {
         const formData = { username: userName, password: password };
 
         // Send form data to the server using Fetch API
-        const response = await fetch('/api/auth/signin', {
-          method: 'POST',
+        const response = await fetch("/api/signin", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
         });
@@ -72,19 +73,23 @@ export default function Contact() {
         if (response.ok) {
           const data = await response.json();
           console.log(data); // Handle the response as desired
-          console.log('Login Successful');
+          console.log("Login Successful");
 
           // Clear the form fields
-          setUserName('')
-          setPassword('')
+          setUserName("");
+          setPassword("");
         } else {
-          throw new Error('Request failed');
+          throw new Error("Request failed");
         }
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     }
-  }
+  };
+
+  const handleIdpClick = (e) => {
+    router?.push("/api/auth/signin");
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -92,7 +97,10 @@ export default function Contact() {
         <CustomContentContainer>
           <h1>Sign In</h1>
           {/* Centered Sub text */}
-          <IdPSignInButton variant="h6">
+          <IdPSignInButton
+            variant="h6"
+            onClick={handleIdpClick}
+          >
             Sign In with Google
           </IdPSignInButton>
           <Container maxWidth="sm">
@@ -124,7 +132,7 @@ export default function Contact() {
                 }}
                 error={errors.email !== undefined}
                 helperText={errors.email}
-                type='password'
+                type="password"
               />
               <ButtonWrapper color="tertiary">
                 <Button variant="contained" color="tertiary" type="submit">
@@ -136,5 +144,5 @@ export default function Contact() {
         </CustomContentContainer>
       </CustomRootContainer>
     </ThemeProvider>
-  )
+  );
 }

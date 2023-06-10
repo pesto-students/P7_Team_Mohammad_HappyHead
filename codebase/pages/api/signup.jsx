@@ -1,4 +1,4 @@
-const { connectToDatabase } = require('../../../utils/mongodb');
+const { connectToDatabase } = require('../../utils/mongodb');
 const ObjectId = require('mongodb').ObjectId;
 import {hashPassword} from './authUtil';
 
@@ -6,6 +6,7 @@ import {hashPassword} from './authUtil';
 export default async function SignUphandler(req, res) {
   if (req.method === 'POST') {
     try {
+      
       // Connect to the MongoDB Atlas cluster
       let { db } = await connectToDatabase();
 
@@ -14,7 +15,12 @@ export default async function SignUphandler(req, res) {
 
       const {hashedPassword, salt} = await hashPassword(password);
         
-      await db.collection('User').insertOne({ name, email, hashedPassword, salt })
+      let user = await db.collection('User').findOne({ email: email });
+
+      if (!user) {
+        await db.collection('User').insertOne({ name, email, hashedPassword, salt })
+
+      }
 
       res.status(200).json({ message: 'Form submission successful!' })
     } catch (error) {

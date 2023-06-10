@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { TextField, Button, Container, IconButton } from "@mui/material";
 import { ThemeProvider, styled } from "@mui/system";
-import GoogleIcon from '@mui/icons-material/Google'
+import GoogleIcon from "@mui/icons-material/Google";
 import RootContainer from "../../styles/RootContainerStyles";
 import ContentContainer from "../../styles/ContentContainerStyles";
 import ButtonWrapper from "../../styles/ButtonWrapperStyles";
 import theme from "../../styles/theme";
+import {useRouter} from 'next/router';
 
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -23,7 +24,6 @@ const IdPSignInButton = styled(Button)({
   textAlign: "center",
   backgroundColor: theme.palette.secondary.main,
   color: theme.palette.text.primary,
-  
 });
 
 // Styled component for the custom text field
@@ -33,11 +33,12 @@ const CustomTextField = styled(TextField)({
   },
 });
 
-export default function Contact() {
+export default function SignUpForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [errors, setErrors] = useState({});
+  const router = useRouter();
 
   const validateForm = () => {
     const newErrors = {};
@@ -62,14 +63,14 @@ export default function Contact() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault();    
 
     if (validateForm()) {
       try {
         const formData = { name: name, email: email, password: password };
 
         // Send form data to the server using Fetch API
-        const response = await fetch("/api/auth/signup", {
+        const response = await fetch("/api/signup", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -94,13 +95,19 @@ export default function Contact() {
     }
   };
 
+  const handleIdpClick = (e) => {
+    router?.push('/api/auth/signin')
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
         <CustomContentContainer>
           <h1>Sign Up</h1>
           {/* Centered Sub text */}
-          <IdPSignInButton variant="outlined" startIcon={<GoogleIcon />}>Sign Up With Google</IdPSignInButton>
+          <IdPSignInButton variant="outlined" startIcon={<GoogleIcon />} onClick={handleIdpClick}>
+            Sign Up With Google
+          </IdPSignInButton>
           <Container maxWidth="sm">
             <form onSubmit={handleSubmit}>
               <CustomTextField

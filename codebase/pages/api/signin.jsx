@@ -1,10 +1,12 @@
-const { connectToDatabase } = require('../../../utils/mongodb')
+const { connectToDatabase } = require('../../utils/mongodb')
 const ObjectId = require('mongodb').ObjectId;
 const { hashPassword } = require('./authUtil');
 
 const authenticateUser = async (req, res) => {
+  console.log('sign up handler')
   if (req.method === 'POST') {
     try {
+      console.log('sign in handler')
       const {username, password} = req.body;
       console.log()
 
