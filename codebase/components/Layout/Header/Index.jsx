@@ -12,12 +12,15 @@ import MuiLink from '../../MuiLink'
 import DesktopMenu from './DesktopMenu'
 import MobileMenu from './MobileMenu'
 import UserMenu from './UserMenu'
+import {useSession} from 'next-auth/react'
 
 // ResponsiveAppBar component
 function ResponsiveAppBar({ isLoggedIn }) {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const { username, expertname } = router.query;
   const dashboardPath = isLoggedIn ? (username ? `/users/dashboard/${username}` : `/experts/dashboard/${expertname}`) : '/features';
+
 
   // State variables
   const [anchorElNav, setAnchorElNav] = React.useState(null)
@@ -129,6 +132,8 @@ function ResponsiveAppBar({ isLoggedIn }) {
 
             {/* Desktop Styling */}
             <DesktopMenu pages={filteredPages} handleCloseNavMenu={handleCloseNavMenu} theme={theme} />
+
+            { (session ? <h4>Logged In, {session?.user?.name}</h4>: <h4>Log In</h4>)}
 
             {/* User Menu */}
             <UserMenu
