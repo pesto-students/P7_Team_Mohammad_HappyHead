@@ -27,9 +27,7 @@ function ResponsiveAppBar() {
   console.log("Session:", session);
   console.log("Status:", status);
 
-  const dashboardPath = username ? `/users/dashboard/${username}` : `/experts/dashboard/${expertname}`;
-
-  // State variables
+    // State variables
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
 
@@ -48,7 +46,7 @@ const pages = [
   const login = [
     { name: 'Sign In', path: '/signin' },
     { name: 'Sign Up', path: '/signup' },
-    { name: 'Dashboard', path: dashboardPath },
+    { name: 'Dashboard', path: (username || expertname) ? `/users/dashboard/${username || expertname}` : '/features',},
     { name: 'Logout', path: '/logout' },
   ];
 
