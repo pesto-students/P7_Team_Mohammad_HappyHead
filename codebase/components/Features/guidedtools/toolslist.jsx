@@ -6,6 +6,7 @@ import theme from '../../../components/styles/theme';
 import RootContainer from '../../../components/styles/RootContainerStyles';
 import ButtonWrapper from '../../../components/styles/ButtonWrapperStyles';
 import meditationTools from '../../Users/practiceTools/toolsData';
+import { redirectToPage } from '../../../utils/redirect';
 
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
   padding: '1rem 2rem 2rem 2rem',
@@ -72,6 +73,12 @@ const Tools = () => {
     theme.palette.quinary.main,
   ];
 
+  const handleStart = () => {
+    window.alert('Login to access');
+    redirectToPage('/signup'); // Redirect to the login page if path doesnt exist
+};
+
+
   return (
     <ThemeProvider theme={theme}>
       {loading ? (
@@ -97,8 +104,8 @@ const Tools = () => {
                 <CustomDesc variant="h6" component="h2">
                   {tool.description}
                 </CustomDesc>
-                <CustomButtonWrapper color="secondary">
-                  <Button variant="contained" color="quinary" disabled={true}>
+                <CustomButtonWrapper color="primary">
+                  <Button variant="contained" onClick={handleStart}>
                     Start Practice
                   </Button>
                 </CustomButtonWrapper>

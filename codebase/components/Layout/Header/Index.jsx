@@ -1,5 +1,4 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
@@ -16,7 +15,6 @@ import UserMenu from './UserMenu'
 
 // ResponsiveAppBar component
 function ResponsiveAppBar() {
-  const router = useRouter();
   const { data: session, status } = useSession();
   const { user } = session || {}; // Destructure user from session object
 

@@ -63,7 +63,7 @@ const Features = ({ isLoggedIn }) => {
     } else {
       console.log('User not logged in. Redirecting to login page...');
       window.alert('Login to access');
-      redirectToPage('/loginUser'); // Redirect to the login page if path doesn't exist
+      redirectToPage('/signin'); // Redirect to the login page if path doesn't exist
     }
   };
 
@@ -91,7 +91,7 @@ const Features = ({ isLoggedIn }) => {
                   height={200}
                 />
                 <MuiLink
-                  href={tool.path ? tool.path : '/loginUser'}
+                  href={tool.path ? tool.path : '/signup'}
                   underline="none"
                   color="inherit"
                   variant="h3"
@@ -104,7 +104,7 @@ const Features = ({ isLoggedIn }) => {
                   {tool.name}
                 </MuiLink>
                 <MuiLink
-                  href={isLoggedIn ? tool.path : '/loginUser'}
+                  href={isLoggedIn ? tool.path : '/signup'}
                   underline="none"
                   color="inherit"
                   variant="h6"
@@ -128,7 +128,7 @@ const Features = ({ isLoggedIn }) => {
                   height={200}
                 />
                 <MuiLink
-                  href={tool.path ? tool.path : '/loginUser'}
+                  href={tool.path ? tool.path : '/signup'}
                   underline="none"
                   color="inherit"
                   variant="h3" // Update the variant to match the desired typography style
@@ -144,7 +144,7 @@ const Features = ({ isLoggedIn }) => {
                   {tool.name}
                 </MuiLink>
                 <MuiLink
-                  href={isLoggedIn ? tool.path : '/loginUser'}
+                  href={isLoggedIn ? tool.path : '/signup'}
                   underline="none"
                   color="inherit"
                   variant="h6" // Update the variant to match the desired typography style
@@ -172,7 +172,7 @@ const Features = ({ isLoggedIn }) => {
                   height={200}
                 />
                 <MuiLink
-                  href={tool.path ? tool.path : '/loginUser'}
+                  href={tool.path ? tool.path : '/signup'}
                   underline="none"
                   color="inherit"
                   variant="h3" // Update the variant to match the desired typography style
@@ -188,7 +188,7 @@ const Features = ({ isLoggedIn }) => {
                   {tool.name}
                 </MuiLink>
                 <MuiLink
-                  href={isLoggedIn ? tool.path : '/loginUser'}
+                  href={isLoggedIn ? tool.path : '/signup'}
                   underline="none"
                   color="inherit"
                   variant="h6" // Update the variant to match the desired typography style

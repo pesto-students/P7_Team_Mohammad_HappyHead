@@ -57,7 +57,7 @@ const info = {
 const QnAMain = () => {
     const handleStart = () => {
         window.alert('Login to access');
-        redirectToPage('/loginUser'); // Redirect to the login page if path doesnt exist
+        redirectToPage('/signup'); // Redirect to the login page if path doesnt exist
     };
 
     return (
