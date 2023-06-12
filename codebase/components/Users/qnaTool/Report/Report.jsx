@@ -135,7 +135,7 @@ const ReportGenerator = () => {
           const aspectRatio = canvas.width / canvas.height;
       
           // Set a fixed width for the PDF page
-          const pageWidth = 250; // Replace with your desired width
+          const pageWidth = 210; // Replace with your desired width
       
           // Calculate the corresponding height based on the aspect ratio
           const pageHeight = 300;
