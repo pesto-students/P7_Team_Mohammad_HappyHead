@@ -17,12 +17,22 @@ import UserMenu from './UserMenu'
 // ResponsiveAppBar component
 function ResponsiveAppBar() {
   const router = useRouter();
-  const { username, expertname } = router.query;
+  const { data: session, status } = useSession();
+  const { user } = session || {}; // Destructure user from session object
+
+   // Get username or expertname from the user object
+   const username = user?.username;
+   const expertname = user?.expertname;
+
+  console.log("Session:", session);
+  console.log("Status:", status);
+
   const dashboardPath = username ? `/users/dashboard/${username}` : `/experts/dashboard/${expertname}`;
 
   // State variables
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
+
 
   // Array of pages for navigation
   const pages = [
@@ -55,8 +65,6 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
   };
-
-  const { data: session, status } = useSession();
 
   const filteredPages = pages.filter((page) => {
     if (page.name === 'Dashboard') {
