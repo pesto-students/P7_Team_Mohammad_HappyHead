@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,15 +13,12 @@ import MuiLink from '../../MuiLink'
 import DesktopMenu from './DesktopMenu'
 import MobileMenu from './MobileMenu'
 import UserMenu from './UserMenu'
-import {useSession} from 'next-auth/react'
 
 // ResponsiveAppBar component
-function ResponsiveAppBar({ isLoggedIn }) {
+function ResponsiveAppBar() {
   const router = useRouter();
-  const { data: session, status } = useSession();
   const { username, expertname } = router.query;
-  const dashboardPath = isLoggedIn ? (username ? `/users/dashboard/${username}` : `/experts/dashboard/${expertname}`) : '/features';
-
+  const dashboardPath = username ? `/users/dashboard/${username}` : `/experts/dashboard/${expertname}`;
 
   // State variables
   const [anchorElNav, setAnchorElNav] = React.useState(null)
@@ -29,7 +27,7 @@ function ResponsiveAppBar({ isLoggedIn }) {
   // Array of pages for navigation
   const pages = [
     { name: 'About', path: '/about' },
-    { name: isLoggedIn ? 'Dashboard' : 'Features', path: dashboardPath },
+    { name: username || expertname ? 'Dashboard' : 'Features', path: dashboardPath },
     { name: 'Contact', path: '/contact' },
   ];
 
@@ -58,15 +56,17 @@ function ResponsiveAppBar({ isLoggedIn }) {
     setAnchorElUser(null)
   };
 
+  const { data: session, status } = useSession();
+
   const filteredPages = pages.filter((page) => {
     if (page.name === 'Dashboard') {
-      return isLoggedIn;
+      return session && (username || expertname);
     }
     return true;
   });
 
   // Filtering login options based on user's login status
-  const filteredLoginOptions = username || expertname ? login.slice(2, 4) : login.slice(0, 2);
+  const filteredLoginOptions = session && (username || expertname) ? login.slice(2, 4) : login.slice(0, 2);
 
   return (
     <ThemeProvider theme={theme}>
@@ -133,8 +133,6 @@ function ResponsiveAppBar({ isLoggedIn }) {
             {/* Desktop Styling */}
             <DesktopMenu pages={filteredPages} handleCloseNavMenu={handleCloseNavMenu} theme={theme} />
 
-            { (session ? <h4>Logged In, {session?.user?.name}</h4>: <h4>Log In</h4>)}
-
             {/* User Menu */}
             <UserMenu
               anchorElUser={anchorElUser}
@@ -148,11 +146,6 @@ function ResponsiveAppBar({ isLoggedIn }) {
       </AppBar>
     </ThemeProvider>
   )
-}
-
-// Default props for ResponsiveAppBar component
-ResponsiveAppBar.defaultProps = {
-  isLoggedIn: false,
 }
 
 export default ResponsiveAppBar;
