@@ -6,7 +6,7 @@ import RootContainer from "../../styles/RootContainerStyles";
 import ContentContainer from "../../styles/ContentContainerStyles";
 import ButtonWrapper from "../../styles/ButtonWrapperStyles";
 import theme from "../../styles/theme";
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -63,7 +63,7 @@ export default function SignUpForm() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();    
+    e.preventDefault();
 
     if (validateForm()) {
       try {
@@ -105,9 +105,11 @@ export default function SignUpForm() {
         <CustomContentContainer>
           <h1>Sign Up</h1>
           {/* Centered Sub text */}
-          <IdPSignInButton variant="outlined" startIcon={<GoogleIcon />} onClick={handleIdpClick}>
-            Sign Up With Google
-          </IdPSignInButton>
+          <ButtonWrapper color="primary">
+            <IdPSignInButton variant="outlined" startIcon={<GoogleIcon />} onClick={handleIdpClick}>
+              Sign Up With Google
+            </IdPSignInButton>
+          </ButtonWrapper>
           <Container maxWidth="sm">
             <form onSubmit={handleSubmit}>
               <CustomTextField
