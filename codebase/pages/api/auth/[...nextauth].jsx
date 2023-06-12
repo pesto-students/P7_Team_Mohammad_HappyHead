@@ -87,10 +87,16 @@ const authOptions = {
       console.log("signin - ", JSON.stringify(obj));
       return true;
     },
-    saveUser(obj) {
-      const {name, email} = obj
-      updateDBSignUp(name, email, "")
-    }
+    // async redirect({ url, baseUrl }) {
+    //   return baseUrl
+    // },
+    // async session({ session, user, token, username }) {
+    //   return session
+    // },
+    // saveUser(obj) {
+    //   const {name, email} = obj
+    //   updateDBSignUp(name, email, "")
+    // }
   },
 };
 
