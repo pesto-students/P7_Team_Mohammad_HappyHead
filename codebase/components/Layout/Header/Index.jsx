@@ -20,35 +20,44 @@ function ResponsiveAppBar() {
   const { data: session, status } = useSession();
   const { user } = session || {}; // Destructure user from session object
 
-   // Get username or expertname from the user object
-   const username = user?.username;
-   const expertname = user?.expertname;
+  // Get username or expertname from the user object
+  const username = user?.username;
+  const expertname = user?.expertname;
 
   console.log("Session:", session);
   console.log("Status:", status);
 
-    // State variables
+  // State variables
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
 
 
   // Array of pages for navigation
-const pages = [
-  { name: 'About', path: '/about' },
-  {
-    name: (username || expertname) ? 'Dashboard' : 'Features',
-    path: (username || expertname) ? `/users/dashboard/${username || expertname}` : '/features',
-  },
-  { name: 'Contact', path: '/contact' },
-];
+  const pages = [
+    { name: 'About', path: '/about' },
+    {
+      name: (username || expertname) ? 'Dashboard' : 'Features',
+      path: (username) ? `/users/dashboard/${username}` : (expertname) ? `/experts/dashboard/${expertname}` : '/features',
+    },
+    { name: 'Contact', path: '/contact' },
+  ];
+
 
   // Array of login options
   const login = [
     { name: 'Sign In', path: '/signin' },
     { name: 'Sign Up', path: '/signup' },
-    { name: 'Dashboard', path: (username || expertname) ? `/users/dashboard/${username || expertname}` : '/features',},
+    {
+      name: 'Dashboard',
+      path: (username && !expertname)
+        ? `/users/dashboard/${username}`
+        : (expertname && !username)
+          ? `/experts/dashboard/${expertname}`
+          : '/features',
+    },
     { name: 'Logout', path: '/logout' },
   ];
+
 
   // Event handlers for opening and closing navigation menu
   const handleOpenNavMenu = (event) => {
@@ -141,6 +150,9 @@ const pages = [
 
             {/* Desktop Styling */}
             <DesktopMenu pages={filteredPages} handleCloseNavMenu={handleCloseNavMenu} theme={theme} />
+
+            {/* Conditionally render the session text for test */}
+            {/* {session && session.user && <h4>Hi, {session.user.name}</h4>} */}
 
             {/* User Menu */}
             <UserMenu
