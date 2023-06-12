@@ -6,7 +6,7 @@ import FaceOutlinedIcon from "@mui/icons-material/FaceOutlined";
 import Face4OutlinedIcon from "@mui/icons-material/Face4Outlined";
 import Face5OutlinedIcon from "@mui/icons-material/Face5Outlined";
 import styled from "@emotion/styled";
-
+import Link from 'next/link'
 import theme from '../styles/theme';
 import RootContainer from '../styles/RootContainerStyles';
 import ContentContainer from '../styles/ContentContainerStyles';
@@ -81,7 +81,7 @@ const HeroComponent = () => {
 
           {/* Link for "Already a user? Login" */}
           <LoginLinkTypography variant="body2" color="primary" align="center">
-            Already a user? <a href="/signin">Login</a>
+            Already a user? <Link href="/signin">Login</Link>
           </LoginLinkTypography>
         </ContentContainer>
       </CustomRoot>
