@@ -1,1 +1,0 @@
-// POST - public route for registering a new user with the Next.js app.
