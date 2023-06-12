@@ -21,7 +21,7 @@ export default async function SignUphandler(req, res) {
   }
 }
 
-const updateDBSignUp = async (name, email, password) => {
+export const updateDBSignUp = async (name, email, password) => {
   // Connect to the MongoDB Atlas cluster
   let { db } = await connectToDatabase();
 
