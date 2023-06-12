@@ -35,11 +35,14 @@ function ResponsiveAppBar() {
 
 
   // Array of pages for navigation
-  const pages = [
-    { name: 'About', path: '/about' },
-    { name: username || expertname ? 'Dashboard' : 'Features', path: dashboardPath },
-    { name: 'Contact', path: '/contact' },
-  ];
+const pages = [
+  { name: 'About', path: '/about' },
+  {
+    name: (username || expertname) ? 'Dashboard' : 'Features',
+    path: (username || expertname) ? `/users/dashboard/${username || expertname}` : '/features',
+  },
+  { name: 'Contact', path: '/contact' },
+];
 
   // Array of login options
   const login = [
