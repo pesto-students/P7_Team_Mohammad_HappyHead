@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { TextField, Button, Container } from "@mui/material";
 import { ThemeProvider, styled } from "@mui/system";
-import RootContainer from "../../styles/RootContainerStyles";
-import ContentContainer from "../../styles/ContentContainerStyles";
-import ButtonWrapper from "../../styles/ButtonWrapperStyles";
-import theme from "../../styles/theme";
+import RootContainer from "../../../styles/RootContainerStyles";
+import ContentContainer from "../../../styles/ContentContainerStyles";
+import ButtonWrapper from "../../../styles/ButtonWrapperStyles";
+import theme from "../../../styles/theme";
 import { useRouter } from "next/router";
-import { redirectToPage } from '../../../utils/redirect';
+import { redirectToPage } from '../../../../utils/redirect';
 
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -71,7 +71,7 @@ export default function SignInForm() {
         const formData = { name: name, email: email, password: password };
        
         // Send form data to the server using Fetch API
-        const response = await fetch("/api/signin", {
+        const response = await fetch("/api/experts/signin", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -81,11 +81,11 @@ export default function SignInForm() {
 
         if (response.ok) {
           const data = await response.json();
-          const username = data.username; // Handle the response as desired
+          const expertname = data.expertname; // Handle the response as desired
           console.log("Login Successful");
 
           // // Redirect the user to the dashboard page
-          redirectToPage(`/users/dashboard/${username}`);
+          redirectToPage(`/experts/dashboard/${expertname}`);
         } else {
           throw new Error("Request failed");
         }

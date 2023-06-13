@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { TextField, Button, Container } from "@mui/material";
+import { TextField, Typography, Button, Container, InputAdornment } from "@mui/material";
 import { ThemeProvider, styled } from "@mui/system";
-import RootContainer from "../../styles/RootContainerStyles";
-import ContentContainer from "../../styles/ContentContainerStyles";
-import ButtonWrapper from "../../styles/ButtonWrapperStyles";
-import theme from "../../styles/theme";
-import { useRouter } from "next/router";
-import { redirectToPage } from '../../../utils/redirect';
+import GoogleIcon from "@mui/icons-material/Google";
+import RootContainer from "../../../styles/RootContainerStyles";
+import ContentContainer from "../../../styles/ContentContainerStyles";
+import ButtonWrapper from "../../../styles/ButtonWrapperStyles";
+import theme from "../../../styles/theme";
+import { useRouter } from 'next/router';
+import { redirectToPage } from '../../../../utils/redirect';
 
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -22,6 +23,8 @@ const CustomContentContainer = styled(ContentContainer)({
 // Styled component for the centered subtext
 const IdPSignInButton = styled(Button)({
   textAlign: "center",
+  backgroundColor: theme.palette.secondary.main,
+  color: theme.palette.text.primary,
 });
 
 // Styled component for the custom text field
@@ -31,10 +34,12 @@ const CustomTextField = styled(TextField)({
   },
 });
 
-export default function SignInForm() {
-  const [name, setName] = useState("");
+export default function SignUpForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [expertname, setExpertname] = useState("");
+  const [usernameAvailable, setUsernameAvailable] = useState();
   const [errors, setErrors] = useState({});
   const router = useRouter();
 
@@ -43,6 +48,9 @@ export default function SignInForm() {
 
     if (name.trim() === "") {
       newErrors.name = "Name is required";
+    }
+    if (expertname.trim() === "") {
+      newErrors.username = "Username is required";
     }
 
     if (email.trim() === "") {
@@ -53,8 +61,6 @@ export default function SignInForm() {
 
     if (password.trim() === "") {
       newErrors.password = "Password is required";
-      // } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/.test(password)) {
-      //   newErrors.password = 'Password must be 8 Characters long';
     }
 
     setErrors(newErrors);
@@ -65,13 +71,12 @@ export default function SignInForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
     if (validateForm()) {
       try {
-        const formData = { name: name, email: email, password: password };
-       
+        const formData = { name: name, email: email, password: password, expertname: expertname };
+
         // Send form data to the server using Fetch API
-        const response = await fetch("/api/signin", {
+        const response = await fetch("/api/experts/signup", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -81,11 +86,10 @@ export default function SignInForm() {
 
         if (response.ok) {
           const data = await response.json();
-          const username = data.username; // Handle the response as desired
-          console.log("Login Successful");
+          const expertname = data.expertname;  // Handle the response as desired
+          console.log(expertname)
+          redirectToPage(`/experts/dashboard/${expertname}`);
 
-          // // Redirect the user to the dashboard page
-          redirectToPage(`/users/dashboard/${username}`);
         } else {
           throw new Error("Request failed");
         }
@@ -96,21 +100,42 @@ export default function SignInForm() {
   };
 
   const handleIdpClick = (e) => {
-    router?.push("/api/auth/signin");
+    router?.push('/api/auth/signin')
   };
+
+  // Check username availability when Check Availability button is clicked
+  const handleCheckAvailability = async () => {
+    if (expertname.trim() === "") {
+      // If the username field is empty, show an error message or handle it as desired
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/experts/${expertname}`);
+      if (response.ok) {
+        const result = await response.json();
+ 
+        setUsernameAvailable(result.available);
+        // Handle the availability result as desired
+      } else {
+        throw new Error("Request failed");
+      }
+    } catch (error) {
+      console.error(error);
+      // Handle the error as desired
+    }
+  };
+
 
   return (
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
         <CustomContentContainer>
-          <h1>Sign In</h1>
+          <h1>Sign Up</h1>
           {/* Centered Sub text */}
           <ButtonWrapper color="primary">
-            <IdPSignInButton
-              variant="h6"
-              onClick={handleIdpClick}
-            >
-              Sign In with Google
+            <IdPSignInButton variant="outlined" startIcon={<GoogleIcon />} onClick={handleIdpClick}>
+              Sign Up With Google
             </IdPSignInButton>
           </ButtonWrapper>
           <Container maxWidth="sm">
@@ -144,6 +169,43 @@ export default function SignInForm() {
                 helperText={errors.email}
               />
               <CustomTextField
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                label="Username"
+                name="expertname"
+                value={expertname}
+                onChange={(e) => setExpertname(e.target.value)}
+                InputLabelProps={{
+                  style: { color: 'black' }, // Set the label text color to black
+                }}
+                InputProps={{
+                  style: { color: theme.palette.text.primary }, // Apply theme.palette.text.primary color to input text
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Button
+                        onClick={handleCheckAvailability}
+                        style={{
+                          backgroundColor: theme.palette.quinary.main,
+                          fontSize: '1rem',
+                          '&:hover': {
+                            backgroundColor: theme.palette.secondary.main,
+                          },
+                        }}
+                      >
+                        Check Availability
+                      </Button>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              {usernameAvailable !== null && usernameAvailable !== undefined && (
+                <Typography variant="caption" color={usernameAvailable ? 'green' : 'error'}>
+                  {usernameAvailable ? 'Username available' : 'Username already taken'}
+                </Typography>
+              )}
+
+              <CustomTextField
                 label="Password"
                 fullWidth
                 value={password}
@@ -160,7 +222,7 @@ export default function SignInForm() {
               />
               <ButtonWrapper color="tertiary">
                 <Button variant="contained" color="tertiary" type="submit">
-                  Sign In
+                  Sign Up
                 </Button>
               </ButtonWrapper>
             </form>
