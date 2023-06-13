@@ -5,12 +5,13 @@ import { validatePassword } from './authUtil';
 export default async function SignInHandler(req, res) {
   if (req.method === 'POST') {
     try {
+      const session = await getSession({ req });
       // Get the Sign-in form inputs from the request
       const { email, password } = req.body;
-
+      
       let user = await authenticateUser(email, password);
-
-      res.status(200).json({ message: 'Authentication successful!', username: user.username });
+      
+      res.status(200).json({ message: 'Authentication successful!', username: user.username, session });
 
     } catch (error) {
       console.error(error);

@@ -34,7 +34,7 @@ function ResponsiveAppBar() {
   const pages = [
     { name: 'About', path: '/about' },
     {
-      name: (username || expertname) ? 'Dashboard' : 'Features',
+      name: session ? 'Dashboard' : 'Features',
       path: (username) ? `/users/dashboard/${username}` : (expertname) ? `/experts/dashboard/${expertname}` : '/features',
     },
     { name: 'Contact', path: '/contact' },
@@ -76,13 +76,14 @@ function ResponsiveAppBar() {
 
   const filteredPages = pages.filter((page) => {
     if (page.name === 'Dashboard') {
-      return session && (username || expertname);
+      return !session || !(username || expertname);
     }
     return true;
   });
 
+
   // Filtering login options based on user's login status
-  const filteredLoginOptions = session && (username || expertname) ? login.slice(2, 4) : login.slice(0, 2);
+  const filteredLoginOptions = session ? login.slice(2, 4) : login.slice(0, 2);
 
   return (
     <ThemeProvider theme={theme}>
