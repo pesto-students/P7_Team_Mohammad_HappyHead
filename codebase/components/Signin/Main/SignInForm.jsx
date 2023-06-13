@@ -6,6 +6,7 @@ import ContentContainer from "../../styles/ContentContainerStyles";
 import ButtonWrapper from "../../styles/ButtonWrapperStyles";
 import theme from "../../styles/theme";
 import { useRouter } from "next/router";
+import { redirectToPage } from '../../../utils/redirect';
 
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -64,6 +65,7 @@ export default function SignInForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+
     if (validateForm()) {
       try {
         const formData = { name: name, email: email, password: password };
@@ -79,17 +81,11 @@ export default function SignInForm() {
 
         if (response.ok) {
           const data = await response.json();
-          console.log(data); // Handle the response as desired
+          const username = data.username; // Handle the response as desired
           console.log("Login Successful");
 
-          // Clear the form fields
-          setName("");
-          setPassword("");
-          setEmail("");
-          const username = data.username; // Replace `data.username` with the actual value you receive from the server
-
-          // Redirect the user to the dashboard page
-          router.push(`/users/dashboard/${username}`);
+          // // Redirect the user to the dashboard page
+          redirectToPage(`/users/dashboard/${username}`);
         } else {
           throw new Error("Request failed");
         }

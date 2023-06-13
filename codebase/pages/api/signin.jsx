@@ -8,9 +8,10 @@ export default async function SignInHandler(req, res) {
       // Get the Sign-in form inputs from the request
       const { email, password } = req.body;
 
-      await authenticateUser(email, password);
+      let user = await authenticateUser(email, password);
 
-      res.status(200).json({ message: 'Authentication successful!' });
+      res.status(200).json({ message: 'Authentication successful!', username: user.username });
+
     } catch (error) {
       console.error(error);
       res.status(401).json({ message: 'Authentication failed' });
@@ -33,11 +34,12 @@ export const authenticateUser = async (email, password) => {
   // console.log(user)
   const { hashedPassword, salt } = user;
 
-  console.log(`${hashedPassword} - ${salt} - ${password}`);
+  // console.log(`${hashedPassword} - ${salt} - ${password}`);
 
   if (await validatePassword(hashedPassword, salt, password)) {
     // Password is valid
     console.log('Authentication successful');
+    return user;
   } else {
     // Password is invalid
     throw new Error('Invalid credentials');

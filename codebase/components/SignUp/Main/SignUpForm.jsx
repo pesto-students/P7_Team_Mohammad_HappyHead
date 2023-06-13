@@ -7,6 +7,7 @@ import ContentContainer from "../../styles/ContentContainerStyles";
 import ButtonWrapper from "../../styles/ButtonWrapperStyles";
 import theme from "../../styles/theme";
 import { useRouter } from 'next/router';
+import { redirectToPage } from '../../../utils/redirect';
 
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -85,13 +86,10 @@ export default function SignUpForm() {
 
         if (response.ok) {
           const data = await response.json();
-          console.log(data); // Handle the response as desired
+          const username = data.username;  // Handle the response as desired
+          
+          redirectToPage(`/users/dashboard/${username}`);
 
-          // Clear the form fields
-          setName("");
-          setEmail("");
-          setPassword("");
-          setUsername("");
         } else {
           throw new Error("Request failed");
         }

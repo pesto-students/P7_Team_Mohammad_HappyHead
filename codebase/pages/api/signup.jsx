@@ -8,9 +8,9 @@ export default async function SignUphandler(req, res) {
       // Update the Contact us form inputs in the database
       const { name, email, password, username } = req.body;
 
-      await updateDBSignUp(name, email, password, username);
-
-      res.status(200).json({ message: 'Form submission successful!' });
+      let user = await updateDBSignUp(name, email, password, username);
+      console.log(user)
+      res.status(200).json({ message: 'Form submission successful!', username: user.username });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal server error' });
@@ -48,6 +48,7 @@ export const updateDBSignUp = async (name, email, password, username) => {
         };
  
     await db.collection('Users').insertOne(user);
+    return user;
   }
   else return;
 };
