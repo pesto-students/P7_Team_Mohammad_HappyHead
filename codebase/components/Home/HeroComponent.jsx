@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/system";
 import Face2OutlinedIcon from "@mui/icons-material/Face2Outlined";
@@ -39,6 +39,10 @@ const HeroComponent = () => {
     router?.push("/api/auth/signin");
   };
 
+  const handleExpertClick = (e) => {
+    router?.push("/experts/signup");
+  };
+
   return (
     <ThemeProvider theme={theme}>
       {/* Custom root container */}
@@ -61,7 +65,7 @@ const HeroComponent = () => {
           </IconContainer>
 
           {/* Button to explore tools */}
-          <ButtonWrapper color="primary">
+          <ButtonWrapper color="primary" sx={{marginTop: '2rem',}}>
             <Button
               variant="contained"
               color="quaternary"
@@ -71,17 +75,22 @@ const HeroComponent = () => {
             </Button>
           </ButtonWrapper>
 
+          {/* Link for "Already a user? Login" */}
+          <LoginLinkTypography variant="body2" color="primary" align="center">
+            Already a user? <Link href="/signin">Login</Link>
+          </LoginLinkTypography>
+
           {/* Button to register as an expert */}
-          <ButtonWrapper color="tertiary">
+          <ButtonWrapper color="tertiary" sx={{marginTop: '2rem',}}>
             <Button variant="contained" color="tertiary"
-              onClick={handleIdpClick}>
+              onClick={handleExpertClick}>
               Register as an Expert
             </Button>
           </ButtonWrapper>
 
-          {/* Link for "Already a user? Login" */}
+          {/* Link for "Already an expert? Login" */}
           <LoginLinkTypography variant="body2" color="primary" align="center">
-            Already a user? <Link href="/signin">Login</Link>
+            Already an expert? <Link href="/experts/signin">Login</Link>
           </LoginLinkTypography>
         </ContentContainer>
       </CustomRoot>

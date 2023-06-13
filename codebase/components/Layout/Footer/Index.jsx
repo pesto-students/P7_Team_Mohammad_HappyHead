@@ -27,7 +27,7 @@ const featureLinks = [
   },
   {
     name: 'Login as an Expert',
-    path: '/signin',
+    path: '/experts/signin',
   },
 ]
 
