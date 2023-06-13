@@ -6,11 +6,11 @@ export default async function SignUphandler(req, res) {
   if (req.method === 'POST') {
     try {
       // Update the Contact us form inputs in the database
-      const { name, email, password } = req.body;
+      const { name, email, password, username } = req.body;
 
-      await updateDBSignUp(name, email, password);
-
-      res.status(200).json({ message: 'Form submission successful!' });
+      let user = await updateDBSignUp(name, email, password, username);
+      console.log(user)
+      res.status(200).json({ message: 'Form submission successful!', username: user.username });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal server error' });
@@ -21,15 +21,34 @@ export default async function SignUphandler(req, res) {
   }
 }
 
-export const updateDBSignUp = async (name, email, password) => {
+export const updateDBSignUp = async (name, email, password, username) => {
   // Connect to the MongoDB Atlas cluster
   let { db } = await connectToDatabase();
 
-  const { hashedPassword, salt } = await hashPassword(password);
-
   let user = await db.collection('Users').findOne({ email: email });
 
+  //default fields to store for a new user 
   if (!user) {
-    user = await db.collection('Users').insertOne({ name, email, hashedPassword, salt });
+    const { hashedPassword, salt } = await hashPassword(password);
+    user = {
+          name: name,
+          username: username,
+          email: email,
+          phonenumber: '',
+          dob: '',
+          toolsCompleted: [],
+          answers: {
+            question: [],
+            answers: [],
+            recommendations: [],
+          },
+          bookedSlots:[],
+          hashedPassword: hashedPassword,
+          salt: salt,
+        };
+ 
+    await db.collection('Users').insertOne(user);
+    return user;
   }
+  else return;
 };
