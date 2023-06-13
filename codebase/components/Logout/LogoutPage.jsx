@@ -2,6 +2,7 @@ import React from 'react';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Image from 'next/image'
 import { signOut } from 'next-auth/react';
 import { ThemeProvider, display, styled } from '@mui/system';
 import theme from '../styles/theme';
@@ -38,10 +39,17 @@ const Logout = () => {
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
         <CustomSectionContainer>
-          <Typography variant="h4" align="center" mt={4} sx={{paddingBottom: '1.5rem'}}>
-            Are you sure you want to logout?
-          </Typography>
-
+          <Image
+            src="/images/logout/exit.png"
+            alt="logout"
+            width={150}
+            height={150}
+          />
+          <Container maxWidth="80%">
+            <h2>
+              Are you sure you want to logout?
+            </h2>
+          </Container>
           <ButtonWrapper color="primary">
             <Button variant="contained" onClick={handleSignOut}>
               Logout
