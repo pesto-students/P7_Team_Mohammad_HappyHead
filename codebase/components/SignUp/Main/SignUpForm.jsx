@@ -216,8 +216,8 @@ export default function SignUpForm() {
                     color: theme.palette.text.primary,
                   },
                 }}
-                error={errors.email !== undefined}
-                helperText={errors.email}
+                error={errors.password !== undefined}
+                helperText={errors.password}
                 type="password"
               />
               <ButtonWrapper color="tertiary">
