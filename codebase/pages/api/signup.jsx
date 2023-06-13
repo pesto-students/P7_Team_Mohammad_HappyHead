@@ -25,11 +25,29 @@ export const updateDBSignUp = async (name, email, password) => {
   // Connect to the MongoDB Atlas cluster
   let { db } = await connectToDatabase();
 
-  const { hashedPassword, salt } = await hashPassword(password);
-
   let user = await db.collection('Users').findOne({ email: email });
 
+  //default fields to store for a new user 
   if (!user) {
-    user = await db.collection('Users').insertOne({ name, email, hashedPassword, salt });
+    const { hashedPassword, salt } = await hashPassword(password);
+    user = {
+          name: name,
+          username: encodeURIComponent(email),
+          email: email,
+          phonenumber: '',
+          dob: '',
+          toolsCompleted: [],
+          answers: {
+            question: [],
+            answers: [],
+            recommendations: [],
+          },
+          bookedSlots:[],
+          hashedPassword: hashedPassword,
+          salt: salt,
+        };
+        console.log(user)
+ 
+    await db.collection('Users').insertOne(user);
   }
 };

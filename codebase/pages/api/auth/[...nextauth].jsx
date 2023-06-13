@@ -37,7 +37,7 @@ const authOptions = {
             const formData = { username: email, password: password };
     
             // Send form data to the server using Fetch API
-            const response = await fetch("http://localhost:3000/api/signIn", {
+            const response = await fetch("/api/signIn", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -83,14 +83,19 @@ const authOptions = {
     //   token.userRole = "admin";
     //   return token;
     // },
-    signIn(obj) {
-      console.log("signin - ", JSON.stringify(obj));
+    async signIn(obj) {
+      // console.log("signin - ", JSON.stringify(obj));
       return true;
     },
-    saveUser(obj) {
+    async saveUser(obj) {
       const {name, email} = obj
       updateDBSignUp(name, email, "")
-    }
+    },
+    async redirect({ url, baseUrl }, obj) {
+      console.log(obj)
+      const email = obj?.email || obj?.user.email; // Get the email from the user object
+      return baseUrl + "/users/dashboard/" + encodeURIComponent(email);
+    },
   },
 };
 

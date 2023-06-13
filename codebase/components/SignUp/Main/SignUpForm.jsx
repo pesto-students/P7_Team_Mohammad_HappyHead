@@ -83,9 +83,9 @@ export default function SignUpForm() {
           console.log(data); // Handle the response as desired
 
           // Clear the form fields
+          setName("");
           setEmail("");
           setPassword("");
-          setEmail("");
         } else {
           throw new Error("Request failed");
         }

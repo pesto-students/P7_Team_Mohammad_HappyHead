@@ -31,7 +31,8 @@ const CustomTextField = styled(TextField)({
 });
 
 export default function SignInForm() {
-  const [userName, setUserName] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const router = useRouter();
@@ -39,8 +40,14 @@ export default function SignInForm() {
   const validateForm = () => {
     const newErrors = {};
 
-    if (userName.trim() === "") {
-      newErrors.userName = "userName is required";
+    if (name.trim() === "") {
+      newErrors.name = "Name is required";
+    }
+
+    if (email.trim() === "") {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Invalid email address";
     }
 
     if (password.trim() === "") {
@@ -59,8 +66,9 @@ export default function SignInForm() {
 
     if (validateForm()) {
       try {
-        const formData = { username: userName, password: password };
-
+        
+        const formData = { name: name, email: email, password: password};
+        console.log(formData)
         // Send form data to the server using Fetch API
         const response = await fetch("/api/signin", {
           method: "POST",
@@ -76,8 +84,9 @@ export default function SignInForm() {
           console.log("Login Successful");
 
           // Clear the form fields
-          setUserName("");
+          setName("");
           setPassword("");
+          setEmail("");
         } else {
           throw new Error("Request failed");
         }
@@ -108,10 +117,24 @@ export default function SignInForm() {
           <Container maxWidth="sm">
             <form onSubmit={handleSubmit}>
               <CustomTextField
-                label="Username"
+                label="Name"
                 fullWidth
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                margin="normal"
+                InputLabelProps={{
+                  style: {
+                    color: theme.palette.text.primary,
+                  },
+                }}
+                error={errors.name !== undefined}
+                helperText={errors.name}
+              />
+               <CustomTextField
+                label="Email"
+                fullWidth
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 margin="normal"
                 InputLabelProps={{
                   style: {

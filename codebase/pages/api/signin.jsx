@@ -1,50 +1,45 @@
-const { connectToDatabase } = require('../../utils/mongodb')
+const { connectToDatabase } = require('../../utils/mongodb');
 const ObjectId = require('mongodb').ObjectId;
-const { hashPassword } = require('./authUtil');
+import { validatePassword } from './authUtil';
 
-const authenticateUser = async (req, res) => {
-  console.log('sign up handler')
+export default async function SignInHandler(req, res) {
   if (req.method === 'POST') {
     try {
-      console.log('sign in handler')
-      const {username, password} = req.body;
-      console.log()
+      // Get the Sign-in form inputs from the request
+      const { email, password } = req.body;
 
-      // Connect to the MongoDB Atlas cluster
-      const { db } = await connectToDatabase();
+      await authenticateUser(email, password);
 
-      // Find the user by username
-      let user = await db.collection('Users').findOne({ email: username });
-      console.log(`$user`);
-      // Send the user profile data as the response
-      if (user) {
-        const {hashedPassword, salt} = user;
-        if(await validatePassword(hashedPassword, salt, password)) {
-          res.status(200).json(user);
-        } else {
-          console.log(`unauthorized user - ${JSON.stringify(user)}`);
-          res.status(401).json({error: 'Invalid Credentials'});  
-        }
-      } else {
-        console.log(`unauthorized user - ${JSON.stringify(user)}`);
-        res.status(401).json({error: 'Invalid Credentials'});
-      }
+      res.status(200).json({ message: 'Authentication successful!' });
     } catch (error) {
-      console.error('Failed to fetch user profile', error);
-      res.status(500).json({ error: 'Failed to fetch user profile' });
+      console.error(error);
+      res.status(401).json({ message: 'Authentication failed' });
     }
   } else {
-    res.status(405).json({ error: 'Method Not Allowed' });
+    // Return a response with method not allowed status code for non-POST requests
+    res.status(405).json({ message: 'Method not allowed' });
   }
-};
-
-const validatePassword = async (hashedPassword, salt, password) => {
-    console.log(`${hashedPassword} - ${salt} - ${password}`);
-    const reqPass = await hashPassword(password, salt);
-
-    console.log(`reqHashPassword - ${JSON.stringify(reqPass)}`);
-    console.log(`HashedPassword - ${hashedPassword}`);
-    return reqPass.hashedPassword === hashedPassword;
 }
 
-export default authenticateUser;
+export const authenticateUser = async (email, password) => {
+  // Connect to the MongoDB Atlas cluster
+  let { db } = await connectToDatabase();
+
+  let user = await db.collection('Users').findOne({ email: email });
+
+  if (!user) {
+    throw new Error('Invalid credentials');
+  }
+  // console.log(user)
+  const { hashedPassword, salt } = user;
+
+  console.log(`${hashedPassword} - ${salt} - ${password}`);
+
+  if (await validatePassword(hashedPassword, salt, password)) {
+    // Password is valid
+    console.log('Authentication successful');
+  } else {
+    // Password is invalid
+    throw new Error('Invalid credentials');
+  }
+};
