@@ -7,11 +7,6 @@ export async function hashPassword(password) {
 }
 
 export async function validatePassword(hashedPassword, salt, password) {
-  console.log(`${hashedPassword} - ${salt} - ${password}`);
-  
-  const isValid = await bcrypt.compare(password, hashedPassword);
-  
-  console.log(isValid)
-  
+  const isValid = await bcrypt.compare(password, hashedPassword); 
   return isValid;
 }
