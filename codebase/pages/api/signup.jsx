@@ -6,9 +6,9 @@ export default async function SignUphandler(req, res) {
   if (req.method === 'POST') {
     try {
       // Update the Contact us form inputs in the database
-      const { name, email, password } = req.body;
+      const { name, email, password, username } = req.body;
 
-      await updateDBSignUp(name, email, password);
+      await updateDBSignUp(name, email, password, username);
 
       res.status(200).json({ message: 'Form submission successful!' });
     } catch (error) {
@@ -21,7 +21,7 @@ export default async function SignUphandler(req, res) {
   }
 }
 
-export const updateDBSignUp = async (name, email, password) => {
+export const updateDBSignUp = async (name, email, password, username) => {
   // Connect to the MongoDB Atlas cluster
   let { db } = await connectToDatabase();
 
@@ -32,7 +32,7 @@ export const updateDBSignUp = async (name, email, password) => {
     const { hashedPassword, salt } = await hashPassword(password);
     user = {
           name: name,
-          username: encodeURIComponent(email),
+          username: username,
           email: email,
           phonenumber: '',
           dob: '',
@@ -46,8 +46,8 @@ export const updateDBSignUp = async (name, email, password) => {
           hashedPassword: hashedPassword,
           salt: salt,
         };
-        console.log(user)
  
     await db.collection('Users').insertOne(user);
   }
+  else return;
 };

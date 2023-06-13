@@ -66,9 +66,8 @@ export default function SignInForm() {
 
     if (validateForm()) {
       try {
-        
-        const formData = { name: name, email: email, password: password};
-        console.log(formData)
+        const formData = { name: name, email: email, password: password };
+       
         // Send form data to the server using Fetch API
         const response = await fetch("/api/signin", {
           method: "POST",
@@ -87,6 +86,10 @@ export default function SignInForm() {
           setName("");
           setPassword("");
           setEmail("");
+          const username = data.username; // Replace `data.username` with the actual value you receive from the server
+
+          // Redirect the user to the dashboard page
+          router.push(`/users/dashboard/${username}`);
         } else {
           throw new Error("Request failed");
         }
@@ -107,12 +110,12 @@ export default function SignInForm() {
           <h1>Sign In</h1>
           {/* Centered Sub text */}
           <ButtonWrapper color="primary">
-          <IdPSignInButton
-            variant="h6"
-            onClick={handleIdpClick}
-          >
-            Sign In with Google
-          </IdPSignInButton>
+            <IdPSignInButton
+              variant="h6"
+              onClick={handleIdpClick}
+            >
+              Sign In with Google
+            </IdPSignInButton>
           </ButtonWrapper>
           <Container maxWidth="sm">
             <form onSubmit={handleSubmit}>
@@ -130,7 +133,7 @@ export default function SignInForm() {
                 error={errors.name !== undefined}
                 helperText={errors.name}
               />
-               <CustomTextField
+              <CustomTextField
                 label="Email"
                 fullWidth
                 value={email}
