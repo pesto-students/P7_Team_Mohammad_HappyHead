@@ -7,6 +7,7 @@ import ButtonWrapper from "../../../styles/ButtonWrapperStyles";
 import theme from "../../../styles/theme";
 import { useRouter } from "next/router";
 import { redirectToPage } from '../../../../utils/redirect';
+import { signIn } from "next-auth/react";
 
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -63,10 +64,12 @@ export default function SignInForm() {
 
     if (validateForm()) {
       try {
+        console.log('control coming here')
+        const response = await signIn('credentials', { redirect: false, email: email, password: password });
         const formData = { email: email, password: password };
 
         // Send form data to the server using Fetch API
-        const response = await fetch("/api/experts/signin", {
+        const res = await fetch("/api/experts/signin", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -74,8 +77,8 @@ export default function SignInForm() {
           body: JSON.stringify(formData),
         });
 
-        if (response.ok) {
-          const data = await response.json();
+        if (res.ok) {
+          const data = await res.json();
           const expertname = data.expertname; // Handle the response as desired
           console.log("Login Successful");
 

@@ -1,7 +1,8 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { authenticateUser } from "../signin";
+import { authenticateUser } from "../users/signin";
+import { authenticateExpert } from "../experts/signin";
 
 const authOptions = {
   providers: [
@@ -15,15 +16,34 @@ const authOptions = {
       async authorize(credentials, req) {
         try {
           const { email, password } = credentials;
-          const userObj = await authenticateUser(email, password);
-          
-          const retObj = {
-            name: userObj.name, 
-            email: userObj.email, 
-            image: [userObj.username, userObj.role],
-           
+          console.log("reqURL - ", req)
+          // Determine if the request is for expert signin or signup
+
+          const isExpertSignin = req?.body?.callbackUrl?.includes("/experts/signin");
+          const isExpertSignup = req?.body?.callbackUrl?.includes("/experts/signup");
+
+          console.log("isExpertSignin - ", isExpertSignin)
+          console.log("isExpertSignup - ", isExpertSignup)
+
+
+          let retObj;
+
+          if (isExpertSignin || isExpertSignup) {
+            const userObj = await authenticateExpert(email, password);
+            retObj = {
+              name: userObj.name,
+              email: userObj.email,
+              image: [userObj.expertname, userObj.role],
+            }
+          } else {
+            const userObj = await authenticateUser(email, password);
+            retObj = {
+              name: userObj.name,
+              email: userObj.email,
+              image: [userObj.username, userObj.role],
+            }
           }
-     
+
           console.log("retObj - ", JSON.stringify(retObj));
           return retObj;
         } catch (e) {

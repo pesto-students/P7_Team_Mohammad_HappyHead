@@ -3,12 +3,12 @@ import { useSession } from 'next-auth/react';
 import { TextField, Typography, Button, Container, InputAdornment } from "@mui/material";
 import { ThemeProvider, styled } from "@mui/system";
 import GoogleIcon from "@mui/icons-material/Google";
-import RootContainer from "../../styles/RootContainerStyles";
-import ContentContainer from "../../styles/ContentContainerStyles";
-import ButtonWrapper from "../../styles/ButtonWrapperStyles";
-import theme from "../../styles/theme";
+import RootContainer from "../../../styles/RootContainerStyles";
+import ContentContainer from "../../../styles/ContentContainerStyles";
+import ButtonWrapper from "../../../styles/ButtonWrapperStyles";
+import theme from "../../../styles/theme";
 import { useRouter } from 'next/router';
-import { redirectToPage } from '../../../utils/redirect';
+import { redirectToPage } from '../../../../utils/redirect';
 import { signIn } from "next-auth/react";
 
 // Styled component for the root container
@@ -79,7 +79,7 @@ export default function SignUpForm() {
         const formData = { name: name, email: email, password: password, username: username };
 
         // Send form data to the server using Fetch API
-        const response = await fetch("/api/signup", {
+        const response = await fetch("/api/users/signup", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

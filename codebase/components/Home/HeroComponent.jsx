@@ -35,8 +35,8 @@ const LoginLinkTypography = styled(Typography)`
 const HeroComponent = () => {
   const router = useRouter();
 
-  const handleIdpClick = (e) => {
-    router?.push("/api/auth/signin");
+  const handleUserClick = (e) => {
+    router?.push("/users/signup");
   };
 
   const handleExpertClick = (e) => {
@@ -69,7 +69,7 @@ const HeroComponent = () => {
             <Button
               variant="contained"
               color="quaternary"
-              onClick={handleIdpClick}
+              onClick={handleUserClick}
             >
               Try for free
             </Button>
@@ -77,7 +77,7 @@ const HeroComponent = () => {
 
           {/* Link for "Already a user? Login" */}
           <LoginLinkTypography variant="body2" color="primary" align="center">
-            Already a user? <Link href="/signin">Login</Link>
+            Already a user? <Link href="/users/signin">Login</Link>
           </LoginLinkTypography>
 
           {/* Button to register as an expert */}
