@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSession } from 'next-auth/react';
 import { TextField, Typography, Button, Container, InputAdornment } from "@mui/material";
 import { ThemeProvider, styled } from "@mui/system";
 import GoogleIcon from "@mui/icons-material/Google";
@@ -8,6 +9,7 @@ import ButtonWrapper from "../../styles/ButtonWrapperStyles";
 import theme from "../../styles/theme";
 import { useRouter } from 'next/router';
 import { redirectToPage } from '../../../utils/redirect';
+import { signIn } from "next-auth/react";
 
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -42,6 +44,7 @@ export default function SignUpForm() {
   const [usernameAvailable, setUsernameAvailable] = useState();
   const [errors, setErrors] = useState({});
   const router = useRouter();
+  
 
   const validateForm = () => {
     const newErrors = {};
@@ -73,6 +76,7 @@ export default function SignUpForm() {
 
     if (validateForm()) {
       try {
+        const res = await signIn('credentials', { redirect: false, email: email, password: password });
         const formData = { name: name, email: email, password: password, username: username };
 
         // Send form data to the server using Fetch API
@@ -87,7 +91,6 @@ export default function SignUpForm() {
         if (response.ok) {
           const data = await response.json();
           const username = data.username;  // Handle the response as desired
-          
           redirectToPage(`/users/dashboard/${username}`);
 
         } else {

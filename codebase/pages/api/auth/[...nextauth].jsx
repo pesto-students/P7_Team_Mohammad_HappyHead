@@ -17,13 +17,15 @@ const authOptions = {
         try {
           const { email, password } = credentials;
           const userObj = await authenticateUser(email, password);
-          // console.log(`user Obj - ${JSON.stringify(userObj)}`);
           
           const retObj = {
             name: userObj.name, 
             email: userObj.email, 
-            image: userObj.username
+            image: [userObj.username, userObj.role],
+           
           }
+     
+          console.log("retObj - ", JSON.stringify(retObj));
           return retObj;
         } catch (e) {
           console.error(e);

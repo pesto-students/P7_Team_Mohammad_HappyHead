@@ -42,6 +42,7 @@ export const updateDBSignUp = async (name, email, password, expertname) => {
           hashedPassword: hashedPassword,
           salt: salt,
           availability: [],
+          role: 'expert',
         };
  
     await db.collection('Experts').insertOne(user);

@@ -17,12 +17,25 @@ import UserMenu from './UserMenu'
 function ResponsiveAppBar() {
   const { data: session, status } = useSession();
   const { user } = session || {}; // Destructure user from session object
+  const role = user?.image[1];
+// Get username or expertname from the user object
+  let username, expertname;
 
-  // Get username or expertname from the user object
-  const username = user?.username;
-  const expertname = user?.expertname;
+// Get username or expertname from the session object
+  if (session && role == "user") {
+    console.log("its a user")
+    username = user.image[0];
+  }
+  else if (session && role == "user") {
+    console.log("its a expert")
+    expertname = user.image[0];
+  } else {
+    console.log("no role")
+  }
 
   console.log("Session:", session);
+  console.log("User/ExpertName:", user?.image[0]);
+  console.log("Role:", user?.image[1]);
   console.log("Status:", status);
 
   // State variables
