@@ -16,11 +16,15 @@ const authOptions = {
       async authorize(credentials, req) {
         try {
           const { email, password } = credentials;
-          // const userObj = await authenticateUser(email, password);
+          const userObj = await authenticateUser(email, password);
           // console.log(`user Obj - ${JSON.stringify(userObj)}`);
           
-          // return userObj;
-          return {name:'Shubham MyObj', email:'mobile@hh.in', role: 'shbh29123'};
+          const retObj = {
+            name: userObj.name, 
+            email: userObj.email, 
+            image: userObj.username
+          }
+          return retObj;
         } catch (e) {
           console.error(e);
           return null;
@@ -30,15 +34,15 @@ const authOptions = {
   ],
   callbacks: {
 
-    async jwt({token, user}) {
-      /**
-       * jwt - {"token":{"name":"Shubham MyObj","email":"mobile@hh.in"},"user":{"name":"Shubham MyObj","email":"mobile@hh.in","username":"shbh29123"},"account":{"type":"credentials","provider":"credentials"},"isNewUser":false,"trigger":"signIn"}
-       */
-      // console.log(` jwt - ${JSON.stringify(responseObj)}`);
-      token.role = user.role;
+    // async jwt({token, user}) {
+    //   /**
+    //    * jwt - {"token":{"name":"Shubham MyObj","email":"mobile@hh.in"},"user":{"name":"Shubham MyObj","email":"mobile@hh.in","username":"shbh29123"},"account":{"type":"credentials","provider":"credentials"},"isNewUser":false,"trigger":"signIn"}
+    //    */
+    //   // console.log(` jwt - ${JSON.stringify(responseObj)}`);
+    //   token = {...token, role: user.role};
 
-      return token;
-    },
+    //   return token;
+    // },
     async signIn(obj) {
       /**
        * signin -  {"user":{"name":"Shubham MyObj","email":"mobile@hh.in","username":"shbh29123"},"account":{"type":"credentials","provider":"credentials"},"credentials":{"redirect":"false","name":"a","email":"a@gg.com","password":"123","csrfToken":"691762fd886ae5faafce2bbe27aa4edfbf333f8d216e065dc02fe3a6a3207c27","callbackUrl":"http://localhost:3000/signin","json":"true"}}
