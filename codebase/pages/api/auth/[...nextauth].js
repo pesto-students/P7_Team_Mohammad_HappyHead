@@ -6,10 +6,12 @@ import { authenticateExpert } from "../experts/signin";
 
 const authOptions = {
   providers: [
+    process.env.VERCEL_ENV === "preview"
+      ? 
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
-    }),
+    }):
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
       name: "Credentials",
