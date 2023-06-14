@@ -5,6 +5,7 @@ import AboutSection from './AboutSection'
 import ContactSection from './ContactSection'
 import FeaturesSection from './FeaturesSection'
 import BottomSection from './BottomSection'
+import { useSession } from 'next-auth/react';
 
 const pages = [
   { name: 'About', path: '/about' },
@@ -12,18 +13,40 @@ const pages = [
   { name: 'Contact', path: '/contact' },
 ]
 
+const Footer = () => {
+
+  const { data: session, status } = useSession();
+  const { user } = session || {}; // Destructure user from session object
+  let username;
+
+  // console.log("Role:", user?.image[1]);
+  // console.log("User/ExpertName:", user?.image[0]);
+
+
+  if (session && user?.image[1] === "user") {
+    username = user?.image[0];
+    // console.log("its a user")
+  }
+
+  
 const featureLinks = [
   {
     name: 'Personalised Mental Health Report & Recommendation',
-    path: '/features/qna',
+    path: (session && username)
+        ? `/users/qna/${username}`
+        : '/features/qna'
   },
   {
     name: 'Guided Mindfulness Tools',
-    path: `/features/guidedtools`,
+    path: (session && username)
+        ? `/users/practicetools/${username}`
+        : '/features/guidedtools'
   },
   {
     name: 'Connect with Experts',
-    path: '/features/connect',
+    path: (session && username)
+        ? `/users/expertConnect/${username}`
+        : '/features/connect'
   },
   {
     name: 'Login as an Expert',
@@ -31,7 +54,6 @@ const featureLinks = [
   },
 ]
 
-const Footer = () => {
   return (
     <Box sx={{ bgcolor: theme.palette.quinary.main, py: 3 }}>
       <Container maxWidth="md">

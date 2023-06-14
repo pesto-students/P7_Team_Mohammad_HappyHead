@@ -23,20 +23,20 @@ function ResponsiveAppBar() {
 
 // Get username or expertname from the session object
   if (session && role == "user") {
-    console.log("its a user")
+    // console.log("its a user")
     username = user.image[0];
   }
   else if (session && role == "expert") {
-    console.log("its a expert")
+    // console.log("its a expert")
     expertname = user.image[0];
   } else {
-    console.log("no role")
+    // console.log("no role")
   }
 
-  console.log("Session:", session);
-  console.log("User/ExpertName:", user?.image[0]);
-  console.log("Role:", user?.image[1]);
-  console.log("Status:", status);
+  // console.log("Session:", session);
+  // console.log("User/ExpertName:", user?.image[0]);
+  // console.log("Role:", user?.image[1]);
+  // console.log("Status:", status);
 
   // State variables
   const [anchorElNav, setAnchorElNav] = React.useState(null)
