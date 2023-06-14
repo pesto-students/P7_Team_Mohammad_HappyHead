@@ -26,7 +26,7 @@ function ResponsiveAppBar() {
     console.log("its a user")
     username = user.image[0];
   }
-  else if (session && role == "user") {
+  else if (session && role == "expert") {
     console.log("its a expert")
     expertname = user.image[0];
   } else {

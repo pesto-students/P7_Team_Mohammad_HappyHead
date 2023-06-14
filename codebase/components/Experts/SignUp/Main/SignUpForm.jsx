@@ -8,6 +8,7 @@ import ButtonWrapper from "../../../styles/ButtonWrapperStyles";
 import theme from "../../../styles/theme";
 import { useRouter } from 'next/router';
 import { redirectToPage } from '../../../../utils/redirect';
+import { signIn } from "next-auth/react";
 
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -87,7 +88,7 @@ export default function SignUpForm() {
         if (response.ok) {
           const data = await response.json();
           const expertname = data.expertname;  // Handle the response as desired
-          console.log(expertname)
+          const res = await signIn('credentials', { redirect: false, email: email, password: password });
           redirectToPage(`/experts/dashboard/${expertname}`);
 
         } else {

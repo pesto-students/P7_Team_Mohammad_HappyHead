@@ -8,7 +8,7 @@ export default async function SignInHandler(req, res) {
       // Get the Sign-in form inputs from the request
       const { email, password } = req.body;
 
-      let user = await authenticateUser(email, password);
+      let user = await authenticateExpert(email, password);
 
       res.status(200).json({ message: 'Authentication successful!', expertname: user.expertname });
 
@@ -22,7 +22,7 @@ export default async function SignInHandler(req, res) {
   }
 }
 
-export const authenticateUser = async (email, password) => {
+export const authenticateExpert = async (email, password) => {
   // Connect to the MongoDB Atlas cluster
   let { db } = await connectToDatabase();
 
