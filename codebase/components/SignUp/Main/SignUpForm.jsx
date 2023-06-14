@@ -76,7 +76,6 @@ export default function SignUpForm() {
 
     if (validateForm()) {
       try {
-        const res = await signIn('credentials', { redirect: false, email: email, password: password });
         const formData = { name: name, email: email, password: password, username: username };
 
         // Send form data to the server using Fetch API
@@ -91,6 +90,7 @@ export default function SignUpForm() {
         if (response.ok) {
           const data = await response.json();
           const username = data.username;  // Handle the response as desired
+          const res = await signIn('credentials', { redirect: false, email: email, password: password });
           redirectToPage(`/users/dashboard/${username}`);
 
         } else {
@@ -117,7 +117,6 @@ export default function SignUpForm() {
       const response = await fetch(`/api/users/dashboard/availability/${username}`);
       if (response.ok) {
         const result = await response.json();
-        console.log(result);
         setUsernameAvailable(result.available);
         // Handle the availability result as desired
       } else {
