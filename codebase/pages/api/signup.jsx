@@ -45,6 +45,7 @@ export const updateDBSignUp = async (name, email, password, username) => {
           bookedSlots:[],
           hashedPassword: hashedPassword,
           salt: salt,
+          role: 'user',
         };
  
     await db.collection('Users').insertOne(user);

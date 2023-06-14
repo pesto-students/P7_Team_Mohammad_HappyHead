@@ -17,18 +17,20 @@ export default function MyApp(props) {
   } = props;
 
   return (
-    <SessionProvider session={session}>
-      <CacheProvider value={emotionCache}>
-        <Head>
-          <meta name="viewport" content="initial-scale=1, width=device-width" />
-          <title>HappyHead</title>
-          <meta name="description" content="Your Mental Health Companion" />
-        </Head>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
+
+    <CacheProvider value={emotionCache}>
+      <Head>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <title>HappyHead</title>
+        <meta name="description" content="Your Mental Health Companion" />
+      </Head>
+      {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+      <CssBaseline />
+      <SessionProvider session={session}>
         <Component {...pageProps} />
-      </CacheProvider>
-    </SessionProvider>
+      </SessionProvider>
+    </CacheProvider>
+
   );
 }
 

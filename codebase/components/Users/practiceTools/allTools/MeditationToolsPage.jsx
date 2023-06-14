@@ -101,7 +101,13 @@ const MeditationTools = () => {
 
   const handleToolClick = (toolId) => {
     // Redirect to the tool page if it's the first tool or if the previous tool is completed
-    if (toolId === 1 || completedStages.includes(toolId - 1)) {
+    // Check if the tool is disabled
+    const isDisabled = toolId !== 1 && !completedStages.includes(toolId - 1);
+    if (isDisabled) {
+      // Show an alert to the user
+      alert('This tool is currently disabled. Please complete the previous tool first.');
+    } else {
+      // Redirect to the tool page if it's the first tool or if the previous tool is completed
       redirectToPage(`/users/practicetools/${username}/${toolId}`);
     }
   };
@@ -133,14 +139,15 @@ const MeditationTools = () => {
                 {tool.description}
               </CustomDesc>
               <CustomButtonWrapper color="primary">
+              <div onClick={() => handleToolClick(tool.toolId)}>
                 <Button
                   variant="contained"
                   color="quinary"
-                  onClick={() => handleToolClick(tool.toolId)}
                   disabled={tool.toolId !== 1 && !completedStages.includes(tool.toolId - 1)}
                 >
                   Start Practice
                 </Button>
+                </div>
               </CustomButtonWrapper>
             </CardContent>
           </CustomCard>
