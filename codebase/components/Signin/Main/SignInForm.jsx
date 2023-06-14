@@ -87,7 +87,7 @@ export default function SignInForm() {
           console.log("Login Successful");
 
           // Redirect the user to the dashboard page
-          redirectToPage(`/users/dashboard/${username}`);
+          // redirectToPage(`/users/dashboard/${username}`);
         } else {
           throw new Error("Request failed");
         }
