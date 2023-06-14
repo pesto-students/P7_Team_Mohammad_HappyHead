@@ -32,7 +32,6 @@ const CustomTextField = styled(TextField)({
 });
 
 export default function SignInForm() {
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -40,10 +39,6 @@ export default function SignInForm() {
 
   const validateForm = () => {
     const newErrors = {};
-
-    if (name.trim() === "") {
-      newErrors.name = "Name is required";
-    }
 
     if (email.trim() === "") {
       newErrors.email = "Email is required";
@@ -68,8 +63,8 @@ export default function SignInForm() {
 
     if (validateForm()) {
       try {
-        const formData = { name: name, email: email, password: password };
-       
+        const formData = { email: email, password: password };
+
         // Send form data to the server using Fetch API
         const response = await fetch("/api/experts/signin", {
           method: "POST",
@@ -115,20 +110,6 @@ export default function SignInForm() {
           </ButtonWrapper>
           <Container maxWidth="sm">
             <form onSubmit={handleSubmit}>
-              <CustomTextField
-                label="Name"
-                fullWidth
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                margin="normal"
-                InputLabelProps={{
-                  style: {
-                    color: theme.palette.text.primary,
-                  },
-                }}
-                error={errors.name !== undefined}
-                helperText={errors.name}
-              />
               <CustomTextField
                 label="Email"
                 fullWidth

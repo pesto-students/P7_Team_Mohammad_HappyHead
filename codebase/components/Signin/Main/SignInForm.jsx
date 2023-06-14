@@ -7,6 +7,8 @@ import ButtonWrapper from "../../styles/ButtonWrapperStyles";
 import theme from "../../styles/theme";
 import { useRouter } from "next/router";
 import { redirectToPage } from '../../../utils/redirect';
+import { signIn } from "next-auth/react";
+
 
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -32,7 +34,6 @@ const CustomTextField = styled(TextField)({
 });
 
 export default function SignInForm() {
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -41,10 +42,7 @@ export default function SignInForm() {
   const validateForm = () => {
     const newErrors = {};
 
-    if (name.trim() === "") {
-      newErrors.name = "Name is required";
-    }
-
+   
     if (email.trim() === "") {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
@@ -68,10 +66,14 @@ export default function SignInForm() {
 
     if (validateForm()) {
       try {
-        const formData = { name: name, email: email, password: password };
-       
+        console.log('control coming here')
+        const response = await signIn('credentials', { redirect: false, email: email, password: password });
+        console.log("response - ", response);
+        // response is only to know if login is succssful. data wil be coming from session.
+
+        const formData = { email: email, password: password };
         // Send form data to the server using Fetch API
-        const response = await fetch("/api/signin", {
+        const res = await fetch("/api/signin", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -79,12 +81,12 @@ export default function SignInForm() {
           body: JSON.stringify(formData),
         });
 
-        if (response.ok) {
-          const data = await response.json();
+        if (res.ok) {
+          const data = await res.json();
           const username = data.username; // Handle the response as desired
           console.log("Login Successful");
 
-          // // Redirect the user to the dashboard page
+          // Redirect the user to the dashboard page
           redirectToPage(`/users/dashboard/${username}`);
         } else {
           throw new Error("Request failed");
@@ -115,20 +117,6 @@ export default function SignInForm() {
           </ButtonWrapper>
           <Container maxWidth="sm">
             <form onSubmit={handleSubmit}>
-              <CustomTextField
-                label="Name"
-                fullWidth
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                margin="normal"
-                InputLabelProps={{
-                  style: {
-                    color: theme.palette.text.primary,
-                  },
-                }}
-                error={errors.name !== undefined}
-                helperText={errors.name}
-              />
               <CustomTextField
                 label="Email"
                 fullWidth

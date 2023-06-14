@@ -1,8 +1,9 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { updateDBSignUp } from '../signup';
-
+import { updateDBSignUp } from "../signup";
+import { authenticateUser } from "../signin";
+import { redirectToPage } from '../../../utils/redirect';
 
 const authOptions = {
   providers: [
@@ -13,67 +14,24 @@ const authOptions = {
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
       name: "Credentials",
-      // `credentials` is used to generate a form on the sign in page.
-      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
-      credentials: {
-        email: {
-          label: "Email",
-          type: "text",
-          placeholder: "Enter email",
-        },
-        password: {
-          label: "Password",
-          type: "password",
-          placeholder: "Enter Password",
-        },
-      },
-
       async authorize(credentials, req) {
-        // if (validateForm()) {
-          try {
-            const { email, password } = credentials;
-            const formData = { username: email, password: password };
-    
-            // Send form data to the server using Fetch API
-            const response = await fetch("/api/signIn", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(formData),
-            });
-    
-            if (response.ok) {
-              const data = await response.json();
-              console.log(data); // Handle the response as desired
-              console.log("Login Successful");
-              return data;
-    
-            } else {
-              return null;
-            }
-          } catch (error) {
-            console.error(error);
-            return null;
-          }
-        // }
-        // const { email, password } = credentials;
-        // const res = await fetch("http://localhost:3000/api/signin", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify({
-        //     email,
-        //     password,
-        //   }),
-        // });
-        // const user = await res.json();
-        // if (res.ok && user) {
-        //   return user;
-        // } else return null;
+        try {
+          const { email, password } = credentials;
+          console.log(
+            `email - ${email}, pass - ${password}, cred - ${JSON.stringify(credentials)}`
+          );
+          const userObj = await authenticateUser(email, password);
+          console.log(`user Obj - ${JSON.stringify(userObj)}`);
+          const obj = {
+            username: userObj.username,
+            name: userObj.name,
+            email: userObj.email,
+          };
+          return obj;
+        } catch (e) {
+          console.error(e);
+          return null;
+        }
       },
     }),
   ],
@@ -84,18 +42,14 @@ const authOptions = {
     //   return token;
     // },
     async signIn(obj) {
-      // console.log("signin - ", JSON.stringify(obj));
+      console.log("signin - ", JSON.stringify(obj));
       return true;
     },
-    async saveUser(obj) {
-      const {name, email} = obj
-      updateDBSignUp(name, email, "")
-    },
-    async redirect({ url, baseUrl }, obj) {
-      console.log(obj)
-      const email = obj?.email || obj?.user.email; // Get the email from the user object
-      return baseUrl + "/users/dashboard/" + encodeURIComponent(email);
-    },
+    // async saveUser(obj) {
+    //   const { name, email } = obj;
+    //   updateDBSignUp(name, email, "");
+    //   return user;
+    // },
   },
 };
 
