@@ -18,6 +18,8 @@ function ResponsiveAppBar() {
   const { data: session, status } = useSession();
   const { user } = session || {}; // Destructure user from session object
 
+  console.log(`header session - ${JSON.stringify(user)}`);
+
   // Get username or expertname from the user object
   const username = user?.username;
   const expertname = user?.expertname;

@@ -7,6 +7,8 @@ import ButtonWrapper from "../../styles/ButtonWrapperStyles";
 import theme from "../../styles/theme";
 import { useRouter } from "next/router";
 import { redirectToPage } from '../../../utils/redirect';
+import { signIn } from "next-auth/react";
+import {useSession} from 'next-auth/react';
 
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -37,6 +39,7 @@ export default function SignInForm() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const router = useRouter();
+  const {data: session, status} = useSession();
 
   const validateForm = () => {
     const newErrors = {};
@@ -68,27 +71,19 @@ export default function SignInForm() {
 
     if (validateForm()) {
       try {
-        const formData = { name: name, email: email, password: password };
-       
-        // Send form data to the server using Fetch API
-        const response = await fetch("/api/signin", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
+        console.log('control coming here')
+        const response = await signIn('credentials', { redirect: false, name: name, email: email, password: password });  
+        console.log(JSON.stringify(response));
 
-        if (response.ok) {
-          const data = await response.json();
-          const username = data.username; // Handle the response as desired
-          console.log("Login Successful");
-
-          // // Redirect the user to the dashboard page
-          redirectToPage(`/users/dashboard/${username}`);
-        } else {
-          throw new Error("Request failed");
+        if(response.ok) {
+          console.log(`session - ${JSON.stringify(session)}`);
+          const username = session?.user.username;
+          console.log(`username - ${username}`);
+          if(username) {
+            redirectToPage(`/users/dashboard/${username}`);
+          }
         }
+        // response is only to know if login is succssful. data wil be coming from session.
       } catch (error) {
         console.error(error);
       }
