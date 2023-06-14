@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { TextField, Button, Container } from "@mui/material";
 import { ThemeProvider, styled } from "@mui/system";
-import RootContainer from "../../styles/RootContainerStyles";
-import ContentContainer from "../../styles/ContentContainerStyles";
-import ButtonWrapper from "../../styles/ButtonWrapperStyles";
-import theme from "../../styles/theme";
+import RootContainer from "../../../styles/RootContainerStyles";
+import ContentContainer from "../../../styles/ContentContainerStyles";
+import ButtonWrapper from "../../../styles/ButtonWrapperStyles";
+import theme from "../../../styles/theme";
 import { useRouter } from "next/router";
-import { redirectToPage } from '../../../utils/redirect';
+import { redirectToPage } from '../../../../utils/redirect';
 import { signIn } from "next-auth/react";
 
 
@@ -73,7 +73,7 @@ export default function SignInForm() {
 
         const formData = { email: email, password: password };
         // Send form data to the server using Fetch API
-        const res = await fetch("/api/signin", {
+        const res = await fetch("/api/users/signin", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -1,6 +1,6 @@
-const { connectToDatabase } = require('../../utils/mongodb');
+const { connectToDatabase } = require('../../../utils/mongodb');
 const ObjectId = require('mongodb').ObjectId;
-import { hashPassword } from './authUtil';
+import { hashPassword } from '../authUtil';
 
 export default async function SignUphandler(req, res) {
   if (req.method === 'POST') {

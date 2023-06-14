@@ -56,8 +56,8 @@ function ResponsiveAppBar() {
 
   // Array of login options
   const login = [
-    { name: 'Sign In', path: '/signin' },
-    { name: 'Sign Up', path: '/signup' },
+    { name: 'Sign In', path: '/users/signin' },
+    { name: 'Sign Up', path: '/users/signup' },
     {
       name: 'Dashboard',
       path: (username && !expertname)
