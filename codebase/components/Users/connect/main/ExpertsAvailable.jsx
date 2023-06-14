@@ -21,7 +21,7 @@ const CustomCard = styled(Card)(({ theme, cardColor }) => ({
   borderRadius: '8px',
   '&:hover': {
     cursor: 'pointer',
-    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)', 
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
   },
 }));
 
@@ -36,7 +36,7 @@ const Heading = styled(Typography)(({ theme }) => ({
 
 const CustomDesc = styled(Typography)(({ theme }) => ({
   marginTop: '0.5rem',
-  fontSize: theme.typography.body1.fontSize, 
+  fontSize: theme.typography.body1.fontSize,
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -81,8 +81,8 @@ const ExpertsPage = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-   // Define an array of colors
-   const cardColors = [
+  // Define an array of colors
+  const cardColors = [
     theme.palette.tertiary.main,
     theme.palette.secondary.main,
     theme.palette.quinary.main,
@@ -147,10 +147,13 @@ const ExpertsPage = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12} md={8} style={isSmallScreen ? { textAlign: 'center' } : {}}>
                   <h2 sx={{ width: '100%' }}>{expert.name}</h2>
-                  <CustomDesc><strong>Experience:</strong> {expert.yearsOfExperience} years</CustomDesc>
-                  <CustomDesc><strong>Qualifications:</strong> {expert.qualifications}</CustomDesc>
-                  <CustomDesc><strong>Speciality:</strong> {expert.speciality}</CustomDesc>
-                  <CustomDesc><strong>Consultation Fee:</strong> ₹{Math.floor(expert.consultationFee)}</CustomDesc>
+                  <CustomDesc>
+                    <strong>Experience:</strong> {expert.yearsOfExperience ? `${expert.yearsOfExperience} years` : "Currently Unavailable"}
+                  </CustomDesc>
+                  <CustomDesc><strong>Qualifications:</strong> {expert.qualifications ? expert.qualifications : "Currently Unavailable"}</CustomDesc>
+                  <CustomDesc><strong>Speciality:</strong> {expert.speciality ? expert.speciality : "Currently Unavailable"}</CustomDesc>
+                  <CustomDesc><strong>Consultation Fee:</strong> {expert.consultationFee ? `₹${Math.floor(expert.consultationFee)}` : "Currently Unavailable"}</CustomDesc>
+
                 </Grid>
                 <Grid item xs={12} md={4} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                   <StyledButton variant="contained" onClick={() => handleExpertClick(expert)}>
@@ -161,27 +164,27 @@ const ExpertsPage = () => {
             </CardContent>
           </CustomCard>
         ))}
-  
+
         <CustomDialog open={dialogOpen} onClose={handleCloseDialog}>
           <DialogTitle style={{ fontWeight: 'bold' }}>Book Appointment</DialogTitle>
           <CustomDialogContainer>
             {selectedExpert && (
               <div>
                 <Typography variant="h6" style={{ paddingTop: '1rem' }}>{selectedExpert.name}</Typography>
-  
+
                 {selectedExpert.availability.length === 0 ||
-                selectedExpert.availability.every((availability) =>
-                  availability.timeSlots.every((slot) => slot.booked)
-                ) ? (
+                  selectedExpert.availability.every((availability) =>
+                    availability.timeSlots.every((slot) => slot.booked)
+                  ) ? (
                   <Typography variant="subtitle1">No appointments available currently</Typography>
                 ) : (
                   selectedExpert.availability.map((availability) => {
                     const availableSlots = availability.timeSlots.filter((slot) => !slot.booked);
-  
+
                     if (availableSlots.length === 0) {
                       return null;
                     }
-  
+
                     return (
                       <div style={{ paddingTop: '0.4rem' }} key={availability._id}>
                         <Typography variant="subtitle2">{availability.day}</Typography>
