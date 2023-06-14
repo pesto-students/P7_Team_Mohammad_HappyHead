@@ -8,6 +8,7 @@ import theme from "../../styles/theme";
 import { useRouter } from "next/router";
 import { redirectToPage } from '../../../utils/redirect';
 import { signIn } from "next-auth/react";
+import {useSession} from 'next-auth/react';
 
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -38,6 +39,7 @@ export default function SignInForm() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const router = useRouter();
+  const {data: session, status} = useSession();
 
   const validateForm = () => {
     const newErrors = {};
@@ -72,6 +74,15 @@ export default function SignInForm() {
         console.log('control coming here')
         const response = await signIn('credentials', { redirect: false, name: name, email: email, password: password });  
         console.log(JSON.stringify(response));
+
+        if(response.ok) {
+          console.log(`session - ${JSON.stringify(session)}`);
+          const username = session?.user.username;
+          console.log(`username - ${username}`);
+          if(username) {
+            redirectToPage(`/users/dashboard/${username}`);
+          }
+        }
         // response is only to know if login is succssful. data wil be coming from session.
       } catch (error) {
         console.error(error);
