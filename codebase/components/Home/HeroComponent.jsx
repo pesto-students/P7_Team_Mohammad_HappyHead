@@ -35,7 +35,7 @@ const LoginLinkTypography = styled(Typography)`
 const HeroComponent = () => {
   const router = useRouter();
 
-  const handleUseClick = (e) => {
+  const handleUserClick = (e) => {
     router?.push("/users/signup");
   };
 
@@ -69,7 +69,7 @@ const HeroComponent = () => {
             <Button
               variant="contained"
               color="quaternary"
-              onClick={handleUseClick}
+              onClick={handleUserClick}
             >
               Try for free
             </Button>
