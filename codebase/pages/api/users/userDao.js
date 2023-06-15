@@ -1,3 +1,5 @@
+const { connectToDatabase } = require('../../../utils/mongodb');
+
 
 export const getUserByEmail = async (email) => {
     // Connect to the MongoDB Atlas cluster

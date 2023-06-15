@@ -68,6 +68,12 @@ const UsersSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
   },
+  provider: {
+    type: String,
+    required: true,
+    minlength: 3,
+    maxlength: 20
+  },
   password: {
     type: String,
     required: true,
