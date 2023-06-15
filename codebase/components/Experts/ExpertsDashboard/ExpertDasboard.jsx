@@ -364,9 +364,14 @@ const UserDashboard = () => {
               label="Password"
               type={showPassword ? 'text' : 'password'}
               name="password"
+              placeholder='Enter new password'
               value={editedProfile.password || ''}
               onChange={handleInputChange}
               fullWidth
+              InputLabelProps={{
+                style: { color: 'black' }, // Set the label text color to black
+                shrink: true,
+              }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">

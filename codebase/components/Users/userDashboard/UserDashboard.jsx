@@ -295,6 +295,7 @@ const UserDashboard = () => {
               label="Date of Birth"
               name="dob"
               type="date"
+              placeholder='Date of birth'
               value={editedProfile.dob || ''}
               onChange={handleInputChange}
               InputLabelProps={{
@@ -313,8 +314,13 @@ const UserDashboard = () => {
               label="Password"
               name="password"
               type={showPassword ? 'text' : 'password'}
+              placeholder='Enter new password'
               value={editedProfile.password || ''}
               onChange={handleInputChange}
+              InputLabelProps={{
+                style: { color: 'black' }, // Set the label text color to black
+                shrink: true,
+              }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">

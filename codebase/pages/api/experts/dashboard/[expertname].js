@@ -1,5 +1,5 @@
 const { connectToDatabase } = require('../../../../utils/mongodb')
-const ObjectId = require('mongodb').ObjectId;
+import { hashPassword } from '../../authUtil';
 
 const expertProfileHandler = async (req, res) => {
   if (req.method === 'GET') {
@@ -13,108 +13,6 @@ const expertProfileHandler = async (req, res) => {
       // Find the user by username
       let expert = await db.collection('Experts').findOne({ expertname: expertname });
 
-      // // If user is not found, create a dummy user
-      // if (!expert) {
-      //   const dummyExpert = {
-      //     name: 'Mr. Senthil Kumar',
-      //     email: 'senthil@example.com',
-      //     expertname: 'senthil',
-      //     phoneNumber: '9847289592',
-      //     qualifications: 'Diploma in Counselling Skills',
-      //     yearsOfExperience: 9,
-      //     speciality: 'Counselling Psychologist',
-      //     consultationFee: 850,
-      //     password: 'password',
-      //     availability: [
-      //       {
-      //         day: 'Monday',
-      //         date: new Date('2023-07-03'), // July 3, 2023
-      //         timeSlots: [
-      //           {
-      //             startTime: '09:00 AM',
-      //             endTime: '10:00 AM',
-      //             booked: false
-      //           },
-      //           {
-      //             startTime: '10:00 AM',
-      //             endTime: '11:00 AM',
-      //             booked: false
-      //           },
-      //           {
-      //             startTime: '02:00 PM',
-      //             endTime: '03:00 PM',
-      //             booked: false
-      //           },
-      //           {
-      //             startTime: '04:00 PM',
-      //             endTime: '05:00 PM',
-      //             booked: false
-      //           }
-      //         ]
-      //       },
-      //       {
-      //         day: 'Tuesday',
-      //         date: new Date('2023-07-04'), // July 4, 2023
-      //         timeSlots: [
-      //           {
-      //             startTime: '09:00 AM',
-      //             endTime: '10:00 AM',
-      //             booked: false
-      //           },
-      //           {
-      //             startTime: '10:00 AM',
-      //             endTime: '11:00 AM',
-      //             booked: false
-      //           },
-      //           {
-      //             startTime: '02:00 PM',
-      //             endTime: '03:00 PM',
-      //             booked: false
-      //           },
-      //           {
-      //             startTime: '04:00 PM',
-      //             endTime: '05:00 PM',
-      //             booked: false
-      //           }
-      //         ]
-      //       },
-      //       {
-      //         day: 'Wednesday',
-      //         date: new Date('2023-07-05'), // July 5, 2023
-      //         timeSlots: [
-      //           {
-      //             startTime: '09:00 AM',
-      //             endTime: '10:00 AM',
-      //             booked: false
-      //           },
-      //           {
-      //             startTime: '10:00 AM',
-      //             endTime: '11:00 AM',
-      //             booked: false
-      //           },
-      //           {
-      //             startTime: '02:00 PM',
-      //             endTime: '03:00 PM',
-      //             booked: false
-      //           },
-      //           {
-      //             startTime: '04:00 PM',
-      //             endTime: '05:00 PM',
-      //             booked: false
-      //           }
-      //         ]
-      //       },
-      //     ]
-      //   };
-
-
-      //   // Insert the dummy user into the database
-      //   await db.collection('Experts').insertOne(dummyExpert);
-
-      //   // Set the user variable to the created dummy expert
-      //   expert = dummyExpert;
-      // }
-
       // Send the user profile data as the response
       res.status(200).json(expert);
     } catch (error) {
@@ -125,6 +23,9 @@ const expertProfileHandler = async (req, res) => {
     try {
           // Connect to the MongoDB Atlas cluster
       let { db } = await connectToDatabase();
+
+      // Convert the plaintext password to hashedPassword
+      const { hashedPassword, salt } = await hashPassword(req.body.editedProfile.password);
 
       // Update the user profile in the database
       await db.collection('Experts').updateOne({ expertname: req.body.oldExpertname }, {
@@ -137,7 +38,8 @@ const expertProfileHandler = async (req, res) => {
           yearsOfExperience: req.body.editedProfile.yearsOfExperience,
           speciality: req.body.editedProfile.speciality,
           consultationFee: req.body.editedProfile.consultationFee,
-          password: req.body.editedProfile.password,
+          hashedPassword: hashedPassword,
+          salt: salt,
         }
       });
 
