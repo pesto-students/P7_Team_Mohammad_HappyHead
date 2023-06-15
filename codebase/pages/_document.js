@@ -5,6 +5,7 @@ import { CacheProvider } from '@emotion/react';
 import createEmotionCache from '../utils/createEmotionCache';
 import theme from '../components/styles/theme';
 import GlobalStyles from '../components/styles/GlobalStyles';
+import Logo from '@mui/icons-material/AddReactionOutlined'
 
 export default class MyDocument extends Document {
   render() {
@@ -14,7 +15,7 @@ export default class MyDocument extends Document {
           <meta charSet="UTF-8" />
           {/* PWA primary color */}
           <meta name="theme-color" content={theme.palette.primary.main} />
-          <link rel="shortcut icon" href="/favicon.ico" />
+          <link rel="shortcut icon" href="/icon.png" />
         </Head>
         <body>
           <CacheProvider value={createEmotionCache()}>

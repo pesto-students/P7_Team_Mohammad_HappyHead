@@ -22,6 +22,7 @@ export default function MyApp(props) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         <title>HappyHead</title>
+        <link rel="icon" href="/icon.png" />
         <meta name="description" content="Your Mental Health Companion" />
       </Head>
       {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
