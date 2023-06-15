@@ -10,7 +10,6 @@ import ButtonWrapper from '../styles/ButtonWrapperStyles';
 import RootContainer from '../styles/RootContainerStyles';
 import SectionContainer from '../styles/SectionsContainer';
 import { redirectToPage } from '../../utils/redirect';
-import Image from 'next/image'
 
 // Custom styled components for the root container, content container, and dialog
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
