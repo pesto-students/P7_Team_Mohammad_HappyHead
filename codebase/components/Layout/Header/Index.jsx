@@ -100,7 +100,7 @@ function ResponsiveAppBar() {
   return (
     <ThemeProvider theme={theme}>
       <AppBar position="static">
-        <Container maxWidth="xl">
+        <Container maxWidth="100vw">
           <Toolbar disableGutters>
             {/* Desktop Styling */}
             <Logo sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} fontSize="large" />
@@ -111,7 +111,7 @@ function ResponsiveAppBar() {
               component="div"
               href="/"
               sx={{
-                mr: 2,
+                mr: 3,
                 display: { xs: 'none', md: 'flex' },
                 fontFamily: 'monospace',
                 fontWeight: 700,
