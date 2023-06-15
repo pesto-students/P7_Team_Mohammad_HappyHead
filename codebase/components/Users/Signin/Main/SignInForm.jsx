@@ -71,26 +71,26 @@ export default function SignInForm() {
         console.log("response - ", response);
         // response is only to know if login is succssful. data wil be coming from session.
 
-        const formData = { email: email, password: password };
-        // Send form data to the server using Fetch API
-        const res = await fetch("/api/users/signin", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
+        // const formData = { email: email, password: password };
+        // // Send form data to the server using Fetch API
+        // const res = await fetch("/api/users/signin", {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify(formData),
+        // });
 
-        if (res.ok) {
-          const data = await res.json();
-          const username = data.username; // Handle the response as desired
-          console.log("Login Successful");
+        // if (res.ok) {
+        //   const data = await res.json();
+        //   const username = data.username; // Handle the response as desired
+        //   console.log("Login Successful");
 
-          // Redirect the user to the dashboard page
-          redirectToPage(`/users/dashboard/${username}`);
-        } else {
-          throw new Error("Request failed");
-        }
+        //   // Redirect the user to the dashboard page
+        //   redirectToPage(`/users/dashboard/${username}`);
+        // } else {
+        //   throw new Error("Request failed");
+        // }
       } catch (error) {
         console.error(error);
       }
