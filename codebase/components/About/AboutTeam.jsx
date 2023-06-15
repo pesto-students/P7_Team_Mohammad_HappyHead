@@ -60,7 +60,7 @@ const Team = () => {
                 </ImageContainer>
                 <CustomSubTitle variant="h5">Chaitra</CustomSubTitle>
                 <SubText variant="body1">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem quod libero natus quas a omnis. Numquam qui fuga modi ex soluta.
+                A free-spirited tech wizard with a bohemian soul, she blends code and wanderlust. When not debugging, she unleashes her zumba freak, joyfully bouncing to the beat.
                 </SubText>
               </ColumnContainer>
             </Grid>
