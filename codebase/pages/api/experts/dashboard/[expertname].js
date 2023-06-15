@@ -21,27 +21,43 @@ const expertProfileHandler = async (req, res) => {
     }
   } else if (req.method === 'PUT') {
     try {
-          // Connect to the MongoDB Atlas cluster
+      // Connect to the MongoDB Atlas cluster
       let { db } = await connectToDatabase();
 
-      // Convert the plaintext password to hashedPassword
-      const { hashedPassword, salt } = await hashPassword(req.body.editedProfile.password);
+      if (req.body.editedProfile.password) {
+        // Convert the plaintext password to hashedPassword
+        const { hashedPassword, salt } = await hashPassword(req.body.editedProfile.password);
 
-      // Update the user profile in the database
-      await db.collection('Experts').updateOne({ expertname: req.body.oldExpertname }, {
-        $set: {
-          name: req.body.editedProfile.name,
-          expertname: req.body.editedProfile.expertname,
-          email: req.body.editedProfile.email,
-          phoneNumber: req.body.editedProfile.phoneNumber,
-          qualifications: req.body.editedProfile.qualifications,
-          yearsOfExperience: req.body.editedProfile.yearsOfExperience,
-          speciality: req.body.editedProfile.speciality,
-          consultationFee: req.body.editedProfile.consultationFee,
-          hashedPassword: hashedPassword,
-          salt: salt,
-        }
-      });
+        // Update the user profile in the database
+        await db.collection('Experts').updateOne({ expertname: req.body.oldExpertname }, {
+          $set: {
+            name: req.body.editedProfile.name,
+            expertname: req.body.editedProfile.expertname,
+            email: req.body.editedProfile.email,
+            phoneNumber: req.body.editedProfile.phoneNumber,
+            qualifications: req.body.editedProfile.qualifications,
+            yearsOfExperience: req.body.editedProfile.yearsOfExperience,
+            speciality: req.body.editedProfile.speciality,
+            consultationFee: req.body.editedProfile.consultationFee,
+            hashedPassword: hashedPassword,
+            salt: salt,
+          }
+        });
+      } else {
+        // Update the user profile in the database
+        await db.collection('Experts').updateOne({ expertname: req.body.oldExpertname }, {
+          $set: {
+            name: req.body.editedProfile.name,
+            expertname: req.body.editedProfile.expertname,
+            email: req.body.editedProfile.email,
+            phoneNumber: req.body.editedProfile.phoneNumber,
+            qualifications: req.body.editedProfile.qualifications,
+            yearsOfExperience: req.body.editedProfile.yearsOfExperience,
+            speciality: req.body.editedProfile.speciality,
+            consultationFee: req.body.editedProfile.consultationFee,
+          }
+        });
+      }
 
       // Send a success response
       res.status(200).json({ message: 'Profile updated successfully' });

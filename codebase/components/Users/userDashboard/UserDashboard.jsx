@@ -138,9 +138,12 @@ const UserDashboard = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ oldUsername: originalUsername, editedProfile }), // Include oldUsername field in the request body
+        body: JSON.stringify({
+          oldUsername: originalUsername,
+          editedProfile
+        }), // Include oldUsername field in the request body
       });
-
+      console.log(response)
       if (response.ok) {
         setUserProfile(editedProfile);
         setOpenDialog(false);
@@ -163,13 +166,22 @@ const UserDashboard = () => {
         ...prevState,
         [name]: formattedDate,
       }));
-    } else {
+    }
+    // else if (name === 'password') {
+    //   setPlainPassword(value);
+    //   setEditedProfile((prevState) => ({
+    //     ...prevState,
+    //     [name]: value,
+    //   }));
+    // } 
+    else {
       setEditedProfile((prevState) => ({
         ...prevState,
         [name]: value,
       }));
     }
   };
+
 
   // Toggle password visibility
   const handleTogglePassword = () => {
@@ -197,7 +209,7 @@ const UserDashboard = () => {
       <CustomRootContainer>
         {/* User profile component */}
         <CustomSectionContainer>
-        <Image
+          <Image
             src="/images/dashboard/bee.png"
             alt="happy-bee"
             width={125}

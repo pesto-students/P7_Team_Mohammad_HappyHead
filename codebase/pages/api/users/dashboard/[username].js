@@ -24,21 +24,36 @@ const userProfileHandler = async (req, res) => {
       // Connect to the MongoDB Atlas cluster
       let { db } = await connectToDatabase();
 
-      // Convert the plaintext password to hashedPassword
-      const { hashedPassword, salt } = await hashPassword(req.body.editedProfile.password);
+      if (req.body.editedProfile.password) {
+        // Convert the plaintext password to hashedPassword
+        const { hashedPassword, salt } = await hashPassword(req.body.editedProfile.password);
 
-      // Update the user profile in the database
-      await db.collection('Users').updateOne({ username: req.body.oldUsername }, {
-        $set: {
-          name: req.body.editedProfile.name,
-          email: req.body.editedProfile.email,
-          username: req.body.editedProfile.username,
-          phonenumber: req.body.editedProfile.phonenumber,
-          dob: req.body.editedProfile.dob,
-          hashedPassword: hashedPassword,
-          salt: salt,
-        }
-      });
+        // Update the user profile in the database
+        await db.collection('Users').updateOne({ username: req.body.oldUsername }, {
+          $set: {
+            name: req.body.editedProfile.name,
+            email: req.body.editedProfile.email,
+            username: req.body.editedProfile.username,
+            phonenumber: req.body.editedProfile.phonenumber,
+            dob: req.body.editedProfile.dob,
+            hashedPassword: hashedPassword,
+            salt: salt,
+          }
+        });
+      }
+      else {
+        // Update the user profile in the database
+        await db.collection('Users').updateOne({ username: req.body.oldUsername }, {
+          $set: {
+            name: req.body.editedProfile.name,
+            email: req.body.editedProfile.email,
+            username: req.body.editedProfile.username,
+            phonenumber: req.body.editedProfile.phonenumber,
+            dob: req.body.editedProfile.dob,
+          }
+        });
+
+      }
 
       // Send a success response
       res.status(200).json({ message: 'Profile updated successfully' });
