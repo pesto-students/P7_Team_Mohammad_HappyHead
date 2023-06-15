@@ -8,6 +8,7 @@ import theme from "../../../styles/theme";
 import { useRouter } from "next/router";
 import { redirectToPage } from '../../../../utils/redirect';
 import { signIn } from "next-auth/react";
+import { useSession } from 'next-auth/react';
 
 
 // Styled component for the root container
@@ -38,6 +39,24 @@ export default function SignInForm() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const router = useRouter();
+
+  const { data: session, status } = useSession();
+  const { user } = session || {}; // Destructure user from session object
+  const role = user?.image[1];
+// Get username or expertname from the user object
+  let username, expertname;
+
+// Get username or expertname from the session object
+  if (session && role == "user") {
+    // console.log("its a user")
+    username = user.image[0];
+  }
+  else if (session && role == "expert") {
+    // console.log("its a expert")
+    expertname = user.image[0];
+  } else {
+    // console.log("no role")
+  }
 
   const validateForm = () => {
     const newErrors = {};
@@ -87,7 +106,7 @@ export default function SignInForm() {
         //   console.log("Login Successful");
 
         //   // Redirect the user to the dashboard page
-        //   redirectToPage(`/users/dashboard/${username}`);
+          redirectToPage(`/users/dashboard/${username}`);
         // } else {
         //   throw new Error("Request failed");
         // }
