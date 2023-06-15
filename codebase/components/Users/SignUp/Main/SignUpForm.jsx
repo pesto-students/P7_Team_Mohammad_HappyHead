@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useSession } from 'next-auth/react';
 import { TextField, Typography, Button, Container, InputAdornment } from "@mui/material";
 import { ThemeProvider, styled } from "@mui/system";
 import GoogleIcon from "@mui/icons-material/Google";
@@ -7,9 +6,11 @@ import RootContainer from "../../../styles/RootContainerStyles";
 import ContentContainer from "../../../styles/ContentContainerStyles";
 import ButtonWrapper from "../../../styles/ButtonWrapperStyles";
 import theme from "../../../styles/theme";
+import Link from 'next/link'
 import { useRouter } from 'next/router';
 import { redirectToPage } from '../../../../utils/redirect';
 import { signIn } from "next-auth/react";
+import Image from 'next/image'
 
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -20,6 +21,7 @@ const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
 const CustomContentContainer = styled(ContentContainer)({
   backgroundColor: theme.palette.secondary.main,
   padding: "2rem 0",
+  minHeight: "80vh",
 });
 
 // Styled component for the centered subtext
@@ -35,6 +37,15 @@ const CustomTextField = styled(TextField)({
     color: theme.palette.text.primary,
   },
 });
+
+const LoginLinkTypography = styled(Typography)`
+  padding-top: 16px;
+  color: ${({ theme }) => theme.palette.text.primary};
+
+  a {
+    color: ${({ theme }) => theme.palette.text.primary};
+  }
+`;
 
 export default function SignUpForm() {
   const [email, setEmail] = useState("");
@@ -133,6 +144,12 @@ export default function SignUpForm() {
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
         <CustomContentContainer>
+        <Image
+            src="/images/login/join-us.png"
+            alt="signup"
+            width={150}
+            height={150}
+          />
           <h1>Sign Up</h1>
           {/* Centered Sub text */}
           <ButtonWrapper color="primary">
@@ -229,6 +246,10 @@ export default function SignUpForm() {
               </ButtonWrapper>
             </form>
           </Container>
+          {/* Link for "Already an expert? Login" */}
+          <LoginLinkTypography variant="body2" color="primary" align="center">
+            Register as an expert? <Link href="/experts/signup">Sign Up</Link>
+          </LoginLinkTypography>
         </CustomContentContainer>
       </CustomRootContainer>
     </ThemeProvider>

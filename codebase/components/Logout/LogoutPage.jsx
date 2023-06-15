@@ -10,6 +10,7 @@ import ButtonWrapper from '../styles/ButtonWrapperStyles';
 import RootContainer from '../styles/RootContainerStyles';
 import SectionContainer from '../styles/SectionsContainer';
 import { redirectToPage } from '../../utils/redirect';
+import Image from 'next/image'
 
 // Custom styled components for the root container, content container, and dialog
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -21,7 +22,7 @@ const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     paddingBottom: '3rem',
   },
-  height: '50vh',
+  minHeight: "80vh",
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',

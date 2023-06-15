@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Button, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/system";
 import Face2OutlinedIcon from "@mui/icons-material/Face2Outlined";
