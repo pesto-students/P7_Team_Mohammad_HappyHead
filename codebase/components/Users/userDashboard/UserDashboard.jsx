@@ -143,7 +143,7 @@ const UserDashboard = () => {
           editedProfile
         }), // Include oldUsername field in the request body
       });
-      console.log(response)
+   
       if (response.ok) {
         setUserProfile(editedProfile);
         setOpenDialog(false);
