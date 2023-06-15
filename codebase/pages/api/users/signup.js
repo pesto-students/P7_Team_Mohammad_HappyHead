@@ -1,6 +1,7 @@
 const { connectToDatabase } = require('../../../utils/mongodb');
 const ObjectId = require('mongodb').ObjectId;
 import { hashPassword } from '../authUtil';
+import { getUser as getUserByEmail } from './userDao';
 
 export default async function SignUphandler(req, res) {
   if (req.method === 'POST') {
@@ -25,7 +26,7 @@ export const updateDBSignUp = async (name, email, password, username) => {
   // Connect to the MongoDB Atlas cluster
   let { db } = await connectToDatabase();
 
-  let user = await db.collection('Users').findOne({ email: email });
+  let user = await getUserByEmail(email);
 
   //default fields to store for a new user 
   if (!user) {

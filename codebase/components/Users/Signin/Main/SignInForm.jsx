@@ -8,7 +8,7 @@ import theme from "../../../styles/theme";
 import Link from 'next/link'
 import { useRouter } from "next/router";
 import { redirectToPage } from '../../../../utils/redirect';
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 import Image from 'next/image'
 
 // Styled component for the root container
@@ -108,8 +108,15 @@ export default function SignInForm() {
     }
   };
 
-  const handleIdpClick = (e) => {
-    router?.push("/api/auth/signin");
+  const handleIdpClick = async () => {
+    await signIn('google');
+    const updatedSession = await getSession();
+    if(updatedSession) {
+      console.log(`userObject - ${JSON.stringify(updatedSession.user)}`);
+      const {email} = updatedSession.user;
+      const username = email.substring(0, email.indexOf('@'));
+      redirectToPage(`/users/dashboard/${username}`);
+    }
   };
 
   return (
@@ -127,7 +134,7 @@ export default function SignInForm() {
           <ButtonWrapper color="primary">
             <IdPSignInButton
               variant="h6"
-              onClick={handleIdpClick}
+              onClick={() => handleIdpClick()}
             >
               Sign In with Google
             </IdPSignInButton>

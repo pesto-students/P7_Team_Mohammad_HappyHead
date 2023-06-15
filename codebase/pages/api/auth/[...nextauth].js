@@ -3,15 +3,17 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { authenticateUser } from "../users/signin";
 import { authenticateExpert } from "../experts/signin";
+import { getUserByEmail } from "../users/userDao";
 
 const authOptions = {
   providers: [
-    process.env.VERCEL_ENV === "preview"
-      ? 
+    // process.env.VERCEL_ENV === "preview"
+    //   ? 
     GoogleProvider({
+      name: 'google',
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
-    }):
+    }),
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
       name: "Credentials",
@@ -55,6 +57,10 @@ const authOptions = {
       },
     }),
   ],
+  // session: {
+  //   jwt: true,
+  //   maxAge: 30 * 24* 60 * 60, // 30 days
+  // },
   callbacks: {
     async signIn(obj) {
       /**
@@ -63,6 +69,16 @@ const authOptions = {
       console.log("signin - ", JSON.stringify(obj));
       return true;
     },
+    session: async({session}) => {
+      /**
+       * {"session":{"user":{"name":"Shubham Singh","email":"shbh29@gmail.com","image":"https://lh3.googleusercontent.com/a/AAcHTte7TmJ7A0ZKpSqHAzknYAfHboqqw2kdr74x9WobcQ=s96-c"},"expires":"2023-07-15T14:36:41.803Z"}
+       * ,"token":{"name":"Shubham Singh","email":"shbh29@gmail.com","picture":"https://lh3.googleusercontent.com/a/AAcHTte7TmJ7A0ZKpSqHAzknYAfHboqqw2kdr74x9WobcQ=s96-c","sub":"111336451378684907226","iat":1686839800,"exp":1689431800,"jti":"a25a3736-3942-4baf-945d-36588a390e88"}} 
+       */
+      const {email} = session.user;
+      const userObj = getUserByEmail(email);
+      session.user.image = [userObj.username, userObj.role];
+      return session;
+    }
   },
 };
 
