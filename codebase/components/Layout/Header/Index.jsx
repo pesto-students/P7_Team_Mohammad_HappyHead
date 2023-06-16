@@ -16,27 +16,27 @@ import UserMenu from './UserMenu'
 // ResponsiveAppBar component
 function ResponsiveAppBar() {
   const sessionData  = useSession();
-  console.log("Session:", sessionData);
-  console.log("User:", sessionData.data?.user);
+  // console.log("Session:", sessionData);
+  // console.log("User:", sessionData.data?.user);
   const [username, setUsername] = useState(null);
   const [expertname, setExpertname] = useState(null);
 
   useEffect(() => {
     if (sessionData?.data && sessionData.data?.user) {
-      console.log(`Got session data - ${JSON.stringify(sessionData.data.user)}`);
-      const session = sessionData.data?.user;
+      // console.log(`Got session data - ${JSON.stringify(sessionData.data.user)}`);
+     
       // Get username or expertname from the session object
       if (sessionData.data.user.image && sessionData.data.user.image[1] === "user") {
         setUsername(sessionData.data.user.image?.[0]);
-        console.log('is user')
+        // console.log('is user')
       } else if (sessionData.data.user.image && sessionData.data.user.image[1]) {
         setExpertname(sessionData.data.user.image?.[0]);
-        console.log('is expert')
+        // console.log('is expert')
       }      
     }
   }, [sessionData]);
   
-  console.log(username)
+  // console.log(username)
   
   // Get username or expertname from the user object
   // State variables
