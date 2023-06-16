@@ -31,7 +31,7 @@ const CustomSectionContainer = styled(SectionContainer)(({ theme }) => ({
 //Styled component for the Heading 
 const CustomTitle = styled(Typography)(({ theme }) => ({
   ...theme.typography.h2,
-  paddingTop: '1rem',
+  paddingTop: '1.5rem',
   [theme.breakpoints.down('sm')]: {
     fontSize: theme.typography.h4.fontSize,
   },
