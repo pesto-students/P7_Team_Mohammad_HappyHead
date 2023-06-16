@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { authenticateUser } from "../users/signin";
 import { authenticateExpert } from "../experts/signin";
 import { getUserByEmail } from "../users/userDao";
+import { getExpertByEmail } from "../experts/expertDao";
 import { updateDBSignUp } from "../users/signup";
 import { generateUserName, isExpertsLogin } from "../authUtil";
 
@@ -22,10 +23,9 @@ const authOptions = {
       async authorize(credentials, req) {
         try {
           const { email, password } = credentials;
-          console.log("reqURL - ", req)
+          // console.log("reqURL - ", req)
          
           let retObj;
-
           if (isExpertsLogin(req)) {
             const userObj = await authenticateExpert(email, password);
             retObj = {
@@ -42,7 +42,7 @@ const authOptions = {
             }
           }
 
-          console.log("retObj - ", JSON.stringify(retObj));
+          // console.log("retObj - ", JSON.stringify(retObj));
           return retObj;
         } catch (e) {
           console.error(e);
@@ -64,10 +64,10 @@ const authOptions = {
       if(account?.provider === 'google') {
         const { name, email} = user;
         const username = generateUserName(15);
-        console.log(`username - ${username}`);
+        // console.log(`username - ${username}`);
         await updateDBSignUp(name, email, null, username, account.provider)
       }
-      console.log("signin - ", JSON.stringify(obj));
+      // console.log("signin - ", JSON.stringify(obj));
       return true;
     },
     session: async ({session}) => {
@@ -75,12 +75,21 @@ const authOptions = {
        * {"session":{"user":{"name":"Shubham Singh","email":"shbh29@gmail.com","image":"https://lh3.googleusercontent.com/a/AAcHTte7TmJ7A0ZKpSqHAzknYAfHboqqw2kdr74x9WobcQ=s96-c"},"expires":"2023-07-15T14:36:41.803Z"}
        * ,"token":{"name":"Shubham Singh","email":"shbh29@gmail.com","picture":"https://lh3.googleusercontent.com/a/AAcHTte7TmJ7A0ZKpSqHAzknYAfHboqqw2kdr74x9WobcQ=s96-c","sub":"111336451378684907226","iat":1686839800,"exp":1689431800,"jti":"a25a3736-3942-4baf-945d-36588a390e88"}} 
        */
-      console.log(session.user)
+      // console.log("SESSIONUSER-- ", session.user)
       const {email} = session.user;
-
-      const userObj = await getUserByEmail(email);
-      // console.log(`userObj session ${JSON.stringify(userObj)}`);
-      session.user.image = [userObj.username, userObj.role];
+      let userObj;
+   
+      if(session.user.image[1]== "user") {
+        userObj = await getUserByEmail(email);
+        // console.log(`userObj session ${JSON.stringify(userObj)}`);
+        session.user.image = [userObj.username, userObj.role];
+       
+      } else {
+        userObj = await getExpertByEmail(email);
+        // console.log(`userObj session ${JSON.stringify(userObj)}`);
+        session.user.image = [userObj.expertname, userObj.role];
+      }
+      // console.log("SESSION-- ",session)
       return session;
     }
   },
