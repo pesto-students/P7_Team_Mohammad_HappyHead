@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
@@ -15,29 +15,30 @@ import UserMenu from './UserMenu'
 
 // ResponsiveAppBar component
 function ResponsiveAppBar() {
-  const { data: session, status } = useSession();
-  const { user } = session || {}; // Destructure user from session object
-  const role = user?.image[1];
-// Get username or expertname from the user object
-  let username, expertname;
+  const sessionData  = useSession();
+  console.log("Session:", sessionData);
+  console.log("User:", sessionData.data?.user);
+  const [username, setUsername] = useState(null);
+  const [expertname, setExpertname] = useState(null);
 
-// Get username or expertname from the session object
-  if (session && role == "user") {
-    // console.log("its a user")
-    username = user.image[0];
-  }
-  else if (session && role == "expert") {
-    // console.log("its a expert")
-    expertname = user.image[0];
-  } else {
-    // console.log("no role")
-  }
-
-  // console.log("Session:", session);
-  // console.log("User/ExpertName:", user?.image[0]);
-  // console.log("Role:", user?.image[1]);
-  // console.log("Status:", status);
-
+  useEffect(() => {
+    if (sessionData?.data && sessionData.data?.user) {
+      console.log(`Got session data - ${JSON.stringify(sessionData.data.user)}`);
+      const session = sessionData.data?.user;
+      // Get username or expertname from the session object
+      if (sessionData.data.user.image && sessionData.data.user.image[1] === "user") {
+        setUsername(sessionData.data.user.image?.[0]);
+        console.log('is user')
+      } else if (sessionData.data.user.image && sessionData.data.user.image[1]) {
+        setExpertname(sessionData.data.user.image?.[0]);
+        console.log('is expert')
+      }      
+    }
+  }, [sessionData]);
+  
+  console.log(username)
+  
+  // Get username or expertname from the user object
   // State variables
   const [anchorElNav, setAnchorElNav] = React.useState(null)
   const [anchorElUser, setAnchorElUser] = React.useState(null)
@@ -69,7 +70,6 @@ function ResponsiveAppBar() {
     { name: 'Logout', path: '/logout' },
   ];
 
-
   // Event handlers for opening and closing navigation menu
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget)
@@ -89,13 +89,13 @@ function ResponsiveAppBar() {
 
   const filteredPages = pages.filter((page) => {
     if (page.name === 'Dashboard') {
-      return session && (username || expertname);
+      return sessionData && (username || expertname);
     }
     return true;
   });
 
   // Filtering login options based on user's login status
-  const filteredLoginOptions = session && (username || expertname) ? login.slice(2, 4) : login.slice(0, 2);
+  const filteredLoginOptions = sessionData && (username || expertname) ? login.slice(2, 4) : login.slice(0, 2);
 
   return (
     <ThemeProvider theme={theme}>

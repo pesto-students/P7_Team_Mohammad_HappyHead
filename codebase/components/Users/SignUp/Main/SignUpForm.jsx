@@ -9,7 +9,7 @@ import theme from "../../../styles/theme";
 import Link from 'next/link'
 import { useRouter } from 'next/router';
 import { redirectToPage } from '../../../../utils/redirect';
-import { signIn } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import Image from 'next/image'
 
 // Styled component for the root container
@@ -55,6 +55,8 @@ export default function SignUpForm() {
   const [usernameAvailable, setUsernameAvailable] = useState();
   const [errors, setErrors] = useState({});
   const router = useRouter();
+  const sessionData = useSession();
+  console.log(`sessionData - ${JSON.stringify(sessionData)}`);
   
 
   const validateForm = () => {
@@ -113,9 +115,17 @@ export default function SignUpForm() {
     }
   };
 
-  const handleIdpClick = (e) => {
-    router?.push('/api/auth/signin')
+  const handleIdpClick = async () => {
+    await signIn('google');
   };
+
+  useEffect(() => {
+    if(sessionData?.data && sessionData.data.user) {
+      // console.log(`userObject - ${JSON.stringify(sessionData.data.user)}`);
+      const {image:[username,role]} = sessionData.data.user;
+      redirectToPage(`/users/dashboard/${username}`);
+    }
+  }, [sessionData]);
 
   // Check username availability when Check Availability button is clicked
   const handleCheckAvailability = async () => {
@@ -153,7 +163,7 @@ export default function SignUpForm() {
           <h1>Sign Up</h1>
           {/* Centered Sub text */}
           <ButtonWrapper color="primary">
-            <IdPSignInButton variant="outlined" startIcon={<GoogleIcon />} onClick={handleIdpClick}>
+          <IdPSignInButton variant="outlined" startIcon={<GoogleIcon />} onClick={(e) => handleIdpClick()}>
               Sign Up With Google
             </IdPSignInButton>
           </ButtonWrapper>

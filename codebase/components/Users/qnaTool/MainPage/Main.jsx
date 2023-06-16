@@ -69,8 +69,8 @@ const QnAMain = () => {
         const response = await fetch(`/api/users/practicetools/${username}`);
         if (response.ok) {
           const userData = await response.json();
-          const answers = userData.answers;
-          setAnswersExist(answers && answers.recommendations.length == 25);
+          const answers = userData?.answers;
+          setAnswersExist(answers && answers?.recommendations.length == 25);
           setIsLoading(false);
         } else {
           console.error('Failed to fetch user data');

@@ -80,6 +80,16 @@ const UsersSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  role: {
+    type: String,
+    required: true,
+  },
+  provider: {
+    type: String,
+    required: true,
+    minlength: 3,
+    maxlength: 20
+  },
   toolsCompleted: UserToolsSchema,
   answers: UserAnswersSchema,
   bookedSlots: [{
