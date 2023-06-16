@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import { Button, CardActions, Dialog, DialogTitle, DialogContent, TextField, InputAdornment, IconButton, DialogActions, Typography } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/system';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -10,6 +10,8 @@ import SubText from '../../styles/SubTextStyles';
 import theme from '../../styles/theme';
 import Loader from '../../styles/Loader';
 import messages from './messages'
+import { redirectToPage } from '../../../utils/redirect';
+
 
 // Custom styled components for the root container, content container, and dialog
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -83,8 +85,10 @@ const buttonStyles = {
 };
 
 const UserDashboard = () => {
-  const router = useRouter();
-  const { username } = router.query;
+  const sessionData  = useSession();
+  // console.log("User:", sessionData.data?.user);
+  const [username, setUsername] = useState(null);
+
   // State variables
   const [userProfile, setUserProfile] = useState();
   const [openDialog, setOpenDialog] = useState(false);
@@ -92,6 +96,14 @@ const UserDashboard = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [usernameAvailable, setUsernameAvailable] = useState(); // State variable for username availability
   const [originalUsername, setOriginalUsername] = useState(''); // New state variable for storing the original username
+
+  useEffect(() => {    
+      // Get username or expertname from the session object
+      if (sessionData.data && sessionData.data?.user && sessionData.data.user?.image[1] === "user") {
+        setUsername(sessionData.data.user.image?.[0]);
+        // console.log('is user')
+      }      
+  }, [sessionData]);
 
   // Open the profile edit dialog
   const handleOpenDialog = () => {
@@ -145,9 +157,11 @@ const UserDashboard = () => {
       });
    
       if (response.ok) {
-        setUserProfile(editedProfile);
-        setOpenDialog(false);
-        router.push(`/users/dashboard/${editedProfile.username}`);
+        setUsername(editedProfile.username);
+        console.log(username)
+        setEditedProfile(editedProfile);
+        setOpenDialog(false);       
+        redirectToPage(`/users/dashboard/${editedProfile.username}`);
       } else {
         console.error('Failed to update user profile');
       }
@@ -167,13 +181,6 @@ const UserDashboard = () => {
         [name]: formattedDate,
       }));
     }
-    // else if (name === 'password') {
-    //   setPlainPassword(value);
-    //   setEditedProfile((prevState) => ({
-    //     ...prevState,
-    //     [name]: value,
-    //   }));
-    // } 
     else {
       setEditedProfile((prevState) => ({
         ...prevState,

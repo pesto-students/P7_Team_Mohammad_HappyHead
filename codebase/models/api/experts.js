@@ -43,6 +43,12 @@ const expertSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  provider: {
+    type: String,
+    required: true,
+    minlength: 3,
+    maxlength: 20
+  },
   availability: [
     {
       day: {

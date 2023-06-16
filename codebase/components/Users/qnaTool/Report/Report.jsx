@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import RootContainer from '../../../styles/RootContainerStyles';
 import { Container, Typography, Button } from '@mui/material';
 import { useState, useEffect } from 'react';
@@ -30,7 +29,7 @@ const CustomSectionContainer = styled(Container)(({ theme }) => ({
     [theme.breakpoints.up('sm')]: {
         padding: '2rem 4rem',
     },
-    textAlign: 'center', 
+    textAlign: 'center',
 }));
 
 // Styled component for customizing the title typography
@@ -60,11 +59,20 @@ const StyledImg = styled('img')(() => ({
 }));
 
 const ReportGenerator = () => {
-    const router = useRouter();
-    const { username } = router.query;
+    const sessionData = useSession();
+    // console.log("User:", sessionData.data?.user);
+    const [username, setUsername] = useState(null);
     const [userAnswers, setUserAnswers] = useState([])
     const [userRecommendations, setUserRecommendations] = useState([])
     const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        // Get username or expertname from the session object
+        if (sessionData.data && sessionData.data?.user && sessionData.data.user?.image[1] === "user") {
+            setUsername(sessionData.data.user.image?.[0]);
+            // console.log('is user')
+        }
+    }, [sessionData]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -73,8 +81,8 @@ const ReportGenerator = () => {
                 const response = await fetch(`/api/users/qna/${username}`);
                 if (response.ok) {
                     const userData = await response.json();
-                    setUserAnswers(userData.answers.answers)
-                    setUserRecommendations(userData.answers.recommendations);
+                    setUserAnswers(userData?.answers?.answers ?? []);
+                    setUserRecommendations(userData?.answers?.recommendations ?? []);
                     setIsLoading(false);
                 } else {
                     console.error('Failed to fetch user data');
@@ -86,7 +94,7 @@ const ReportGenerator = () => {
         };
 
         fetchData();
-    }, [username]);
+    }, [username, sessionData]);
 
     const sentences = [
         // Sentence 1: Introduction to the report
@@ -150,7 +158,7 @@ const ReportGenerator = () => {
                             )}
                             {index === 1 && (
                                 <React.Fragment>
-                                <StyledImg src="/images/report/yoga.png" alt="physical-activity" />
+                                    <StyledImg src="/images/report/yoga.png" alt="physical-activity" />
                                     <CustTitle gutterBottom>
                                         Physical Activity:
                                     </CustTitle>
@@ -167,7 +175,7 @@ const ReportGenerator = () => {
                             )}
                             {index === 1 && (
                                 <React.Fragment>
-                                <StyledImg src="/images/report/screen.png" alt="screen-time" />
+                                    <StyledImg src="/images/report/screen.png" alt="screen-time" />
                                     <CustTitle gutterBottom>
                                         Screen Time:
                                     </CustTitle>
@@ -184,7 +192,7 @@ const ReportGenerator = () => {
                             )}
                             {index === 1 && (
                                 <React.Fragment>
-                                <StyledImg src="/images/report/food.png" alt="food-habits" />
+                                    <StyledImg src="/images/report/food.png" alt="food-habits" />
                                     <CustTitle gutterBottom>
                                         Food Habits:
                                     </CustTitle>
@@ -211,7 +219,7 @@ const ReportGenerator = () => {
                             )}
                             {index === 1 && (
                                 <React.Fragment>
-                                <StyledImg src="/images/report/tobacco.png" alt="tobacco" />
+                                    <StyledImg src="/images/report/tobacco.png" alt="tobacco" />
                                     <CustTitle gutterBottom>
                                         Tobacco:
                                     </CustTitle>
@@ -228,7 +236,7 @@ const ReportGenerator = () => {
                             )}
                             {index === 1 && (
                                 <React.Fragment>
-                                <StyledImg src="/images/report/beer.png" alt="alcohol" />
+                                    <StyledImg src="/images/report/beer.png" alt="alcohol" />
                                     <CustTitle gutterBottom>
                                         Alcohol Consumption:
                                     </CustTitle>
@@ -245,7 +253,7 @@ const ReportGenerator = () => {
                             )}
                             {index === 1 && (
                                 <React.Fragment>
-                                <StyledImg src="/images/report/friends.png" alt="friends" />
+                                    <StyledImg src="/images/report/friends.png" alt="friends" />
                                     <CustTitle gutterBottom>
                                         Social Life:
                                     </CustTitle>
@@ -262,7 +270,7 @@ const ReportGenerator = () => {
                             )}
                             {index === 1 && (
                                 <React.Fragment>
-                                <StyledImg src="/images/report/leisure.png" alt="leisure" />
+                                    <StyledImg src="/images/report/leisure.png" alt="leisure" />
                                     <CustTitle gutterBottom>
                                         Leisure & Relaxation:
                                     </CustTitle>
@@ -284,7 +292,7 @@ const ReportGenerator = () => {
                             )}
                             {index === 1 && (
                                 <React.Fragment>
-                                <StyledImg src="/images/report/destress.png" alt="destress" />
+                                    <StyledImg src="/images/report/destress.png" alt="destress" />
                                     <CustTitle gutterBottom>
                                         De-stressing:
                                     </CustTitle>
@@ -309,7 +317,7 @@ const ReportGenerator = () => {
                                 <React.Fragment>
                                     {userRecommendations.slice(21, 24).some(recommendation => recommendation) && (
                                         <React.Fragment>
-                                        <StyledImg src="/images/report/medicine.png" alt="medical-condition" />
+                                            <StyledImg src="/images/report/medicine.png" alt="medical-condition" />
                                             <CustTitle gutterBottom>
                                                 Current Medical Condition:
                                             </CustTitle>
@@ -330,7 +338,7 @@ const ReportGenerator = () => {
                                 <React.Fragment>
                                     {userRecommendations.slice(0, 5).some(recommendation => recommendation) && (
                                         <React.Fragment>
-                                        <StyledImg src="/images/report/therapist.png" alt="therapist" />
+                                            <StyledImg src="/images/report/therapist.png" alt="therapist" />
                                             <CustTitle gutterBottom>
                                                 Recommendation for Expert Connect:
                                             </CustTitle>
@@ -355,7 +363,7 @@ const ReportGenerator = () => {
                             )}
                             {index === 3 && (
                                 <React.Fragment>
-                                <StyledImg src="/images/report/audio.png" alt="audiotools" />
+                                    <StyledImg src="/images/report/audio.png" alt="audiotools" />
                                     <CustTitle gutterBottom>
                                         Practice tools:
                                     </CustTitle>

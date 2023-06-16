@@ -88,7 +88,7 @@ const Team = () => {
                 </ImageContainer>
                 <CustomSubTitle variant="h5">Shubham</CustomSubTitle>
                 <SubText variant="body1">
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora et magnam, ab, voluptatum numquam rem excepturi id voluptatem obcaecati eos eveniet porro.
+                An experienced coder, with impeccable coding standards, who blends his nerdiness with an active lifestyle. He excels in handball and table tennis, and seeks trekking adventures.
                 </SubText>
               </ColumnContainer>
             </Grid>

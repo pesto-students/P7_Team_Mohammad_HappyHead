@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { Button, Card, CardContent, Dialog, DialogContent, DialogTitle, Grid, Typography, useMediaQuery } from '@mui/material';
 import { ThemeProvider, styled } from '@mui/system';
@@ -75,11 +76,20 @@ const StyledSlotButton = styled(Button)(({ theme }) => ({
 
 const ExpertsPage = () => {
   const router = useRouter();
-  const { username } = router.query;
+  const sessionData  = useSession();
+  const [username, setUsername] = useState(null);
   const [experts, setExperts] = useState([]);
   const [selectedExpert, setSelectedExpert] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {    
+    // Get username or expertname from the session object
+    if (sessionData.data && sessionData.data?.user && sessionData.data.user?.image[1] === "user") {
+      setUsername(sessionData.data.user.image?.[0]);
+      // console.log('is user')
+    }      
+}, [sessionData]);
 
   // Define an array of colors
   const cardColors = [

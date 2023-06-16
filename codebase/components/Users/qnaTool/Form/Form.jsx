@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { Box, FormControl, FormGroup, FormControlLabel, Checkbox, Radio, RadioGroup, Button, IconButton } from '@mui/material';
 import { ThemeProvider, styled } from '@mui/system';
 import ButtonWrapper from '../../../styles/ButtonWrapperStyles';
@@ -50,24 +50,21 @@ const CustButtonWrapper = styled('div')(({ theme, color }) => ({
 
 
 const QnAPage = () => {
-  const router = useRouter();
-  const { username } = router.query;
-
+  const sessionData  = useSession();
+  // console.log("User:", sessionData.data?.user);
+  const [username, setUsername] = useState(null);
 
   // State to hold the user's answers
   const [answers, setAnswers] = useState(Array(defaultQuestionnaireData.length).fill(''));
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isFormValid, setIsFormValid] = useState(false);
 
-
   const totalQuestions = defaultQuestionnaireData.length;
-
 
   // Function to handle selecting an answer
   const handleSelectAnswer = (questionIndex, answerIndex, checked, question) => {
     const newAnswers = [...answers];
     const selectedOptions = newAnswers[questionIndex];
-
 
     if (question.type === 'checkbox') {
       // Checkbox: update selected options array
@@ -84,27 +81,22 @@ const QnAPage = () => {
       newAnswers[questionIndex] = answerIndex.toString();
     }
 
-
     setAnswers(newAnswers);
-
 
     // Check if all questions are answered
     const isAllQuestionsAnswered = newAnswers.every((answer) => answer !== '');
     setIsFormValid(isAllQuestionsAnswered);
   };
 
-
   // Function to go to the previous question
   const goToPreviousQuestion = () => {
     setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
   };
 
-
   // Function to go to the next question
   const goToNextQuestion = () => {
     setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
   };
-
 
   // Function to handle submitting the answers
   const handleSubmit = async () => {
@@ -118,7 +110,6 @@ const QnAPage = () => {
         }
       });
 
-
       const recommendations = answersWithRecommendations.map((answer, index) => {
         if (defaultQuestionnaireData[index].recommendation.length === 1 && answer == defaultQuestionnaireData[index].options.length - 1) {
           return "";
@@ -130,7 +121,6 @@ const QnAPage = () => {
           return defaultQuestionnaireData[index].recommendation[answer];
         }
       });
-
 
       const data = {
         answers: {
@@ -162,9 +152,7 @@ const QnAPage = () => {
     }
   };
 
-
   const currentQuestion = defaultQuestionnaireData[currentQuestionIndex];
-
 
   return (
     <ThemeProvider theme={theme}>

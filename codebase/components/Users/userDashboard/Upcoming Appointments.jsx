@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import { styled, ThemeProvider } from '@mui/system';
 import { Typography, Card, CardContent, Divider } from '@mui/material';
 import RootContainer from '../../styles/RootContainerStyles';
 import theme from '../../styles/theme';
 import Loader from '../../styles/Loader';
 import Image from 'next/image'
+import { useSession } from 'next-auth/react';
 
 // Custom styled components for the root container, content container, and dialog
 const CustomRootContainer = styled(RootContainer)(() => ({
@@ -53,10 +53,20 @@ const SubText = styled(Typography)(({ theme }) => ({
 }))
 
 const UpcomingAppointments = () => {
-  const router = useRouter();
-  const { username } = router.query;
+  const sessionData  = useSession();
+  // console.log("User:", sessionData.data?.user);
+  const [username, setUsername] = useState(null);
+
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {    
+    // Get username or expertname from the session object
+    if (sessionData.data && sessionData.data?.user && sessionData.data.user?.image[1] === "user") {
+      setUsername(sessionData.data.user.image?.[0]);
+      // console.log('is user')
+    }      
+}, [sessionData]);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -81,7 +91,7 @@ const UpcomingAppointments = () => {
     if (username) {
       fetchAppointments();
     }
-  }, [username]);
+  }, [username, sessionData]);
 
   // Define an array of colors
   const cardColors = [
