@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TextField, Button, Container, Typography } from "@mui/material";
 import { ThemeProvider, styled } from "@mui/system";
 import RootContainer from "../../../styles/RootContainerStyles";
@@ -8,7 +8,7 @@ import theme from "../../../styles/theme";
 import Link from 'next/link'
 import { useRouter } from "next/router";
 import { redirectToPage } from '../../../../utils/redirect';
-import { signIn, getSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Image from 'next/image'
 
 // Styled component for the root container
@@ -49,6 +49,8 @@ export default function SignInForm() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const router = useRouter();
+  const sessionData = useSession();
+  console.log(`sessionData - ${JSON.stringify(sessionData)}`);
 
   const validateForm = () => {
     const newErrors = {};
@@ -110,14 +112,15 @@ export default function SignInForm() {
 
   const handleIdpClick = async () => {
     await signIn('google');
-    const updatedSession = await getSession();
-    if(updatedSession) {
-      console.log(`userObject - ${JSON.stringify(updatedSession.user)}`);
-      const {email} = updatedSession.user;
-      const username = email.substring(0, email.indexOf('@'));
+  };
+
+  useEffect(() => {
+    if(sessionData.data && sessionData.data.user) {
+      console.log(`userObject - ${JSON.stringify(sessionData.data.user)}`);
+      const {image:[username,role]} = sessionData.data.user;
       redirectToPage(`/users/dashboard/${username}`);
     }
-  };
+  }, [sessionData]);
 
   return (
     <ThemeProvider theme={theme}>

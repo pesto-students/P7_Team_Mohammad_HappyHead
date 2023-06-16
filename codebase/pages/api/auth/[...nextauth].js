@@ -5,6 +5,7 @@ import { authenticateUser } from "../users/signin";
 import { authenticateExpert } from "../experts/signin";
 import { getUserByEmail } from "../users/userDao";
 import { updateDBSignUp } from "../users/signup";
+import { generateUserName, isExpertsLogin } from "../authUtil";
 
 const authOptions = {
   providers: [
@@ -22,18 +23,10 @@ const authOptions = {
         try {
           const { email, password } = credentials;
           console.log("reqURL - ", req)
-          // Determine if the request is for expert signin or signup
-
-          const isExpertSignin = req?.body?.callbackUrl?.includes("/experts/signin");
-          const isExpertSignup = req?.body?.callbackUrl?.includes("/experts/signup");
-
-          console.log("isExpertSignin - ", isExpertSignin)
-          console.log("isExpertSignup - ", isExpertSignup)
-
-
+         
           let retObj;
 
-          if (isExpertSignin || isExpertSignup) {
+          if (isExpertsLogin(req)) {
             const userObj = await authenticateExpert(email, password);
             retObj = {
               name: userObj.name,
@@ -70,7 +63,7 @@ const authOptions = {
       const {user, account} = obj;
       if(account?.provider === 'google') {
         const { name, email} = user;
-        const username = email.substring(0, email.indexOf('@'));
+        const username = generateUserName(15);
         console.log(`username - ${username}`);
         await updateDBSignUp(name, email, null, username, account.provider)
       }
