@@ -131,14 +131,6 @@ export default function SignInForm() {
           />
           <h1>Sign In</h1>
           {/* Centered Sub text */}
-          <ButtonWrapper color="primary">
-          <IdPSignInButton
-              variant="h6"
-              onClick={() => handleIdpClick()}
-            >
-              Sign In with Google
-            </IdPSignInButton>
-          </ButtonWrapper>
           <Container maxWidth="sm">
             <form onSubmit={handleSubmit}>
               <CustomTextField
