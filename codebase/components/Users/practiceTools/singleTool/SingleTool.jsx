@@ -108,6 +108,7 @@ const ToolPage = () => {
   useEffect(() => {
     // Fetch the user's data, including the toolsCompleted array, based on the username
     const fetchUserSchema = async () => {
+      if (!username) return; // Add a null check for the username
       try {
         // Make an API request to fetch the user's profile
         const response = await fetch(`/api/users/practicetools/${username}/${toolId}`);
@@ -116,6 +117,7 @@ const ToolPage = () => {
         const stagesCompleted = data.toolsCompleted
 
         if (response.ok) {
+          const stagesCompleted = data && data.toolsCompleted ? data.toolsCompleted : [];
           // Set the completed stages based on the user's toolsCompleted array
           setCompletedStages(stagesCompleted);
 
@@ -137,7 +139,7 @@ const ToolPage = () => {
     };
 
     fetchUserSchema();
-  });
+  }, [username, toolId]);
 
   // Render loading state or placeholder component while fetching data
   if (isLoading) {

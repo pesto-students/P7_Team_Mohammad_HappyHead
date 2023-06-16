@@ -35,9 +35,9 @@ const CustomButtonWrapper = styled(ButtonWrapper)(({ theme }) => ({
 }));
 
 const CustomTitle = styled(Typography)(({ theme }) => ({
-  ...theme.typography.h2, 
+  ...theme.typography.h2,
   [theme.breakpoints.down('sm')]: {
-    fontSize: theme.typography.h4.fontSize, 
+    fontSize: theme.typography.h4.fontSize,
   },
 }));
 
@@ -46,8 +46,8 @@ const CustomDesc = styled(Typography)(() => ({
 }));
 
 const CustomImage = styled('img')(() => ({
-  maxWidth: '100%', 
-  height: 'auto', 
+  maxWidth: '100%',
+  height: 'auto',
   marginBottom: '1rem',
   paddingTop: '2rem',
 }));
@@ -56,12 +56,12 @@ const Heading = styled(Typography)(({ theme }) => ({
   ...theme.typography.h2,
   fontWeight: 'bold',
   [theme.breakpoints.down('sm')]: {
-    fontSize: theme.typography.h4.fontSize, 
+    fontSize: theme.typography.h4.fontSize,
   },
 }));
 
 const MeditationTools = () => {
-  const sessionData  = useSession();
+  const sessionData = useSession();
   const [username, setUsername] = useState(null);
   const [completedStages, setCompletedStages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -73,37 +73,40 @@ const MeditationTools = () => {
     theme.palette.quinary.main,
   ];
 
-  useEffect(() => {    
+  useEffect(() => {
     // Get username or expertname from the session object
     if (sessionData.data && sessionData.data?.user && sessionData.data.user?.image[1] === "user") {
       setUsername(sessionData.data.user.image?.[0]);
       // console.log('is user')
-    }      
-}, [sessionData]);
+    }
+  }, [sessionData]);
 
   useEffect(() => {
-    // Fetch the user's data, including the toolsCompleted array, based on the username
-    const fetchUserSchema = async () => {
-      try {
-        // Make an API request to fetch the user's profile
-        const response = await fetch(`/api/users/practicetools/${username}`);
-        const data = await response.json();
-        const stagesCompleted = data.toolsCompleted
-        if (response.ok) {
-          // Set the completed stages based on the user's toolsCompleted array
-          setCompletedStages(stagesCompleted);
-          setIsLoading(false);
-        } else {
-          console.error('Failed to fetch user profile:', data.error);
+    if (username) {
+      // Fetch the user's data, including the toolsCompleted array, based on the username
+      const fetchUserSchema = async () => {
+        try {
+          // Make an API request to fetch the user's profile
+          const response = await fetch(`/api/users/practicetools/${username}`);
+          const data = await response.json();
+          const stagesCompleted = data.toolsCompleted
+          if (response.ok) {
+            // Set the completed stages based on the user's toolsCompleted array
+            if (data && data?.toolsCompleted) {
+              setCompletedStages(data?.toolsCompleted);
+            }
+            setIsLoading(false);
+          } else {
+            console.error('Failed to fetch user profile:', data.error);
+            setIsLoading(false);
+          }
+        } catch (error) {
+          console.error('Failed to fetch user profile:', error);
           setIsLoading(false);
         }
-      } catch (error) {
-        console.error('Failed to fetch user profile:', error);
-        setIsLoading(false);
-      }
-    };
-
-    fetchUserSchema();
+      };
+      fetchUserSchema();
+    }
   });
 
   const handleToolClick = (toolId) => {
@@ -128,16 +131,16 @@ const MeditationTools = () => {
           Guided Meditation Tools
         </Heading>
         {meditationTools.map((tool, index) => (
-          <CustomCard 
-          key={tool.toolId} 
-          variant="outlined"
-          cardColor={cardColors[index % cardColors.length]}
+          <CustomCard
+            key={tool.toolId}
+            variant="outlined"
+            cardColor={cardColors[index % cardColors.length]}
           >
             <CardContent>
-            <CustomImage
+              <CustomImage
                 src={tool.image}
                 alt={tool.title}
-                style={{ maxWidth: '200px', height: 'auto' }} 
+                style={{ maxWidth: '200px', height: 'auto' }}
               />
               <CustomTitle component="h2">
                 {tool.title}
@@ -146,14 +149,14 @@ const MeditationTools = () => {
                 {tool.description}
               </CustomDesc>
               <CustomButtonWrapper color="primary">
-              <div onClick={() => handleToolClick(tool.toolId)}>
-                <Button
-                  variant="contained"
-                  color="quinary"
-                  disabled={tool.toolId !== 1 && !completedStages.includes(tool.toolId - 1)}
-                >
-                  Start Practice
-                </Button>
+                <div onClick={() => handleToolClick(tool.toolId)}>
+                  <Button
+                    variant="contained"
+                    color="quinary"
+                    disabled={tool.toolId !== 1 && !completedStages.includes(tool.toolId - 1)}
+                  >
+                    Start Practice
+                  </Button>
                 </div>
               </CustomButtonWrapper>
             </CardContent>

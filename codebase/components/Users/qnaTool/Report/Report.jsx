@@ -66,12 +66,12 @@ const ReportGenerator = () => {
     const [userRecommendations, setUserRecommendations] = useState([])
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {    
+    useEffect(() => {
         // Get username or expertname from the session object
         if (sessionData.data && sessionData.data?.user && sessionData.data.user?.image[1] === "user") {
-          setUsername(sessionData.data.user.image?.[0]);
-          // console.log('is user')
-        }      
+            setUsername(sessionData.data.user.image?.[0]);
+            // console.log('is user')
+        }
     }, [sessionData]);
 
     useEffect(() => {
@@ -81,8 +81,8 @@ const ReportGenerator = () => {
                 const response = await fetch(`/api/users/qna/${username}`);
                 if (response.ok) {
                     const userData = await response.json();
-                    setUserAnswers(userData.answers.answers)
-                    setUserRecommendations(userData.answers.recommendations);
+                    setUserAnswers(userData?.answers?.answers ?? []);
+                    setUserRecommendations(userData?.answers?.recommendations ?? []);
                     setIsLoading(false);
                 } else {
                     console.error('Failed to fetch user data');
