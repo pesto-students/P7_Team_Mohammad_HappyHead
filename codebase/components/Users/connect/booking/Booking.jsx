@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import { Box, Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, TextField } from '@mui/material';
 import ButtonWrapper from '../../../styles/ButtonWrapperStyles'
 import theme from '../../../styles/theme'
@@ -86,12 +87,22 @@ const StyledCloseButton = styled(Button)(({ theme }) => ({
   }));
 
 const BookSlot = () => {
+    const sessionData  = useSession();
+    const [username, setUsername] = useState(null);
     const router = useRouter();
-    const { username, expertname, availability, slot } = router.query;
+    const { expertname, availability, slot } = router.query;
     const [expertProfile, setExpertProfile] = useState(null);
     const [userDetails, setUserDetails] = useState(null);
     const [bookingConfirmed, setBookingConfirmed] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {    
+        // Get username or expertname from the session object
+        if (sessionData.data && sessionData.data?.user && sessionData.data.user?.image[1] === "user") {
+          setUsername(sessionData.data.user.image?.[0]);
+          // console.log('is user')
+        }      
+    }, [sessionData]);
 
     useEffect(() => {
         const fetchExpert = async () => {
@@ -116,13 +127,10 @@ const BookSlot = () => {
         };
         fetchExpert();
         fetchUser();
-    }, [expertname, username]);
-
-
+    }, [expertname, username, sessionData]);
 
     const parsedAvailability = availability ? JSON.parse(availability) : null;
     const parsedSlot = slot ? JSON.parse(slot) : null;
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();

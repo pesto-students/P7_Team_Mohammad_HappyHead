@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import { Button, Card, Typography } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/system';
 import { redirectToPage } from '../../../../utils/redirect';
@@ -78,7 +79,9 @@ const CustomImage = styled('img')(({ theme }) => ({
 
 const ToolPage = () => {
   const router = useRouter();
-  const { toolId, username } = router.query;
+  const { toolId } = router.query;
+  const sessionData  = useSession();
+  const [username, setUsername] = useState(null);
   const [completedStages, setCompletedStages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -93,6 +96,14 @@ const ToolPage = () => {
     theme.palette.tertiary.main,
     theme.palette.secondary.main,
   ];
+
+  useEffect(() => {    
+    // Get username or expertname from the session object
+    if (sessionData.data && sessionData.data?.user && sessionData.data.user?.image[1] === "user") {
+      setUsername(sessionData.data.user.image?.[0]);
+      // console.log('is user')
+    }      
+}, [sessionData]);
 
   useEffect(() => {
     // Fetch the user's data, including the toolsCompleted array, based on the username

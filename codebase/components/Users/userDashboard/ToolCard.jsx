@@ -9,6 +9,7 @@ import theme from '../../styles/theme';
 import Loader from '../../styles/Loader';
 import Image from 'next/image'
 import { redirectToPage } from '../../../utils/redirect';
+import { useSession } from 'next-auth/react';
 
 // Custom styled components for the root container, content container, and dialog
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -40,8 +41,20 @@ const muiLinkStyles = {
 
 const ToolCardContainer = () => {
   const router = useRouter();
-  const { username } = router.query;
+
+  const sessionData  = useSession();
+  // console.log("User:", sessionData.data?.user);
+  const [username, setUsername] = useState(null);
+
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {    
+    // Get username or expertname from the session object
+    if (sessionData.data && sessionData.data?.user && sessionData.data.user?.image[1] === "user") {
+      setUsername(sessionData.data.user.image?.[0]);
+      // console.log('is user')
+    }      
+}, [sessionData]);
 
   useEffect(() => {
     // Simulating a delay of 2 seconds for loading

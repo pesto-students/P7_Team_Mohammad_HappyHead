@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { redirectToPage } from '../../../../utils/redirect';
 import Loader from '../../../styles/Loader';
 import Image from 'next/image'
+import { useSession } from 'next-auth/react';
 
 // Styled component for the root container
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -59,9 +60,21 @@ const info = {
 
 const QnAMain = () => {
   const router = useRouter();
-  const { username } = router.query;
+
+  const sessionData  = useSession();
+  // console.log("User:", sessionData.data?.user);
+  const [username, setUsername] = useState(null);
+
   const [answersExist, setAnswersExist] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {    
+    // Get username or expertname from the session object
+    if (sessionData.data && sessionData.data?.user && sessionData.data.user?.image[1] === "user") {
+      setUsername(sessionData.data.user.image?.[0]);
+      // console.log('is user')
+    }      
+}, [sessionData]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,7 +96,7 @@ const QnAMain = () => {
     };
 
     fetchData();
-  }, [username]);
+  }, [username, sessionData]);
 
   const handleStart = () => {
     redirectToPage(`/users/qna/form/${username}`);

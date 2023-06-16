@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import { Button, CardActions, Dialog, DialogTitle, DialogContent, TextField, InputAdornment, IconButton, DialogActions, Typography } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/system';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -11,7 +11,7 @@ import theme from '../../styles/theme';
 import Loader from '../../styles/Loader';
 import messages from './messages'
 import { redirectToPage } from '../../../utils/redirect';
-import { useSession } from 'next-auth/react';
+
 
 // Custom styled components for the root container, content container, and dialog
 const CustomRootContainer = styled(RootContainer)(({ theme }) => ({
@@ -85,11 +85,8 @@ const buttonStyles = {
 };
 
 const UserDashboard = () => {
-  const router = useRouter();
-  // const { username } = router.query;
-
   const sessionData  = useSession();
-  console.log("User:", sessionData.data?.user);
+  // console.log("User:", sessionData.data?.user);
   const [username, setUsername] = useState(null);
 
   // State variables
@@ -104,7 +101,7 @@ const UserDashboard = () => {
       // Get username or expertname from the session object
       if (sessionData.data && sessionData.data?.user && sessionData.data.user?.image[1] === "user") {
         setUsername(sessionData.data.user.image?.[0]);
-        console.log('is user')
+        // console.log('is user')
       }      
   }, [sessionData]);
 
