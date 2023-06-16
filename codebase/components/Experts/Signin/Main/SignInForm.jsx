@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TextField, Button, Container, Typography } from "@mui/material";
 import { ThemeProvider, styled } from "@mui/system";
 import RootContainer from "../../../styles/RootContainerStyles";
@@ -8,7 +8,7 @@ import theme from "../../../styles/theme";
 import Link from 'next/link'
 import { useRouter } from "next/router";
 import { redirectToPage } from '../../../../utils/redirect';
-import { signIn } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import Image from 'next/image'
 
 // Styled component for the root container
@@ -49,6 +49,16 @@ export default function SignInForm() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const router = useRouter();
+  const sessionData = useSession();
+  console.log(`sessionData - ${JSON.stringify(sessionData)}`);
+
+  useEffect(() => {
+    if(sessionData?.data && sessionData.data.user) {
+      // console.log(`userObject - ${JSON.stringify(sessionData.data.user)}`);
+      const {image:[expertname,role]} = sessionData.data.user;
+      redirectToPage(`/experts/dashboard/${expertname}`);
+    }
+  }, [sessionData]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -105,8 +115,8 @@ export default function SignInForm() {
     }
   };
 
-  const handleIdpClick = (e) => {
-    router?.push("/api/auth/signin");
+  const handleIdpClick = async () => {
+    await signIn('google');
   };
 
   return (
@@ -122,9 +132,9 @@ export default function SignInForm() {
           <h1>Sign In</h1>
           {/* Centered Sub text */}
           <ButtonWrapper color="primary">
-            <IdPSignInButton
+          <IdPSignInButton
               variant="h6"
-              onClick={handleIdpClick}
+              onClick={() => handleIdpClick()}
             >
               Sign In with Google
             </IdPSignInButton>

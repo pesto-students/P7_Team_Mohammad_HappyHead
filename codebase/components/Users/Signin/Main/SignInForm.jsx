@@ -8,7 +8,7 @@ import theme from "../../../styles/theme";
 import Link from 'next/link'
 import { useRouter } from "next/router";
 import { redirectToPage } from '../../../../utils/redirect';
-import { signIn, getSession, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Image from 'next/image'
 
 // Styled component for the root container
@@ -50,7 +50,7 @@ export default function SignInForm() {
   const [errors, setErrors] = useState({});
   const router = useRouter();
   const sessionData = useSession();
-  console.log(`sessionData - ${JSON.stringify(sessionData)}`);
+  // console.log(`sessionData - ${JSON.stringify(sessionData)}`);
 
   useEffect(() => {
     if(sessionData.data && sessionData.data.user) {

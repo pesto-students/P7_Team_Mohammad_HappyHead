@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TextField, Typography, Button, Container, InputAdornment } from "@mui/material";
 import { ThemeProvider, styled } from "@mui/system";
 import GoogleIcon from "@mui/icons-material/Google";
@@ -58,6 +58,13 @@ export default function SignUpForm() {
   const sessionData = useSession();
   console.log(`sessionData - ${JSON.stringify(sessionData)}`);
   
+  useEffect(() => {
+    if(sessionData?.data && sessionData.data.user) {
+      // console.log(`userObject - ${JSON.stringify(sessionData.data.user)}`);
+      const {image:[username,role]} = sessionData.data.user;
+      redirectToPage(`/users/dashboard/${username}`);
+    }
+  }, [sessionData]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -118,14 +125,6 @@ export default function SignUpForm() {
   const handleIdpClick = async () => {
     await signIn('google');
   };
-
-  useEffect(() => {
-    if(sessionData?.data && sessionData.data.user) {
-      // console.log(`userObject - ${JSON.stringify(sessionData.data.user)}`);
-      const {image:[username,role]} = sessionData.data.user;
-      redirectToPage(`/users/dashboard/${username}`);
-    }
-  }, [sessionData]);
 
   // Check username availability when Check Availability button is clicked
   const handleCheckAvailability = async () => {

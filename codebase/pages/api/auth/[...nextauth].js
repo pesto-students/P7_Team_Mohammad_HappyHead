@@ -75,6 +75,7 @@ const authOptions = {
        * {"session":{"user":{"name":"Shubham Singh","email":"shbh29@gmail.com","image":"https://lh3.googleusercontent.com/a/AAcHTte7TmJ7A0ZKpSqHAzknYAfHboqqw2kdr74x9WobcQ=s96-c"},"expires":"2023-07-15T14:36:41.803Z"}
        * ,"token":{"name":"Shubham Singh","email":"shbh29@gmail.com","picture":"https://lh3.googleusercontent.com/a/AAcHTte7TmJ7A0ZKpSqHAzknYAfHboqqw2kdr74x9WobcQ=s96-c","sub":"111336451378684907226","iat":1686839800,"exp":1689431800,"jti":"a25a3736-3942-4baf-945d-36588a390e88"}} 
        */
+      console.log(session.user)
       const {email} = session.user;
 
       const userObj = await getUserByEmail(email);

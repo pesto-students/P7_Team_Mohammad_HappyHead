@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TextField, Typography, Button, Container, InputAdornment } from "@mui/material";
 import { ThemeProvider, styled } from "@mui/system";
-import GoogleIcon from "@mui/icons-material/Google";
 import RootContainer from "../../../styles/RootContainerStyles";
 import ContentContainer from "../../../styles/ContentContainerStyles";
 import ButtonWrapper from "../../../styles/ButtonWrapperStyles";
@@ -9,7 +8,7 @@ import theme from "../../../styles/theme";
 import Link from 'next/link'
 import { useRouter } from 'next/router';
 import { redirectToPage } from '../../../../utils/redirect';
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Image from 'next/image'
 
 // Styled component for the root container
@@ -55,6 +54,16 @@ export default function SignUpForm() {
   const [usernameAvailable, setUsernameAvailable] = useState();
   const [errors, setErrors] = useState({});
   const router = useRouter();
+  const sessionData = useSession();
+  console.log(`sessionData - ${JSON.stringify(sessionData)}`);
+
+  useEffect(() => {
+    if(sessionData.data && sessionData.data.user) {
+      // console.log(`userObject - ${JSON.stringify(sessionData.data.user)}`);
+      const {image:[expertname,role]} = sessionData.data.user;
+      redirectToPage(`/experts/dashboard/${expertname}`);
+    }
+  }, [sessionData]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -112,8 +121,8 @@ export default function SignUpForm() {
     }
   };
 
-  const handleIdpClick = (e) => {
-    router?.push('/api/auth/signin')
+  const handleIdpClick = async () => {
+    await signIn('google');
   };
 
   // Check username availability when Check Availability button is clicked
@@ -127,7 +136,7 @@ export default function SignUpForm() {
       const response = await fetch(`/api/experts/${expertname}`);
       if (response.ok) {
         const result = await response.json();
- 
+
         setUsernameAvailable(result.available);
         // Handle the availability result as desired
       } else {
@@ -144,7 +153,7 @@ export default function SignUpForm() {
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
         <CustomContentContainer>
-        <Image
+          <Image
             src="/images/login/join-us.png"
             alt="signup"
             width={150}
@@ -153,8 +162,11 @@ export default function SignUpForm() {
           <h1>Sign Up</h1>
           {/* Centered Sub text */}
           <ButtonWrapper color="primary">
-            <IdPSignInButton variant="outlined" startIcon={<GoogleIcon />} onClick={handleIdpClick}>
-              Sign Up With Google
+          <IdPSignInButton
+              variant="h6"
+              onClick={() => handleIdpClick()}
+            >
+              Sign In with Google
             </IdPSignInButton>
           </ButtonWrapper>
           <Container maxWidth="sm">
