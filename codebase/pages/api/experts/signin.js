@@ -1,5 +1,4 @@
 const { connectToDatabase } = require('../../../utils/mongodb');
-const ObjectId = require('mongodb').ObjectId;
 import { validatePassword } from '../authUtil';
 
 export default async function SignInHandler(req, res) {

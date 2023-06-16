@@ -1,6 +1,5 @@
 const { connectToDatabase } = require('../../../../utils/mongodb')
 
-
 const expertProfileHandler = async (req, res) => {
   if (req.method === 'GET') {
     try {

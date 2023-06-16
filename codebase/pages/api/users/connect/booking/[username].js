@@ -1,5 +1,4 @@
 const { connectToDatabase } = require('../../../../../utils/mongodb')
-const ObjectId = require('mongodb').ObjectId;
 
 const userProfileHandler = async (req, res) => {
   if (req.method === 'GET') {

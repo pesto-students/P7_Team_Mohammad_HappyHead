@@ -1,5 +1,4 @@
 const { connectToDatabase } = require('../../../../utils/mongodb')
-const ObjectId = require('mongodb').ObjectId;
 
 const getAllExpertsHandler = async (req, res) => {
   if (req.method === 'GET') {

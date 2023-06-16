@@ -1,6 +1,4 @@
 const { connectToDatabase } = require('../../utils/mongodb');
-const ObjectId = require('mongodb').ObjectId;
-
 
 export default async function ContactUshandler(req, res) {
   if (req.method === 'POST') {

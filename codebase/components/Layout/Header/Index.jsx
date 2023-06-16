@@ -16,8 +16,8 @@ import UserMenu from './UserMenu'
 // ResponsiveAppBar component
 function ResponsiveAppBar() {
   const sessionData  = useSession();
-  // console.log("Session:", sessionData);
-  // console.log("User:", sessionData.data?.user);
+  console.log("Session:", sessionData);
+  console.log("User:", sessionData.data?.user);
   const [username, setUsername] = useState(null);
   const [expertname, setExpertname] = useState(null);
 
