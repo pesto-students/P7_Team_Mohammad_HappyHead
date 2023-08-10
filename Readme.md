@@ -8,6 +8,8 @@ HappyHead is a cutting-edge mental health platform built using Next.js, designed
 
 You can explore the project live at: [HappyHead](https://p7-team-mohammad-happy-head-happyhead.vercel.app/)
 
+![Screenshot](/codebase/public/Screenshot.png)
+
 ### Key Features
 
 * **User Profiles:** Users and experts can create profiles, edit information, and manage appointments.
