@@ -50,24 +50,33 @@ export default function SignInForm() {
   const [errors, setErrors] = useState({});
   const router = useRouter();
 
-  const validateForm = () => {
-    const newErrors = {};
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  const validateEmail = () => {
+    const newErrors = { ...errors };
 
     if (email.trim() === "") {
       newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
+    } else if (!emailRegex.test(email)) {
       newErrors.email = "Invalid email address";
+    } else {
+      newErrors.email = undefined; // Clear the error if email is valid
     }
+
+    setErrors(newErrors);
+  };
+
+  const validatePassword = () => {
+    const newErrors = { ...errors };
 
     if (password.trim() === "") {
       newErrors.password = "Password is required";
-      // } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/.test(password)) {
-      //   newErrors.password = 'Password must be 8 Characters long';
+    } else {
+      newErrors.password = undefined; // Clear the error if password is valid
     }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
 
+    setErrors(newErrors);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -121,6 +130,7 @@ export default function SignInForm() {
                 fullWidth
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onBlur={validateEmail} // Validate on leaving field
                 margin="normal"
                 InputLabelProps={{
                   style: {
@@ -135,6 +145,7 @@ export default function SignInForm() {
                 fullWidth
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onBlur={validatePassword} 
                 margin="normal"
                 InputLabelProps={{
                   style: {

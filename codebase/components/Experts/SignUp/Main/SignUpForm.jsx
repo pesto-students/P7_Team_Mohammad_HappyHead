@@ -65,12 +65,6 @@ export default function SignUpForm() {
       newErrors.username = "Username is required";
     }
 
-    if (email.trim() === "") {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = "Invalid email address";
-    }
-
     if (password.trim() === "") {
       newErrors.password = "Password is required";
     }
@@ -78,6 +72,22 @@ export default function SignUpForm() {
     setErrors(newErrors);
 
     return Object.keys(newErrors).length === 0;
+  };
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  const validateEmail = () => {
+    const newErrors = { ...errors };
+  
+    if (email.trim() === "") {
+      newErrors.email = "Email is required";
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = "Invalid email address";
+    } else {
+      newErrors.email = undefined; // Clear the error if email is valid
+    }
+  
+    setErrors(newErrors);
   };
 
   const handleSubmit = async (e) => {
@@ -167,6 +177,7 @@ export default function SignUpForm() {
                 fullWidth
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onBlur={validateEmail} 
                 margin="normal"
                 InputLabelProps={{
                   style: {
