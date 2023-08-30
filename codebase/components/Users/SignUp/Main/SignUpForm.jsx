@@ -258,7 +258,6 @@ export default function SignUpForm() {
                 fullWidth
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                onBlur={validatePassword} 
                 margin="normal"
                 InputLabelProps={{
                   style: {
