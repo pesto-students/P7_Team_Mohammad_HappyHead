@@ -53,33 +53,58 @@ export default function SignInForm() {
   // console.log(`sessionData - ${JSON.stringify(sessionData)}`);
 
   useEffect(() => {
-    if(sessionData.data && sessionData.data.user) {
+    if (sessionData.data && sessionData.data.user) {
       // console.log(`userObject - ${JSON.stringify(sessionData.data.user)}`);
-      const {image:[username,role]} = sessionData.data.user;
+      const { image: [username, role] } = sessionData.data.user;
       redirectToPage(`/users/dashboard/${username}`);
     }
   }, [sessionData]);
 
-  const validateForm = () => {
-    const newErrors = {};
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-   
+  // const validateForm = () => {
+  //   const newErrors = {};
+
+  //   if (email.trim() === "") {
+  //     newErrors.email = "Email is required";
+  //   } else if (!emailRegex.test(email)) {
+  //     newErrors.email = "Invalid email address";
+  //   }
+
+  //   if (password.trim() === "") {
+  //     newErrors.password = "Password is required";
+  //   }
+
+  //   setErrors(newErrors);
+
+  //   return Object.keys(newErrors).length === 0;
+  // };
+  const validateEmail = () => {
+    const newErrors = { ...errors };
+  
     if (email.trim() === "") {
       newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
+    } else if (!emailRegex.test(email)) {
       newErrors.email = "Invalid email address";
+    } else {
+      newErrors.email = undefined; // Clear the error if email is valid
     }
-
+  
+    setErrors(newErrors);
+  };
+  
+  const validatePassword = () => {
+    const newErrors = { ...errors };
+  
     if (password.trim() === "") {
       newErrors.password = "Password is required";
-      // } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/.test(password)) {
-      //   newErrors.password = 'Password must be 8 Characters long';
+    } else {
+      newErrors.password = undefined; // Clear the error if password is valid
     }
-
+  
     setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0;
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -118,7 +143,7 @@ export default function SignInForm() {
     }
   };
 
- 
+
   const handleIdpClick = async () => {
     await signIn('google');
   };
@@ -127,7 +152,7 @@ export default function SignInForm() {
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
         <CustomContentContainer>
-        <Image
+          <Image
             src="/images/login/welcome.png"
             alt="signin"
             width={150}
@@ -136,7 +161,7 @@ export default function SignInForm() {
           <h1>Sign In</h1>
           {/* Centered Sub text */}
           <ButtonWrapper color="primary">
-          <IdPSignInButton
+            <IdPSignInButton
               variant="h6"
               onClick={() => handleIdpClick()}
             >
@@ -150,28 +175,30 @@ export default function SignInForm() {
                 fullWidth
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                 onBlur={validateEmail} // Validate on leaving field
                 margin="normal"
                 InputLabelProps={{
                   style: {
                     color: theme.palette.text.primary,
                   },
                 }}
-                error={errors.email !== undefined}
-                helperText={errors.email}
+                error={errors.email !== undefined} // Check if error exists
+                helperText={errors.email} // Display error message
               />
               <CustomTextField
                 label="Password"
                 fullWidth
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onBlur={validatePassword} 
                 margin="normal"
                 InputLabelProps={{
                   style: {
                     color: theme.palette.text.primary,
                   },
                 }}
-                error={errors.password !== undefined}
-                helperText={errors.password}
+                error={errors.password !== undefined} // Check if error exists
+                helperText={errors.password} // Display error message
                 type="password"
               />
               <ButtonWrapper color="tertiary">
