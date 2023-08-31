@@ -158,6 +158,7 @@ const UpcomingAppointments = () => {
                           <SubText>
                             <strong>Contact:</strong> {slot.user.phoneNumber}
                           </SubText>
+
                         </div>
                       </CustomCardContent>
                     </CustomCard>
