@@ -7,7 +7,6 @@ import ContentContainer from "../../../styles/ContentContainerStyles";
 import ButtonWrapper from "../../../styles/ButtonWrapperStyles";
 import theme from "../../../styles/theme";
 import Link from 'next/link'
-import { useRouter } from 'next/router';
 import { redirectToPage } from '../../../../utils/redirect';
 import { useSession, signIn } from "next-auth/react";
 import Image from 'next/image'
@@ -54,38 +53,42 @@ export default function SignUpForm() {
   const [username, setUsername] = useState("");
   const [usernameAvailable, setUsernameAvailable] = useState();
   const [errors, setErrors] = useState({});
-  const router = useRouter();
+
+  // State variable to track whether the form is ready for submission
+  const [canSubmit, setCanSubmit] = useState(false);
   const sessionData = useSession();
   console.log(`sessionData - ${JSON.stringify(sessionData)}`);
-  
+
   useEffect(() => {
-    if(sessionData?.data && sessionData.data.user) {
+    if (sessionData?.data && sessionData.data.user) {
       // console.log(`userObject - ${JSON.stringify(sessionData.data.user)}`);
-      const {image:[username,role]} = sessionData.data.user;
+      const { image: [username, role] } = sessionData.data.user;
       redirectToPage(`/users/dashboard/${username}`);
     }
   }, [sessionData]);
 
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (name.trim() === "") {
-      newErrors.name = "Name is required";
+  // Check if the form is ready for submission
+  useEffect(() => {
+    if (errors.username === undefined && errors.email === undefined && errors.password === undefined && errors.name === undefined) {
+      setCanSubmit(true);
+    } else {
+      setCanSubmit(false);
     }
-    if (username.trim() === "") {
-      newErrors.username = "Username is required";
-    }
+  }, [errors]);
 
+  const validateRequiredField = (fieldValue, fieldName) => {
+    const newErrors = { ...errors };
+    if (fieldValue.trim() === "") {
+      newErrors[fieldName] = `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} is required`;
+    } else {
+      newErrors[fieldName] = undefined;
+    }
     setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0;
   };
 
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const validateEmail = () => {
     const newErrors = { ...errors };
-  
     if (email.trim() === "") {
       newErrors.email = "Email is required";
     } else if (!emailRegex.test(email)) {
@@ -93,27 +96,59 @@ export default function SignUpForm() {
     } else {
       newErrors.email = undefined; // Clear the error if email is valid
     }
-  
     setErrors(newErrors);
   };
-  
-  const validatePassword = () => {
-    const newErrors = { ...errors };
-  
-    if (password.trim() === "") {
-      newErrors.password = "Password is required";
-    } else {
-      newErrors.password = undefined; // Clear the error if password is valid
+
+  // Check username availability when Check Availability button is clicked
+  const handleCheckAvailability = async () => {
+    try {
+      if (username.trim() === "") {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          username: "Username is required",
+        }));
+        return;
+      }
+
+      const response = await fetch(`/api/users/dashboard/availability/${username}`);
+      if (response.ok) {
+        const result = await response.json();
+        setUsernameAvailable(result.available);
+
+        if (!result.available) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            username: "Username is already taken",
+          }));
+        } else {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            username: undefined,
+          }));
+        }
+      } else {
+        throw new Error("Request failed");
+      }
+    } catch (error) {
+      console.error(error);
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        username: "An error occurred while checking username availability",
+      }));
     }
-  
-    setErrors(newErrors);
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (validateForm()) {
+    // Validate all fields including the username
+    await handleCheckAvailability();
+    validateEmail();
+    validateRequiredField(password, "password");
+    validateRequiredField(name, "name");
+
+    // Check if the form is ready for submission
+    if (canSubmit) {
       try {
         const formData = { name: name, email: email, password: password, username: username };
 
@@ -145,34 +180,11 @@ export default function SignUpForm() {
     await signIn('google');
   };
 
-  // Check username availability when Check Availability button is clicked
-  const handleCheckAvailability = async () => {
-    if (username.trim() === "") {
-      // If the username field is empty, show an error message or handle it as desired
-      return;
-    }
-
-    try {
-      const response = await fetch(`/api/users/dashboard/availability/${username}`);
-      if (response.ok) {
-        const result = await response.json();
-        setUsernameAvailable(result.available);
-        // Handle the availability result as desired
-      } else {
-        throw new Error("Request failed");
-      }
-    } catch (error) {
-      console.error(error);
-      // Handle the error as desired
-    }
-  };
-
-
   return (
     <ThemeProvider theme={theme}>
       <CustomRootContainer>
         <CustomContentContainer>
-        <Image
+          <Image
             src="/images/login/join-us.png"
             alt="signup"
             width={150}
@@ -181,7 +193,7 @@ export default function SignUpForm() {
           <h1>Sign Up</h1>
           {/* Centered Sub text */}
           <ButtonWrapper color="primary">
-          <IdPSignInButton variant="outlined" startIcon={<GoogleIcon />} onClick={(e) => handleIdpClick()}>
+            <IdPSignInButton variant="outlined" startIcon={<GoogleIcon />} onClick={(e) => handleIdpClick()}>
               Sign Up With Google
             </IdPSignInButton>
           </ButtonWrapper>
@@ -200,13 +212,14 @@ export default function SignUpForm() {
                 }}
                 error={errors.name !== undefined}
                 helperText={errors.name}
+                onBlur={() => validateRequiredField(name, "name")}
               />
               <CustomTextField
                 label="Email"
                 fullWidth
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                onBlur={validateEmail} 
+                onBlur={validateEmail}
                 margin="normal"
                 InputLabelProps={{
                   style: {
@@ -246,6 +259,8 @@ export default function SignUpForm() {
                     </InputAdornment>
                   ),
                 }}
+                error={errors.username !== undefined} 
+                onBlur={handleCheckAvailability}
               />
               {usernameAvailable !== null && usernameAvailable !== undefined && (
                 <Typography variant="caption" color={usernameAvailable ? 'green' : 'error'}>
@@ -267,6 +282,7 @@ export default function SignUpForm() {
                 error={errors.password !== undefined}
                 helperText={errors.password}
                 type="password"
+                onBlur={() => validateRequiredField(password, "password")}
               />
               <ButtonWrapper color="tertiary">
                 <Button variant="contained" color="tertiary" type="submit">
