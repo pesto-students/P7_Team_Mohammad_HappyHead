@@ -52,14 +52,14 @@ const SubText = styled(Typography)(({ theme }) => ({
   fontSize: '1.2rem',
 }));
 
-const CancelButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.text.secondary,
-  backgroundColor: theme.palette.primary.main,
-  '&:hover': {
-    backgroundColor: theme.palette.text.secondary,
-    color: theme.palette.primary.main,
-  },
-}))
+// const CancelButton = styled(Button)(({ theme }) => ({
+//   color: theme.palette.text.secondary,
+//   backgroundColor: theme.palette.primary.main,
+//   '&:hover': {
+//     backgroundColor: theme.palette.text.secondary,
+//     color: theme.palette.primary.main,
+//   },
+// }))
 
 const UpcomingAppointments = () => {
   const router = useRouter();
@@ -167,7 +167,7 @@ const UpcomingAppointments = () => {
                           <SubText>
                             <strong>Contact:</strong> {slot.user.phoneNumber}
                           </SubText>
-                          <CancelButton>Cancel Appointment</CancelButton>
+                          {/* <CancelButton>Cancel Appointment</CancelButton> */}
                         </div>
                       </CustomCardContent>
                     </CustomCard>
