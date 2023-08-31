@@ -6,7 +6,6 @@ import ContentContainer from "../../../styles/ContentContainerStyles";
 import ButtonWrapper from "../../../styles/ButtonWrapperStyles";
 import theme from "../../../styles/theme";
 import Link from 'next/link'
-import { useRouter } from "next/router";
 import { redirectToPage } from '../../../../utils/redirect';
 import { signIn } from "next-auth/react";
 import Image from 'next/image'
@@ -21,11 +20,6 @@ const CustomContentContainer = styled(ContentContainer)({
   backgroundColor: theme.palette.secondary.main,
   padding: "2rem 0",
   minHeight: "80vh",
-});
-
-// Styled component for the centered subtext
-const IdPSignInButton = styled(Button)({
-  textAlign: "center",
 });
 
 // Styled component for the custom text field
@@ -48,7 +42,6 @@ export default function SignInForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const router = useRouter();
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -77,15 +70,20 @@ export default function SignInForm() {
 
     setErrors(newErrors);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (validateForm()) {
+  
+    // Validate fields before submitting
+    validateEmail();
+    validatePassword();
+  
+    if (!errors.email && !errors.password) {
       try {
-        console.log('control coming here')
+        console.log('control coming here');
         const response = await signIn('credentials', { redirect: false, email: email, password: password });
         const formData = { email: email, password: password };
-
+  
         // Send form data to the server using Fetch API
         const res = await fetch("/api/experts/signin", {
           method: "POST",
@@ -94,13 +92,13 @@ export default function SignInForm() {
           },
           body: JSON.stringify(formData),
         });
-
+  
         if (res.ok) {
           const data = await res.json();
           const expertname = data.expertname; // Handle the response as desired
           console.log("Login Successful");
-
-          // // Redirect the user to the dashboard page
+  
+          // Redirect the user to the dashboard page
           redirectToPage(`/experts/dashboard/${expertname}`);
         } else {
           throw new Error("Request failed");
@@ -110,6 +108,7 @@ export default function SignInForm() {
       }
     }
   };
+  
 
   return (
     <ThemeProvider theme={theme}>
@@ -122,7 +121,6 @@ export default function SignInForm() {
             height={150}
           />
           <h1>Sign In</h1>
-          {/* Centered Sub text */}
           <Container maxWidth="sm">
             <form onSubmit={handleSubmit}>
               <CustomTextField
