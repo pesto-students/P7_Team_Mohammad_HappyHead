@@ -18,9 +18,9 @@ const Heading = styled(Typography)(({ theme }) => ({
     ...theme.typography.h3,
     paddingBottom: '1rem',
     [theme.breakpoints.down('sm')]: {
-      fontSize: theme.typography.h4.fontSize,
+        fontSize: theme.typography.h4.fontSize,
     },
-  }));
+}));
 
 // Styled component for the custom content container
 const CustomContentContainer = styled(Box)(({ theme }) => ({
@@ -51,29 +51,29 @@ const LeftColumn = styled('div')(({ theme }) => ({
     [theme.breakpoints.up('sm')]: {
         padding: '1rem 2rem',
     },
-  }));
-  
-  // Styled component for the right column
-  const RightColumn = styled('div')(({ theme }) => ({
+}));
+
+// Styled component for the right column
+const RightColumn = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.secondary.main,
     borderRadius: '8px',
     padding: '1rem 1rem 2rem',
     flex: '1',
     alignItems: 'center',
     '&:hover': {
-      cursor: 'pointer',
-      boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
-      transform: 'scale(1.02)',
+        cursor: 'pointer',
+        boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
+        transform: 'scale(1.02)',
     },
-  }));
+}));
 
 // Styled component for the button
 const StyledButton = styled(Button)(({ theme }) => ({
     color: theme.palette.primary.contrastText,
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
     '&:hover': {
-        backgroundColor: theme.palette.tertiary.main, 
-        color: theme.palette.getContrastText(theme.palette.primary.contrastText), 
+        backgroundColor: theme.palette.tertiary.main,
+        color: theme.palette.getContrastText(theme.palette.primary.contrastText),
     },
 }));
 
@@ -82,12 +82,19 @@ const StyledCloseButton = styled(Button)(({ theme }) => ({
     color: theme.palette.text.primary,
     backgroundColor: theme.palette.quinary.main,
     '&:hover': {
-      backgroundColor: theme.palette.tertiary.main,
+        backgroundColor: theme.palette.tertiary.main,
     },
-  }));
+}));
+
+const generateBookingId = () => {
+    // Generate a unique booking ID using a combination of timestamp and random number
+    const timestamp = Date.now();
+    const randomNum = Math.floor(Math.random() * 10000);
+    return `${timestamp}-${randomNum}`;
+};
 
 const BookSlot = () => {
-    const sessionData  = useSession();
+    const sessionData = useSession();
     const [username, setUsername] = useState(null);
     const router = useRouter();
     const { expertname, availability, slot } = router.query;
@@ -96,12 +103,12 @@ const BookSlot = () => {
     const [bookingConfirmed, setBookingConfirmed] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {    
+    useEffect(() => {
         // Get username or expertname from the session object
         if (sessionData.data && sessionData.data?.user && sessionData.data.user?.image[1] === "user") {
-          setUsername(sessionData.data.user.image?.[0]);
-          // console.log('is user')
-        }      
+            setUsername(sessionData.data.user.image?.[0]);
+            // console.log('is user')
+        }
     }, [sessionData]);
 
     useEffect(() => {
@@ -135,6 +142,10 @@ const BookSlot = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const phoneNumber = e.target.elements.phoneNumber.value;
+
+        // Generate a unique booking ID
+        const bookingId = generateBookingId();
+
         // Validate phone number format
         const phoneNumberRegex = /^\d{10}$/;
         if (!phoneNumber.match(phoneNumberRegex)) {
@@ -159,6 +170,7 @@ const BookSlot = () => {
                                 ) {
                                     return {
                                         ...timeSlot,
+                                        id: bookingId, // Assign the generated booking ID
                                         booked: true,
                                         user: {
                                             name: userDetails.name,
@@ -182,6 +194,7 @@ const BookSlot = () => {
                         date: parsedAvailability.date,
                         startTime: parsedSlot.startTime,
                         endTime: parsedSlot.endTime,
+                        id: bookingId, // Assign the generated booking ID
                         booked: true,
                         user: {
                             name: expertProfile.name,
@@ -251,9 +264,9 @@ const BookSlot = () => {
     return (
         <ThemeProvider theme={theme}>
             <CustomRootContainer>
-            <Heading variant="h3" component="h2">Appointment Booking</Heading>
+                <Heading variant="h3" component="h2">Appointment Booking</Heading>
                 <CustomContentContainer>
-                    
+
                     <GridContainer>
                         <LeftColumn>
                             {expertProfile ? (
