@@ -92,8 +92,11 @@ export default function SignInForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+// Validate fields before submitting
+validateEmail();
+validatePassword();
 
-    if (validateForm()) {
+    if (!errors.email && !errors.password) {
       try {
         console.log('control coming here')
         const response = await signIn('credentials', { redirect: false, email: email, password: password });
