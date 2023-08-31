@@ -4,13 +4,13 @@ const expertProfileHandler = async (req, res) => {
   if (req.method === 'GET') {
     try {
       const expertname = req.query.expertname;
-      
+ 
       // Connect to the MongoDB Atlas cluster
       const { db } = await connectToDatabase();
 
       // Find the user by username
       let expert = await db.collection('Experts').findOne({ expertname: expertname });
-  
+
       // Send the user profile data as the response
       res.status(200).json(expert);
     } catch (error) {
