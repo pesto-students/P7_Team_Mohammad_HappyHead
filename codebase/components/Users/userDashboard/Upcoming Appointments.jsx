@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { styled, ThemeProvider } from '@mui/system';
-import { Typography, Card, CardContent, Divider } from '@mui/material';
+import { Typography, Card, CardContent, Divider, Button } from '@mui/material';
 import RootContainer from '../../styles/RootContainerStyles';
 import theme from '../../styles/theme';
 import Loader from '../../styles/Loader';
@@ -52,46 +52,162 @@ const SubText = styled(Typography)(({ theme }) => ({
   fontSize: '1.2rem',
 }))
 
+const CancelButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.text.secondary,
+  backgroundColor: theme.palette.primary.main,
+  '&:hover': {
+    backgroundColor: theme.palette.text.secondary,
+    color: theme.palette.primary.main,
+  },
+}))
+
 const UpcomingAppointments = () => {
-  const sessionData  = useSession();
+  const sessionData = useSession();
   // console.log("User:", sessionData.data?.user);
   const [username, setUsername] = useState(null);
-
+  const [phoneNumber, setphoneNumber] = useState(null);
+  const [appointment, setAppointment] = useState(null);
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {    
-    // Get username or expertname from the session object
+  const [expertProfile, setExpertProfile] = useState(null);
+  const [userDetails, setUserDetails] = useState(null);
+  const [bookingCancelled, setBookingCancelled] = useState(false);
+
+  useEffect(() => {
+    // Handle session data and set username
     if (sessionData.data && sessionData.data?.user && sessionData.data.user?.image[1] === "user") {
       setUsername(sessionData.data.user.image?.[0]);
       // console.log('is user')
-    }      
-}, [sessionData]);
+    }
+  }, [sessionData]);
+
+  // Function to fetch upcoming appointments
+  const fetchUpcomingAppointments = async () => {
+    try {
+      const response = await fetch(`/api/users/dashboard/${username}`);
+      const data = await response.json();
+      setUserDetails(data);
+      const bookedSlots = data.bookedSlots || [];
+      console.log('bookedSlots', bookedSlots)
+      const filteredAppointments = bookedSlots.filter((slot) => {
+        const appointmentDate = new Date(slot.date);
+        const currentDate = new Date();
+        return appointmentDate > currentDate;
+      });
+      setUpcomingAppointments(filteredAppointments);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching appointments:', error);
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchAppointments = async () => {
-      try {
-        const response = await fetch(`/api/users/dashboard/${username}`);
-        const data = await response.json();
-
-        const bookedSlots = data.bookedSlots || [];
-        const filteredAppointments = bookedSlots.filter((slot) => {
-          const appointmentDate = new Date(slot.date);
-          const currentDate = new Date();
-          return appointmentDate > currentDate;
-        });
-        setUpcomingAppointments(filteredAppointments);
-        setIsLoading(false);
-      } catch (error) {
-        console.error('Error fetching appointments:', error);
-        setIsLoading(false);
-      }
-    };
-
     if (username) {
-      fetchAppointments();
+      console.log("Im refreshing")
+      fetchUpcomingAppointments(); // Fetch upcoming appointments when username changes
     }
   }, [username, sessionData]);
+
+  // useEffect to fetch expert profile for cancellation
+  useEffect(() => {
+    async function fetchDetailsAndProfile(phoneNumber) {
+      try {
+        const expertResponse = await fetch(`/api/users/cancelbooking/${phoneNumber}`);
+        const expertData = await expertResponse.json();
+        setExpertProfile(expertData);
+      } catch (error) {
+        console.error('Error fetching expert profile:', error);
+      }
+    }
+
+    if (phoneNumber && appointment) {
+      fetchDetailsAndProfile(appointment.user.phoneNumber);
+    }
+  }, [phoneNumber, appointment]);
+
+  // useEffect to update user details and expert profile
+  useEffect(() => {
+    async function updateDetailsAndProfile() {
+      console.log(userDetails)
+      console.log(expertProfile)
+      const updatedExpertProfile = {
+        ...expertProfile,
+        availability: expertProfile.availability.map((day) => {
+          return {
+            ...day,
+            timeSlots: day.timeSlots.map((timeSlot) => {
+              if (timeSlot.id === appointment.id) {
+                return {
+                  ...timeSlot,
+                  id: "", // Remove the booking ID
+                  booked: false,
+                  user: {
+                    name: "",
+                    phoneNumber: "",
+                  },
+                };
+              }
+              return timeSlot;
+            }),
+          };
+        }),
+      };
+      setExpertProfile(updatedExpertProfile);
+
+      const updatedUserProfile = {
+        ...userDetails,
+        bookedSlots: userDetails.bookedSlots.filter((slot) => slot.id !== appointment.id),
+      };
+      setUserDetails(updatedUserProfile)
+      console.log("updatedExpertProfile", updatedExpertProfile)
+      console.log("updatedUserProfile", userDetails)
+      
+      try {
+        // Update expert profile
+        fetch(`/api/users/cancelbooking/${phoneNumber}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedExpertProfile),
+        });
+
+        // Update user profile
+        fetch(`/api/users/connect/booking/${username}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedUserProfile),
+        });
+
+        // Set booking cancelled state
+        setBookingCancelled(true);
+      } catch (error) {
+        console.error('Error updating profiles:', error);
+      }
+    }
+
+    if (userDetails && expertProfile && appointment) {
+      updateDetailsAndProfile();
+      console.log("profiles updated")
+      // After appointment cancellation, fetch and update upcoming appointments
+      fetchUpcomingAppointments();
+      console.log("upcomings updated")
+      setphoneNumber(null);
+      setAppointment(null);
+      setBookingCancelled(false);   
+    }
+
+  }, [userDetails, expertProfile]);
+
+  // Function to handle canceling appointment
+  const cancelAppointment = async (appointment) => {
+    setphoneNumber(appointment.user.phoneNumber);
+    setAppointment(appointment);
+  };
 
   // Define an array of colors
   const cardColors = [
@@ -143,6 +259,7 @@ const UpcomingAppointments = () => {
                       <SubText>
                         <strong>Expert Phone Number:</strong> {appointment.user.phoneNumber}
                       </SubText>
+                      <CancelButton onClick={() => cancelAppointment(appointment)}>Cancel Appointment</CancelButton>
                     </div>
                   </CustomCardContent>
                 </CustomCard>
